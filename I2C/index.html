@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <!-- Load the Paper.js library -->
+    <script type="text/javascript" src="paper.js"></script>
+    <!-- Define inlined PaperScript associate it with myCanvas -->
+    <title>I2C Communication Animation</title>
+    <link href="StyleSheet.css" rel="stylesheet" type="text/css">
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+ <script src="jquery.min.js"></script>
+</head>
+<body id = 'main'>
+    <!-- <div id = "form-wrap" class= "sticky">
+        <form id="form1">
+          <button class="back" id = "btn1" type = 'button'>Speed Down</button>
+          <button class="button" id = "btn2" type = 'button'>Speed Up</button>
+          Choose a scenario on the right to start
+          <button class = 'site' id = 'enable_btn' type = 'button'>Enable Light Sensor</button>
+          <button class = 'site' id = 'read_btn' type = 'button'>Read From Light Sensor</button>
+        </form>
+    </div>   -->
+    <ul id = "menu">
+      <!-- <form id="form1">
+          <button class="back" id = "btn1" type = 'button'>Speed Down</button>
+          <button class="button" id = "btn2" type = 'button'>Speed Up</button>
+          <button class = 'site' id = 'enable_btn' type = 'button'>Enable Light Sensor</button>
+          <button class = 'site' id = 'read_btn' type = 'button'>Read From Light Sensor</button>
+        </form> -->
+      <li>
+        <a href="#">Options</a>
+        <ul id = "speed_bar">
+            <li><a href="#" id = 'show_instruction'>Instructions</a></li>
+            <button class="site" id = "btn2" type = 'button'>--</button>
+            <button class="site" id = "btn1" type = 'button'>++</button>
+            <p id = 'spd_text'>Animation Speed:</p> 
+            <p id = 'speed_text'>3</p>
+        </ul>
+      </li>
+      <li>
+        <a href="#">General</a>
+        <ul id = 'general'>
+            <li><a href="#" id = 'default_status'>1 Default Status</a></li>
+            <li><a href="#" id = 'start'>2 START Conditon</a></li>
+            <li><a href="#" id = 'clk_stretching'>3 Clock Streching</a></li>
+            <li><a href="#" id = 'i2en'>4 Enabling I2C Interface</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Enabling Light Sensor Scenario</a>
+        <ul id = 'enable'>
+            <li><a href="#" id = 'enable_btn'>1 Initiating The Connection</a></li>
+            <li><a href="#" id = 'enable_set_2'>2 Accessing The Command Register</a></li>
+            <li><a href="#" id = 'enable_set_3'>3 Writing To Register</a></li>
+        </ul>
+      </li>
+      <li>
+          <a href="#">Reading From Light Sensor Scenario</a>
+          <ul id = 'read'>
+              <li><a href="#" id = 'read_btn'>1 Initiating The Connection</a></li>
+              <li><a href="#" id = 'read_set_2'>2 Accessing The LSB_Sensor Register</a></li>
+              <li><a href="#" id = 'read_set_3'>3 Initiating New Connection With Direction Change</a></li>
+              <li><a href="#" id = 'read_set_4'>4 Reading from LSB_Sensor Register</a></li>
+          </ul>
+        </li>
+    </ul>
+    
+    <div class = 'dropdown-content_1' id = 'diagram_1' style = 'display:none'>The signal waveform you see depicts a segment of data that is being sent back and forth between the Master and Slave. Parts of the diagram highlighted in light blue are controlled by the Master, while parts highlighted in yellow are being controlled by the Slave. This will then be translated and simplified into a block diagram for ease of viewing/understanding.</div>
+    <div class = 'dropdown-content_1' id = 'diagram_2' style = 'display:none'>The diagram you see below represents 5 different master devices represented by light blue circles on the left, while 5 different slave devices on the right are represented by yellow circles. You can also see a series of traffic lights on the left of each Master device, this is to visualize I2C communication as half-duplex, while 1 device is transmitting, the others will be stopped. Each portion of the box diagram will be translated into the signal that is sent by either the Master or Slave. This diagram will then show how each part of the signal is propagated by each respective device. On the right side of the slaves is a representation of specifically the light sensor device, with a slave address of 0x44, the register address and value will be modified as the animation continues.</div>
+    
+    <div id = "page-1">
+        <div class = "dropdown-content" id="master_popup" style="display: none">
+            <div id="wrapper">
+                <div class="chat">
+                  <div class="chat-container">
+                    <div class="chat-listcontainer">
+              
+                      <ul class="chat-message-list">
+                      </ul>
+              
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <canvas id="myCanvas"> 
+        </canvas>
+    </div>
+    <div id = "form-wrap">
+      <form id="form1">
+          <button class="back" id = "prev_btn" type = 'button'>Previous</button>
+          <button class="site" id = "play_btn" type = 'button'>Play Again</button>
+          <button class="button" id = "next_btn" type = 'button'>Next</button>
+          <button class ='site' id = 'feedback' type = 'button'>Feedback</button>
+      </form>
+  </div>  
+  <div class ="overlay" id = 'last_survey'>
+<!--     <iframe id = 'feedback_survey' src="https://docs.google.com/forms/d/e/1FAIpQLSfsudw44xkbIPprUacfXZVv2Bh7PcKkoNJgQKEm0mIAG4tK3g/viewform?embedded=true" width="640" height="1005" frameborder="0" marginheight="0" marginwidth="0">Loading...
+  </iframe> -->
+      <iframe id = 'feedback_survey'> </iframe>
+  <button class = "site glowing" id = 'close_feedback' type = 'button'>Close once the survey has been submitted</button>
+  </div>
+  <div class ="overlay" id = 'first_survey' style="overflow:auto;-webkit-overflow-scrolling:touch">
+<!--     <iframe id = 'prior_survey' src="https://docs.google.com/forms/d/e/1FAIpQLSc4sy2AkV9Xt511uJE5NBAImpKlSPoatk1DeBTcI7diR7uP8w/viewform?embedded=true" width="640" height="1005" frameborder="0" marginheight="0" marginwidth="0">Loading...
+  </iframe> -->
+    <iframe id = 'prior_survey'> </iframe>
+  <button class = "site glowing" id = 'close_prior' type = 'button'>Close once the survey has been submitted</button>
+  </div>
+  <div class ='dropdown-content' id = 'instructions_overlay'><p id = 'instructions'>This tool is meant to help learners to visualize how I2C communications work. To start, choose a scenario on the menu bar. Controls are at the bottom of the page, the previous button is to view the previous scene, play again will repeat the animation that was just played, and next will move on to the next scene. You can first watch the animation, followed by reading the instructional text on the right, and play the animation again as needed. Go under options to adjust animation speed or to bring up this page again. Once you have finished going through both scenarios please open up the feedback survey on the bottom right.
+  <button class = "site glowing" id = 'close_instructions' type = 'button'>Close</button></p>
+  </div>  
+  <script type="text/paperscript" src="Combined.js" canvas="myCanvas"></script>
+</body>
+</html>
