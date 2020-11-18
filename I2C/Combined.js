@@ -1702,7 +1702,7 @@ function ctrReg_box(group, type, ctrBit, posX, posY, offsetX){
 
         else {
                 txt = ' ';
-            if(i>23 && i<30){
+            if(i>24 && i<30){
                 bitNum = (!type&&i==27?'-1':'--');
             }
         }
