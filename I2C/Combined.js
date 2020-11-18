@@ -1543,6 +1543,45 @@ function nack(){
     view.on('frame', framehandler);
 }
 
+function ackFlag(){
+    disable_play_buttons();
+     var count = 0, i=0;
+     sda.position.y = sda_yPos;
+     scl.position.y = scl0_yPos;
+     var framehandler = function(event){
+    if(count==0){
+            if(i<20){
+                sda.position.y += 1;
+                i++;
+            }
+            else if (i=20){
+                 count += 1;   
+            }
+        }
+        else if(count==1){
+            if(i>0){
+                scl.position.y -= 1;
+                i--;
+                }
+            else if(i==0){
+            count += 1; 
+            }
+           }
+        else if(count==2 && i<20){
+                scl.position.y += 1;
+                i++;
+            if(i==20){
+            count += 1; 
+            }
+        }
+        else {
+        view.off('frame', framehandler);
+        enable_play_buttons();
+    }
+     }
+    view.on('frame', framehandler);
+}
+
 // Register box function
 var regBox_group = new Group();
 
@@ -1617,7 +1656,9 @@ function ctrReg_box(group, type, ctrBit, posX, posY, offsetX){
     }
     else {
         label = 'I2CxCONCLEAR ';
+        if(text!='STO'){
         text +=(text?'C':' ');
+        }
     }
   
     for(var i=0; i<32; i++){
@@ -1632,7 +1673,7 @@ function ctrReg_box(group, type, ctrBit, posX, posY, offsetX){
                 case 16: 
                   bitNum = '15';
                   break;
-                case 23: 
+                case 24: 
                   bitNum = '7';
                 break;
                 case 31:
@@ -1644,8 +1685,14 @@ function ctrReg_box(group, type, ctrBit, posX, posY, offsetX){
         if(ctrBit>1 && ctrBit<7){
             if (i==31-ctrBit){
                 bitNum = '--';
-                value =  '1';
-                txt = text;
+                if(ctrBit==4 && type==0){
+                value = 'X';
+                txt = ' ';
+                }
+                else{
+                value = '1';
+                txt = text;    
+                }
             }
             else{
                 value = 'X';
@@ -1802,14 +1849,15 @@ function gen_scenario(num){
             ctrRegBox_visible(true);
             visibleSignal(true);
             scenario.content = 'I2C ACK Flag';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl_yPos);
-            animateSignal(sda, 0); 
+            ackFlag();
+            // resetSignal(sda, sda_yPos);
+            // resetSignal(scl, scl_yPos);
+            // animateSignal(sda, 0); 
             break; 
          case 16: //I2C STOP Flag
             ctrRegBox_clear();
-            ctrReg_box(regBox_group, 1, 5, 100, 300, 20);
-            ctrReg_box(regBox_group, 0, 5, 100, 400, 20);
+            ctrReg_box(regBox_group, 1, 4, 100, 300, 20);
+            ctrReg_box(regBox_group, 0, 4, 100, 400, 20);
             ctrRegBox_visible(true);
             visibleSignal(true);  
             scenario.content = 'I2C STOP Flag';
