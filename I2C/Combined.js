@@ -3249,6 +3249,10 @@ function show_layer(num){
             layer1.visible = false;
             layer2.visible = true;
             break;
+        default:
+            value_item.visible = false;
+            layer1.visible = false;
+            layer2.visible = false;
     }
 
 }
@@ -3270,7 +3274,7 @@ function clear_all(){
     show_read_box_diagram(99);
     clearboxes();
     all_red();
-    feedback_button_not_glowing();
+    // feedback_button_not_glowing();
     visibleSignal(false);
     value_item.visible = false;
     single_signal.visible = false;
@@ -3463,11 +3467,20 @@ play_btn.onclick = function update(){
 
 function show_overlay(){
     document.getElementById('instructions_overlay').style.display = 'block';
-    instruction_overlay.visible = true;   
+    instruction_overlay.visible = true;
+    pages.visible = false;
+    gen_pages.visible = false;
+    read_pages.visible = false;
+    scenario.content = ' ';
+    ctrRegBox_clear();
+    document.getElementById('feedback').style.display = 'none';   
 }
 function hide_overlay(){
     document.getElementById('instructions_overlay').style.display = 'none';
     instruction_overlay.visible = false;  
+    pages.visible = true;
+    gen_pages.visible = true;
+    read_pages.visible = true;
 }   
 
 close_instructions.onclick = function update(){
@@ -3483,7 +3496,8 @@ close_prior.onclick = function update(){
 }
 
 show_instruction.onclick = function update(){
-    show_overlay();  
+    show_overlay();
+    show_layer(0);  
     document.getElementById('master_popup').style.display = 'none';
 }
 
@@ -3557,11 +3571,11 @@ menu_arrow.position += new Point(-200, -400);
 menu_text = instruction_text.clone();
 menu_text.content = 'Menu';
 menu_text.position += new Point(-695, 75);
-feedback_arrow = arrow.clone();
-feedback_arrow.position += new Point(650, 15);
-feedback_text = text.clone();
-feedback_text.content = 'Open Feedback Form';
-feedback_text.position += new Point(650, 15);
+// feedback_arrow = arrow.clone();
+// feedback_arrow.position += new Point(650, 15);
+// feedback_text = text.clone();
+// feedback_text.content = 'Open Feedback Form';
+// feedback_text.position += new Point(650, 15);
 
 
 var progress_bar_wrapper = new Path();
@@ -3822,6 +3836,9 @@ layer2.addChild(read_box_diagram);
 
 
 function compiled_gen_scenario(num){
+    hide_overlay();
+    document.getElementById('master_popup').style.display = 'none';
+    document.getElementById('feedback').style.display = 'none';
     scene=3;
     slave_group.position = new Point(735, 130);
     show_layer(1);
@@ -3833,6 +3850,9 @@ function compiled_gen_scenario(num){
 }    
       
 function compiled_enable_scenario(num){
+    hide_overlay();
+    document.getElementById('master_popup').style.display = 'block';
+    document.getElementById('feedback').style.display = 'none';
     switch(num) {
         case 0:
             show_layer(1);
@@ -4044,12 +4064,15 @@ function compiled_enable_scenario(num){
             // add_message(chatMessages[7]);
             add_message_mass(chatMessages, 7);
             show_page(12);
-            feedback_button_glow();
+            // feedback_button_glow();
             break;
 
     }    
 }
 function compiled_read_scenario(num){
+    hide_overlay();
+    document.getElementById('master_popup').style.display = 'block';
+    document.getElementById('feedback').style.display = 'none';
     switch(num){
         case 0:
             show_layer(1);
