@@ -501,7 +501,7 @@ button.glowing{
 }
 #speed_bar{
   height: 65px;
-  width: 250px;
+  width: 210px;
   color: #999;
   font-size: 15px;
 }
@@ -516,13 +516,13 @@ button.glowing{
   top: 3px;
 }
 #general {
-  width: 200px;
+  width: 186px;
 }
 #enable {
-  width: 270px;
+  width: 285px;
 }
 #read {
-  width: 320px;
+  width: 317px;
 }
 
 .overlay {

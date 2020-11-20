@@ -1424,7 +1424,7 @@ function clockPulse(){
     view.on('frame', framehandler);
 }
 
-function clockStreching(){
+function clockStretching(){
     disable_play_buttons();
      var count = 0, i=0;
      var framehandler = function(event){
@@ -1806,10 +1806,10 @@ function gen_scenario(num){
             break;
          case 11: //Clock Streching
             visibleSignal(true);
-            scenario.content = 'Clock Streching';
+            scenario.content = 'Clock Stretching';
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl_yPos);
-            clockStreching();        
+            clockStretching();        
             break;
          case 12: //I2C control register
             ctrRegBox_clear();
@@ -1817,7 +1817,7 @@ function gen_scenario(num){
             ctrReg_box(regBox_group, 0, 0, 100, 400, 20);
             ctrRegBox_visible(true);
             visibleSignal(true);
-            scenario.content = 'I2C Control Register';
+            scenario.content = 'I2C Control Registers';
             resetSignal(sda, sda_yPos);
             resetSignal(scl, scl_yPos);
             break;
@@ -1848,7 +1848,7 @@ function gen_scenario(num){
             ctrReg_box(regBox_group, 0, 2, 100, 400, 20);
             ctrRegBox_visible(true);
             visibleSignal(true);
-            scenario.content = 'I2C ACK Flag';
+            scenario.content = 'I2C AA Flag';
             ackFlag();
             // resetSignal(sda, sda_yPos);
             // resetSignal(scl, scl_yPos);
@@ -3759,7 +3759,7 @@ add_page(gen_pages, "11. During a change of direction within a transfer, the STA
 
 
 //12
-add_page(gen_pages, "12. If a slave itself is a microcontroller and cannot receive or transmit another complete byte of data until it has performed some other function, it can hold the clock line SCL LOW to force the master into a wait state. This is called clock streching.");
+add_page(gen_pages, "12. If a slave itself is a microcontroller and cannot receive or transmit another complete byte of data until it has performed some other function, it can hold the clock line SCL LOW to force the master into a wait state. This is called clock stretching.");
 
 //13
 add_page(gen_pages, "13. I2C Control Register is accessed through I2CxCONSET and I2CxCONCLR. Writing to 1's to CONSET will set the corresponding bits in the Control Register, and writing 1's to CONCLR will clear the corresponding bits.");
