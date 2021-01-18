@@ -203,11 +203,11 @@ function thickendown(coordinate, type){
 }
 
 function drawoverlay() {
-    var ctl = new Rectangle(new Point(200, 55), new Size(stretch+risedelay+5, 75))
+    var ctl = new Rectangle(new Point(200, 75), new Size(stretch+risedelay+5, 50))
     var ctlbox = new Path.Rectangle(ctl);
     overlay_group.addChild(ctlbox);
 
-    var rect = new Rectangle(new Point(253+5, 55), new Size(42, 75))
+    var rect = new Rectangle(new Point(253+5, 75), new Size(42, 50))
     box = new Path.Rectangle(rect);
     overlay_group.addChild(box);
     for (var i = 1; i < 9; i++) {
@@ -215,7 +215,7 @@ function drawoverlay() {
         box1.position += new Point(42*i, 0);
         overlay_group.addChild(box1);
         }
-    var rect = new Rectangle(new Point(253+42*9+5, 55), new Size(stretch*2+clocklength*2, 75));
+    var rect = new Rectangle(new Point(253+42*9+5, 75), new Size(stretch*2+clocklength*2, 50));
     big_box = new Path.Rectangle(rect);
     overlay_group.addChild(big_box);
     var ctlbox1 = ctlbox.clone();
@@ -263,9 +263,14 @@ function sda_control(type, num){
 //     }
 // }
 
-function clock_pulse_control(){
-    for(i=12; i<=20; i++){
-        overlay_group.children[i].fillColor = 'lightblue';
+function clock_pulse_control(num){
+    for(i=11; i<=21; i++){
+        if(num==1){
+        overlay_group.children[i].fillColor = 'yellow';   
+        }
+        else{
+        overlay_group.children[i].fillColor = 'lightblue';   
+        }
     }
 }
 // function clock_clear(){
@@ -275,7 +280,7 @@ function clock_pulse_control(){
 // }
 
 function byte_control(type){
-    clock_pulse_control();
+    clock_pulse_control(0);
     for(i=1; i<=8; i++){
         if(type == 0){
             overlay_group.children[i].fillColor = 'lightblue';
@@ -284,6 +289,38 @@ function byte_control(type){
             overlay_group.children[i].fillColor = 'yellow';
         }
         if(type == 2){
+            overlay_group.children[i].fillColor = 'white';
+        }
+    }
+
+}
+
+// function sdaControl(type){
+//     clock_pulse_control();
+//     for(i=0; i<=10; i++){
+//         if(type == 0){
+//             overlay_group.children[i].fillColor = 'lightblue';
+//         }
+//         else if(type == 1){
+//             overlay_group.children[i].fillColor = 'yellow';
+//         }
+//         else {
+//             overlay_group.children[i].fillColor = 'white';
+//         }
+//     }
+
+// }
+
+function sdaControl(type){
+    // clock_pulse_control();
+    for(i=0; i<=10; i++){
+        if(type == 0){
+            overlay_group.children[i].fillColor = 'lightblue';
+        }
+        else if(type == 1){
+            overlay_group.children[i].fillColor = 'yellow';
+        }
+        else {
             overlay_group.children[i].fillColor = 'white';
         }
     }
@@ -766,6 +803,7 @@ function draw_number(group){
     }
     group.visible = true;
 }
+
 function fill_num(input, group){
     seperate_9(digits1, input);
     for(i = 0; i<=8; i++){
@@ -1394,16 +1432,21 @@ function animateSignal(signal, value){
 
 function clockPulse(){
     disable_play_buttons();
-     var count = 0, i=0;
+     var count = 0, i=0, clk_num=0;
      var framehandler = function(event){
     if(count<19){
+        ClkNum.content= 'CLK Pulse No.' + clk_num;
+        SCL_ctr.content='SCL Master Control';
+        SDA_ctr.content='SDA Transmitter Control';
+        clock_pulse_control(0);
         if(count%2==0){
             if(i<20){
                 scl.position.y += 1;
                 i++;
             }
             else if (i=20){
-                         count += 1;   
+                         count += 1;
+                         clk_num++;  
             }
         }
         else {
@@ -1426,18 +1469,25 @@ function clockPulse(){
 
 function clockStretching(){
     disable_play_buttons();
-     var count = 0, i=0;
+     var count = 0, i=0, clk_num=0;
      var framehandler = function(event){
     if(count<18){
+        ClkNum.content= 'CLK Pulse No.' + clk_num;
+        if(count<17){
+            SCL_ctr.content='SCL Master Control';
+            SDA_ctr.content='SDA Transmitter Control';
+            clock_pulse_control(0);
+        }
         if(count%2==0){
             if(i<20){
                 scl.position.y += 1;
                 i++;
             }
             else if (i=20){
-                if(count==16){
-                    sda.position.y = sda_yPos;
-                }
+                clk_num++;
+                // if(count==16){
+                //     sda.position.y = sda_yPos;
+                // }
                          count += 1;   
             }
         }
@@ -1449,6 +1499,8 @@ function clockStretching(){
             else if(i==0){
                 if (count==17){
                     scl.position.y=scl0_yPos;
+                    SCL_ctr.content='SCL Slave Control';
+                    clock_pulse_control(1);
                     view.off('frame', framehandler);
                     enable_play_buttons();
                 }
@@ -1467,15 +1519,22 @@ function clockStretching(){
 
 function ack(){
     disable_play_buttons();
-     var count = 0, i=0;
+     var count = 0, i=0, clk_num=0;
      var framehandler = function(event){
     if(count<19){
+        ClkNum.content= 'CLK Pulse No.' + clk_num;
+        if(count<17){
+        SCL_ctr.content='SCL Master Control';
+        SDA_ctr.content='SDA Transmitter Control'; 
+        clock_pulse_control(0);          
+        }
         if(count%2==0){
             if(i<20){
                 scl.position.y += 1;
                 i++;
             }
             else if (i=20){
+                clk_num++;
                 if(count==16){
                     sda.position.y = sda_yPos;
                 }
@@ -1488,6 +1547,7 @@ function ack(){
                 i--;
                     if (count==17 && i == 15){
                     sda.position.y=sda0_yPos;
+                    SDA_ctr.content='SDA/ACK Receiver Control';
                 }
             }
             else if(i==0){
@@ -1506,15 +1566,22 @@ function ack(){
 
 function nack(){
      disable_play_buttons();
-     var count = 0, i=0;
+     var count = 0, i=0, clk_num=0;
      var framehandler = function(event){
     if(count<19){
+        ClkNum.content= 'CLK Pulse No.' + clk_num;
+        if(count<17){
+        SDA_ctr.content='SDA Transmitter Control'; 
+        SCL_ctr.content='SCL Master Control';
+        clock_pulse_control(0);          
+        }
         if(count%2==0){
             if(i<20){
                 scl.position.y += 1;
                 i++;
             }
             else if (i=20){
+                clk_num++;
                 if(count==16){
                     sda.position.y = sda_yPos;
                 }
@@ -1536,6 +1603,7 @@ function nack(){
            }
         }
        else {
+        SDA_ctr.content='SDA/NACK Receiver Control';
         view.off('frame', framehandler);
         enable_play_buttons();
     }
@@ -1723,39 +1791,87 @@ function ctrRegBox_clear(){
 
 ctrRegBox_visible(false);
 
+var SDA_ctr = new PointText(new Point(260,70));
+SDA_ctr.content = '';
+SDA_ctr.fontSize = 16;
+SDA_ctr.fontWeight = 'bold';
+SDA_ctr.fillColor = 'black';
+
+var SCL_ctr = new PointText(new Point(260, 220));
+SCL_ctr.content = '';
+SCL_ctr.fontSize = 16;
+SCL_ctr.fontWeight = 'bold';
+SCL_ctr.fillColor = 'black';
+
+var ClkNum = new PointText(new Point(500, 220));
+ClkNum.content = '';
+ClkNum.fontSize = 16;
+ClkNum.fontWeight = 'bold';
+ClkNum.fillColor = 'black';
+
+function signalCtr(num1, num2){
+    if(num1==0){
+        SDA_ctr.content='SDA Master Control';
+    }
+    else if (num1==1){
+        SDA_ctr.content='SDA Slave Control';
+    }
+    else if (num1==2){
+        SDA_ctr.content='SDA Transmitter Control';
+    }
+    else if (num1==3){
+        SDA_ctr.content='SDA Receiver Control';
+    }
+    else {
+        SDA_ctr.content=' ';
+    }
+    if(num2==0){
+        SCL_ctr.content='SCL Master Control';
+    }
+    else if (num2==1){
+        SCL_ctr.content='SCL Slave Control';
+    }
+    else {
+        SCL_ctr.content=' ';
+    }
+
+}
+
+
 // General Scenario function
 function gen_scenario(num){
-    // clear_all();
     switch(num){
         case 0:  //Default condition
-            visibleSignal(false);
             scenario.content = 'Default Condition';
             default_scenario();
             break;
         case 1: //START condition
             visibleSignal(true);
-            ctrRegBox_visible(false);
+            // ctrRegBox_visible(false);
             scenario.content = 'START Condition';
             resetSignal(sda, sda_yPos);
             resetSignal(scl, scl_yPos);
             animateSignal(sda, 0);
+            sdaControl(0);
+            signalCtr(0,5);
             break;
         case 2:  //Stop condition
             visibleSignal(true);
-            ctrRegBox_clear();
             ctrRegBox_visible(true);
             scenario.content = 'STOP Condition';
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl_yPos);
             animateSignal(sda, 1);
+            sdaControl(0);
+            signalCtr(0,5);
             break;       
         case 3: //Clock pulse generation
-            ctrRegBox_clear(); 
             visibleSignal(true);
             scenario.content = 'Clock Pulses';
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl_yPos);
             clockPulse();
+            signalCtr(2,0);
             break;
         case 4: //SDA change from low to high
             visibleSignal(true);
@@ -1763,25 +1879,35 @@ function gen_scenario(num){
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl0_yPos);
             animateSignal(sda, 1);   
+            clock_pulse_control();
+            signalCtr(2,0);
             break;   
         case 5: //SDA change from high to low
             visibleSignal(true);
             scenario.content = 'SDA High to Low';
             resetSignal(sda, sda_yPos);
             resetSignal(scl, scl0_yPos);
-            animateSignal(sda, 0);      
+            animateSignal(sda, 0);  
+            clock_pulse_control();
+            signalCtr(2,0);
             break; 
         case 6: //Read status
             visibleSignal(true);
             scenario.content = 'Read Request';
             resetSignal(sda, sda_yPos);
             resetSignal(scl, scl0_yPos);
+            sdaControl(0);
+            clock_pulse_control();
+            signalCtr(0,0);
            break;     
         case 7: //Write status
             visibleSignal(true);
             scenario.content = 'Write Request';
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl0_yPos);
+            sdaControl(0);
+            clock_pulse_control();
+            signalCtr(0,0);
            break;     
        case 8: //Acknowledged
             visibleSignal(true);
@@ -1789,6 +1915,8 @@ function gen_scenario(num){
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl_yPos);
             ack();
+            clock_pulse_control(); 
+            signalCtr(5,0);
            break;   
        case 9: //Not Acknowledged
             visibleSignal(true);
@@ -1796,6 +1924,8 @@ function gen_scenario(num){
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl_yPos);
             nack();
+            clock_pulse_control(); 
+            signalCtr(5,0);
            break;  
          case 10: //Repeat START condition
             visibleSignal(true);
@@ -1803,16 +1933,17 @@ function gen_scenario(num){
             resetSignal(sda, sda_yPos);
             resetSignal(scl, scl_yPos);
             animateSignal(sda, 0); 
+            sdaControl(0);
+            signalCtr(0,5);
             break;
          case 11: //Clock Streching
             visibleSignal(true);
             scenario.content = 'Clock Stretching';
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl_yPos);
-            clockStretching();        
+            clockStretching(); 
             break;
          case 12: //I2C control register
-            ctrRegBox_clear();
             ctrReg_box(regBox_group, 1, 0, 100, 300, 20);
             ctrReg_box(regBox_group, 0, 0, 100, 400, 20);
             ctrRegBox_visible(true);
@@ -1822,7 +1953,6 @@ function gen_scenario(num){
             resetSignal(scl, scl_yPos);
             break;
          case 13: //I2C interface enable
-            ctrRegBox_clear();
             ctrReg_box(regBox_group, 1, 6, 100, 300, 20);
             ctrReg_box(regBox_group, 0, 6, 100, 400, 20);
             ctrRegBox_visible(true);
@@ -1832,7 +1962,6 @@ function gen_scenario(num){
             resetSignal(scl, scl_yPos);
             break;
          case 14: //I2C Start Flag
-            ctrRegBox_clear();
             ctrReg_box(regBox_group, 1, 5, 100, 300, 20);
             ctrReg_box(regBox_group, 0, 5, 100, 400, 20);
             ctrRegBox_visible(true);
@@ -1841,21 +1970,21 @@ function gen_scenario(num){
             resetSignal(sda, sda_yPos);
             resetSignal(scl, scl_yPos);
             animateSignal(sda, 0); 
+            sdaControl(0);
+            signalCtr(0,5);
             break;  
          case 15: //I2C Ascert Acknowledge Flag
-            ctrRegBox_clear();
             ctrReg_box(regBox_group, 1, 2, 100, 300, 20);
             ctrReg_box(regBox_group, 0, 2, 100, 400, 20);
             ctrRegBox_visible(true);
             visibleSignal(true);
             scenario.content = 'I2C AA Flag';
             ackFlag();
-            // resetSignal(sda, sda_yPos);
-            // resetSignal(scl, scl_yPos);
-            // animateSignal(sda, 0); 
+            clock_pulse_control();
+            sdaControl(0);
+            signalCtr(0,0);    
             break; 
          case 16: //I2C STOP Flag
-            ctrRegBox_clear();
             ctrReg_box(regBox_group, 1, 4, 100, 300, 20);
             ctrReg_box(regBox_group, 0, 4, 100, 400, 20);
             ctrRegBox_visible(true);
@@ -1864,9 +1993,11 @@ function gen_scenario(num){
             resetSignal(sda, sda0_yPos);
             resetSignal(scl, scl_yPos);
             animateSignal(sda, 1); 
+            clock_pulse_control();
+            sdaControl(0);
+            signalCtr(0,0);  
             break; 
          case 17: //I2C Interrupt Flag
-            ctrRegBox_clear();
             ctrReg_box(regBox_group, 1, 3, 100, 300, 20);
             ctrReg_box(regBox_group, 0, 3, 100, 400, 20);
             ctrRegBox_visible(true);
@@ -1876,6 +2007,30 @@ function gen_scenario(num){
             resetSignal(scl, scl_yPos);
             break; 
         }
+}
+
+//Clock pulse sequence number
+pulseNum = new Group();
+function draw_PulseNum(group){
+    var text = new PointText(new Point(235, 195));
+    text.fillColor = 'black';
+    text.content = ' ';
+    group.insertChild(0, text);
+    for(i = 1; i<= 9; i++){
+        var text_clone = text.clone();
+        text_clone.position += new Point(i*2*(clocklength+risedelay), 0);
+        group.insertChild(i, text_clone);
+        group.children[i].content = i;
+        }
+}
+draw_PulseNum(pulseNum);
+function clkPulseNum(num, group){
+    if(num==1){   
+            group.visible = true; 
+        }         
+    else{
+            group.visible = false; 
+        } 
 }
 
 //Switch cases for diagram 1 animation states
@@ -1893,6 +2048,7 @@ function enable_scenario(num) {
             read_or_write('w');
             ack_or_nack('y');
             fill_num('100010000', number_text);
+            clkPulseNum(1, pulseNum);
             break;
         case 1:
             all_waves.removeChildren();
@@ -1908,6 +2064,7 @@ function enable_scenario(num) {
             read_or_write('w');
             ack_or_nack('y');
             fill_num('100010000', number_text);
+            clkPulseNum(1, pulseNum);
             move_waveform(set_1.position, en_diagram.children[0]);
             break;       
         case 2:
@@ -1919,6 +2076,7 @@ function enable_scenario(num) {
             ack_control(1);
             ack_or_nack('y');
             change_waveform('00000000');
+            clkPulseNum(1, pulseNum);
             break;
         case 3:
             all_waves.removeChildren();
@@ -1929,6 +2087,7 @@ function enable_scenario(num) {
             ack_or_nack('y');
             change_waveform('00000000');
             fill_num('000000000', number_text);
+            clkPulseNum(1, pulseNum);
             // clearboxes();
             // clear_control();
             move_waveform(set_2.position, en_diagram.children[1]);
@@ -1944,6 +2103,7 @@ function enable_scenario(num) {
             change_waveform('10000000');
             ack_or_nack('y');
             fill_num('100000000', number_text);
+            clkPulseNum(1, pulseNum);
             stop_group.visible = true;
             break;
         case 5:
@@ -1956,6 +2116,7 @@ function enable_scenario(num) {
             change_waveform('10000000');
             ack_or_nack('y');
             fill_num('100000000', number_text);
+            clkPulseNum(1, pulseNum);
             stop_group.visible = true;
             // clear_control();
             // clearboxes();
@@ -1977,6 +2138,7 @@ function read_scenario(num) {
             read_or_write('w');
             ack_or_nack('y');
             fill_num('100010000', number_text);
+            clkPulseNum(1, pulseNum);
             show_read_diagram(0);
             break;
         case 1:
@@ -1990,6 +2152,7 @@ function read_scenario(num) {
             read_or_write('w');
             ack_or_nack('y');
             fill_num('100010000', number_text);
+            clkPulseNum(1, pulseNum);
             // clearboxes();
             // clear_control();
             show_read_diagram(0);
@@ -2005,6 +2168,7 @@ function read_scenario(num) {
             change_waveform('00001000');
             ack_or_nack('y');
             fill_num('000010000', number_text);
+            clkPulseNum(1, pulseNum);
             stop_group.visible = true;
             show_read_diagram(1);
             break;
@@ -2017,6 +2181,7 @@ function read_scenario(num) {
             change_waveform('00001000');
             ack_or_nack('y');
             fill_num('000010000', number_text);
+            clkPulseNum(1, pulseNum);
             stop_group.visible = true;
             // clearboxes();
             // clear_control();
@@ -2035,6 +2200,7 @@ function read_scenario(num) {
             read_or_write('r');
             ack_or_nack('y');
             fill_num('100010010', number_text);
+            clkPulseNum(1, pulseNum);
             show_read_diagram(2);
             break;
         case 5:
@@ -2048,6 +2214,7 @@ function read_scenario(num) {
             read_or_write('r');
             ack_or_nack('y');
             fill_num('100010010', number_text);
+            clkPulseNum(1, pulseNum);
             // clearboxes();
             // clear_control();
             show_read_diagram(2);
@@ -2063,6 +2230,7 @@ function read_scenario(num) {
             change_waveform('11001011');
             ack_or_nack('n');
             fill_num('110010111', number_text);
+            clkPulseNum(1, pulseNum);
             stop_group.visible = true;
             show_read_diagram(3);
             break;
@@ -2075,6 +2243,7 @@ function read_scenario(num) {
             change_waveform('11001011');
             ack_or_nack('n');
             fill_num('110010111', number_text);
+            clkPulseNum(1, pulseNum);
             stop_group.visible = true;
             // clearboxes();
             // clear_control();
@@ -3228,14 +3397,14 @@ function clear_messages(){
     $(".chat-message-list").empty();
 }
 
-function feedback_button_glow(){
-    $('#feedback').addClass('glowing');
-    document.getElementById('feedback').style.color = 'white';
-}
-function feedback_button_not_glowing(){
-    $('#feedback').removeClass('glowing');
-    document.getElementById('feedback').style.color = 'gray';
-}
+// function feedback_button_glow(){
+//     $('#feedback').addClass('glowing');
+//     document.getElementById('feedback').style.color = 'white';
+// }
+// function feedback_button_not_glowing(){
+//     $('#feedback').removeClass('glowing');
+//     document.getElementById('feedback').style.color = 'gray';
+// }
 
 function show_layer(num){
     clear_messages();
@@ -3274,11 +3443,12 @@ function clear_all(){
     show_read_box_diagram(99);
     clearboxes();
     all_red();
-    // feedback_button_not_glowing();
+    signalCtr(5,5);
+    ClkNum.content=' ';
+    clkPulseNum(0, pulseNum);
     visibleSignal(false);
     value_item.visible = false;
     single_signal.visible = false;
-    // gen_pages.visible = false;
 }
 
 // General
@@ -3334,14 +3504,10 @@ enable_btn.onclick = function update(){
     scene = 1;
     scenario.content = 'Enabling The Light Sensor';
     scene_num = 0;
-    scene_num_1.content = scene_num;
     testing.content = scene_num;
     compiled_enable_scenario(scene_num);
     show_read_page(0);
     show_gen_page(0);
-    // document.getElementById('enable_btn').disabled = true;
-    // document.getElementById('read_btn').disabled = false;
-    enable_play_buttons();
 }
 
 enable_set_2.onclick = function update(){
@@ -3351,6 +3517,7 @@ enable_set_2.onclick = function update(){
     scene = 1;
     scenario.content = 'Enabling The Light Sensor';
     scene_num = 10;
+    testing.content = scene_num;
     compiled_enable_scenario(scene_num);
 }
 
@@ -3361,6 +3528,7 @@ enable_set_3.onclick = function update(){
     scene = 1;
     scenario.content = 'Enabling The Light Sensor';
     scene_num = 17;
+    testing.content = scene_num;
     compiled_enable_scenario(scene_num);
 }
 
@@ -3369,14 +3537,10 @@ read_btn.onclick = function update(){
     scene = 2;
     scenario.content = 'Reading From The Light Sensor';
     scene_num = 0;
-    scene_num_1.content = scene_num;
     testing.content = scene_num;
     compiled_read_scenario(scene_num);
     show_page(0);
     show_gen_page(0);
-    // document.getElementById('enable_btn').disabled = false;
-    // document.getElementById('read_btn').disabled = true;
-    enable_play_buttons();
 }
 
 read_set_2.onclick = function update(){
@@ -3386,6 +3550,7 @@ read_set_2.onclick = function update(){
     scene = 2;
     scenario.content = 'Reading From The Light Sensor';
     scene_num = 10;
+    testing.content = scene_num;
     compiled_read_scenario(scene_num);
 }
 
@@ -3396,6 +3561,7 @@ read_set_3.onclick = function update(){
     scene = 2;
     scenario.content = 'Reading From The Light Sensor';
     scene_num = 19;
+    testing.content = scene_num;
     compiled_read_scenario(scene_num);
 }
 
@@ -3406,6 +3572,7 @@ read_set_4.onclick = function update(){
     scene = 2;
     scenario.content = 'Reading From The Light Sensor';
     scene_num = 28;
+    testing.content = scene_num;
     compiled_read_scenario(scene_num);
 }
 
@@ -3473,7 +3640,7 @@ function show_overlay(){
     read_pages.visible = false;
     scenario.content = ' ';
     ctrRegBox_clear();
-    document.getElementById('feedback').style.display = 'none';   
+    // document.getElementById('feedback').style.display = 'none';   
 }
 function hide_overlay(){
     document.getElementById('instructions_overlay').style.display = 'none';
@@ -3486,31 +3653,37 @@ function hide_overlay(){
 close_instructions.onclick = function update(){
     hide_overlay();
     document.getElementById('master_popup').style.display = 'block';
+    show_gen_page(0); 
+    show_read_page(0);
+    show_page(0);
+    disable_play_buttons();  
 }
 
-close_prior.onclick = function update(){
-    document.getElementById('first_survey').style.display = 'none';   
-    document.getElementById('main').style.overflow = 'scroll';
-    show_overlay();
-    show_gen_page(0);  
-}
+// close_prior.onclick = function update(){
+    // document.getElementById('first_survey').style.display = 'none';   
+//     document.getElementById('main').style.overflow = 'scroll';
+//     show_overlay();
+//     show_gen_page(0);
+//     disable_play_buttons();  
+// }
 
 show_instruction.onclick = function update(){
     show_overlay();
     show_layer(0);  
     document.getElementById('master_popup').style.display = 'none';
+    disable_play_buttons();
 }
 
-feedback.onclick = function update(){
+// feedback.onclick = function update(){
     // document.getElementById('last_survey').style.display = 'block';  
     // document.getElementById('main').style.overflow = 'hidden';
-    window.open('https://docs.google.com/forms/d/e/1FAIpQLSfsudw44xkbIPprUacfXZVv2Bh7PcKkoNJgQKEm0mIAG4tK3g/viewform?usp=sf_link', '_blank');
-}
+//     window.open('https://docs.google.com/forms/d/e/1FAIpQLSfsudw44xkbIPprUacfXZVv2Bh7PcKkoNJgQKEm0mIAG4tK3g/viewform?usp=sf_link', '_blank');
+// }
 
-close_feedback.onclick = function update(){
+// close_feedback.onclick = function update(){
     // document.getElementById('last_survey').style.display = 'none';   
     // document.getElementById('main').style.overflow = 'scroll';
-}
+// }
 
 function disable_play_buttons(){
     document.getElementById('prev_btn').disabled = true;
@@ -3834,11 +4007,20 @@ read_box_diagram.children[3].position += new Point(-460, 100);
 layer2.addChild(read_box_diagram);
 // box_diagram.children[0].visible = true;
 
+// var SCL_group = new Group();
+// function SCL_overlay(){
+//  var overlay = new Rectangle(new Point(200, 130), new Size(460, 75));
+// var path = new Path.Rectangle(overlay);
+// SCL_group.addChild(path);   
+// }
+
+// SCL_overlay();
 
 function compiled_gen_scenario(num){
     hide_overlay();
+    clear_all();
     document.getElementById('master_popup').style.display = 'none';
-    document.getElementById('feedback').style.display = 'none';
+    // document.getElementById('feedback').style.display = 'none';
     scene=3;
     slave_group.position = new Point(735, 130);
     show_layer(1);
@@ -3852,7 +4034,7 @@ function compiled_gen_scenario(num){
 function compiled_enable_scenario(num){
     hide_overlay();
     document.getElementById('master_popup').style.display = 'block';
-    document.getElementById('feedback').style.display = 'none';
+    // document.getElementById('feedback').style.display = 'none';
     switch(num) {
         case 0:
             show_layer(1);
@@ -4072,7 +4254,7 @@ function compiled_enable_scenario(num){
 function compiled_read_scenario(num){
     hide_overlay();
     document.getElementById('master_popup').style.display = 'block';
-    document.getElementById('feedback').style.display = 'none';
+    // document.getElementById('feedback').style.display = 'none';
     switch(num){
         case 0:
             show_layer(1);
@@ -4390,7 +4572,7 @@ scene_num_1.content = scene_num;
 
 
 
-hide_overlay();
+show_overlay();
 
 disable_play_buttons();
 
