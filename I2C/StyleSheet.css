@@ -15,7 +15,7 @@ iframe{
   position: relative;
   left: -30px;
   height: 500px;
-  width: 1275px;
+  width: 1475px;
 }
 
 
@@ -29,7 +29,7 @@ iframe{
     display: none;
     position: absolute;
     top: 345px;
-    left: 880px;
+    left: 1040px;
 
     background-color: #f9f9f9;
     min-width: 160px;
@@ -515,9 +515,9 @@ button.glowing{
   position: relative;
   top: 3px;
 }
-#general {
+/*#general {
   width: 186px;
-}
+}*/
 #enable {
   width: 285px;
 }
@@ -540,17 +540,17 @@ button.glowing{
   cursor: pointer; /* Add a pointer on hover */
 }
 
-#prior_survey{
+/*#prior_survey{
   position: relative; 
   margin: auto;
   overflow: scroll;
-}
+}*/
 
-#feedback_survey{
+/*#feedback_survey{
   position: relative; 
   margin: auto;
   overflow: scroll;
-}
+}*/
 
 #instructions{
   padding: 10px;
@@ -569,21 +569,21 @@ button.glowing{
   height: 15%;
 }
 
-#close_prior{
+/*#close_prior{
   position: relative;
   height: 10%;
   width: 20%;
   left: 0%;
   bottom: 80%;
-}
+}*/
 
-#close_feedback{
+/*#close_feedback{
   position: relative;
   height: 100px;
   width: 200px;
   left: 50%;
   bottom: 80%;
-}
+}*/
 
 #instructions_overlay{
   display: none;

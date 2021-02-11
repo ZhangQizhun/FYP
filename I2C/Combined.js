@@ -14,8 +14,8 @@ tc4.strokeColor = 'black';
 var speed = 3;
 var scene = 0;
 
-initial_destination = new Point(200,350);
-destination = new Point(200, 350);
+initial_destination = new Point(300,350);
+destination = new Point(300, 350);
 var cur_frame= [0];
 var flag = [0];
 var number_text = new Group();
@@ -203,11 +203,11 @@ function thickendown(coordinate, type){
 }
 
 function drawoverlay() {
-    var ctl = new Rectangle(new Point(200, 75), new Size(stretch+risedelay+5, 50))
+    var ctl = new Rectangle(new Point(325, 75), new Size(stretch+risedelay+5, 50))
     var ctlbox = new Path.Rectangle(ctl);
     overlay_group.addChild(ctlbox);
 
-    var rect = new Rectangle(new Point(253+5, 75), new Size(42, 50))
+    var rect = new Rectangle(new Point(353+5, 75), new Size(42, 50))
     box = new Path.Rectangle(rect);
     overlay_group.addChild(box);
     for (var i = 1; i < 9; i++) {
@@ -215,7 +215,7 @@ function drawoverlay() {
         box1.position += new Point(42*i, 0);
         overlay_group.addChild(box1);
         }
-    var rect = new Rectangle(new Point(253+42*9+5, 75), new Size(stretch*2+clocklength*2, 50));
+    var rect = new Rectangle(new Point(353+42*9+5, 75), new Size(stretch*2+clocklength*2, 50));
     big_box = new Path.Rectangle(rect);
     overlay_group.addChild(big_box);
     var ctlbox1 = ctlbox.clone();
@@ -264,7 +264,7 @@ function sda_control(type, num){
 // }
 
 function clock_pulse_control(num){
-    for(i=11; i<=21; i++){
+    for(i=11; i<=20; i++){
         if(num==1){
         overlay_group.children[i].fillColor = 'yellow';   
         }
@@ -599,6 +599,7 @@ function draw_wave_start(group){
     // wav_group.fillColor = 'red';
 }
 
+
 function draw_wave_initiate(group){
     var clk = new Path();
     clk.strokeColor = 'black';
@@ -617,6 +618,7 @@ function draw_wave_initiate(group){
     wav_group.opacity = 0;
     wav_group.strokeColor = 'black';
     wav_group.bringToFront();
+    // wav_group.sendToBack();
     wav_group.opacity = 1 ;
     group.addChild(wav_group);
     group.addChild(clk);
@@ -667,25 +669,33 @@ function change_waveform(input) {
     length = input.toString().length;
     if(length == 8) {
         seperate(digits1, input);
-        for (var i = 1; i <= 8; i++) {
+        for (var i = 1; i <=8; i++) {
             var segnum = w_dict[i];
             // var segnum2 = w_dict[i+8];
             if(digits1[i-1]==1){
-                if(i%2==1){
+                    all_waves.children[0].children[1].opacity = 0;
                     high(segnum, all_waves.children[0].children[0]);
-                    // high(segnum2, waveform1)
-                } else {
-                    high(segnum, all_waves.children[0].children[1]);
-                    // high(segnum2, waveform2);
-                }
+                // if(i%2==1){
+                //     all_waves.children[0].children[1].opacity = 0;
+                //     high(segnum, all_waves.children[0].children[0]);
+                //     // high(segnum2, waveform1)
+                // } else {
+                //     all_waves.children[0].children[1].opacity = 0;
+                //     high(segnum, all_waves.children[0].children[1]);
+                //     // high(segnum2, waveform2);
+                // }
             } else if (digits1[i-1]==0) {
-                if(i%2==1){
+                    all_waves.children[0].children[1].opacity = 0;
                     low(segnum, all_waves.children[0].children[0]);
-                    // low(segnum2, waveform1);
-                } else {
-                    low(segnum, all_waves.children[0].children[1]);
-                    // low(segnum2, waveform2);
-                }
+                // if(i%2==1){
+                //     //all_waves.children[0].children[0].opacity = 0;
+                //     low(segnum, all_waves.children[0].children[0]);
+                //     // low(segnum2, waveform1);
+                // } else {
+                //     all_waves.children[0].children[1].opacity = 0;
+                //     low(segnum, all_waves.children[0].children[1]);
+                //     // low(segnum2, waveform2);
+                // }
             }
         }
     } else {
@@ -792,7 +802,7 @@ function move_to_position_2(path1, object, group){ //removed moving animations, 
 }
 
 function draw_number(group){
-    var text = new PointText(new Point(275, 95));
+    var text = new PointText(new Point(375, 95));
     text.fillColor = 'black';
     text.content = '0';
     group.insertChild(0, text);
@@ -835,11 +845,13 @@ function low(segnum, x){
         if(segment.point.y==original) {
             segment.point.y = segment.point.y + height;
         } else {
+            continue;
         }
     }
 }
 
 function high(segnum, x){
+    console.log(x.segments[0]);
     var segment = x.segments[0];
     var original = segment.point.y; 
     for(var j = 1; j<=2; j++) {
@@ -848,6 +860,7 @@ function high(segnum, x){
         if(segment.point.y!=original) {
             segment.point.y = segment.point.y - height;
         } else {
+            continue;
         }
     }
 }
@@ -911,27 +924,48 @@ function illustrate(group, type, animate){
     switch(type) {
         case 0:
             draw_wave_start(group);
-            slave_group.position = new Point(735, 130);
+            slave_group.position = new Point(810, 143);
             break;
         case 1:
             draw_wave_middle(group);
-            slave_group.position = new Point(735, 130);
+            slave_group.position = new Point(810, 143);
             break;
         case 2:
             draw_wave_end(group); 
-            slave_group.position = new Point(735+stretch*2-risedelay, 130);
+            slave_group.position = new Point(823+stretch*2-risedelay, 143);
             break;
         case 3:
             draw_wave_initiate(group);
-            slave_group.position = new Point(735, 130);            
+            slave_group.position = new Point(810, 143);
+        case 4:
+            draw_wave_start(group);
+            slave_group.position = new Point(762, 143);
+            slave_group.bringToFront();
+            break;
+        case 5:
+            draw_wave_middle(group);
+            slave_group.position = new Point(762, 143);
+            slave_group.bringToFront();
+            break;
+        case 6:
+            draw_wave_end(group);
+            slave_group.position = new Point(762, 143);
+            slave_group.bringToFront();
+            break;
+        case 7:
+            draw_wave_end(group);
+            slave_group.position = new Point(808, 143);
+            slave_group.bringToFront();
+            break;    
     }
+    wave_coordinate.x[0] = 300;
+    wave_coordinate.x[1] = 300;  
+    wave_coordinate.y[0] = 160;
+    wave_coordinate.y[1] = 100;
     if (animate == 1) {
         animate_draw_wave(all_waves.children[1], all_waves.children[0].children[0], all_waves.children[0].children[1]);
     }
-    wave_coordinate.x[0] = 200;
-    wave_coordinate.x[1] = 200;
-    wave_coordinate.y[0] = 160;
-    wave_coordinate.y[1] = 100;
+
 }
 
 function show_en_diagram(num){
@@ -1029,7 +1063,7 @@ var w_dict = {
 }
 
 //array to contain coordinates of waveform/clock
-var wave_coordinate = { x: [200, 200, 200, 200], y: [160, 100, 150, 100]}
+var wave_coordinate = { x: [300, 300, 300, 300], y: [160, 100, 150, 100]}
 var w_array = new Array(2);
 for (var i = 0; i < w_array.length; i++) {
     w_array[i] = new Array(0);
@@ -1044,6 +1078,40 @@ fill(1, wave_coordinate.x[1], wave_coordinate.y[1]);
 var digits = [1,1,1,1,1,1,1,1,1];
 var digits1 = [1,1,1,1,1,1,1,1,1];
 
+//draw micro controller box
+var microCtr_group = new Group();
+var Micro = new Rectangle(new Point(50, 55), new Size(100, 150));
+var microPath = new Path.Rectangle(Micro);
+microPath.fillColor = 'lightblue';
+microPath.strokeColor = 'blue';
+microCtr_group.addChild(microPath);
+var microTxt = new PointText(new Point(100, 110));
+microTxt.justification = 'center';
+microTxt.fillColor = 'black';
+microTxt.content = 'Micro';
+microTxt.fontSize = '20';
+ctrTxt = microTxt.clone();
+ctrTxt.content = 'Controller';
+ctrTxt.position = new Point(100, 130);
+microCtr_group.addChild(microTxt);
+microCtr_group.addChild(ctrTxt);
+var arrow = new Group();
+var box = new Path.Rectangle(new Point(100,100), new Size(15,45));
+box.fillColor = 'lightblue';
+var triangle = new Path.RegularPolygon(new Point(107, 100), 3, 20);
+triangle.fillColor = 'lightblue';
+var tri1 = new Path.RegularPolygon(new Point(107, 75), 3, 20);
+tri1.fillColor = 'lightblue';
+arrow.addChild(box);
+arrow.addChild(triangle);
+arrow.rotate(180); 
+arrow.addChild(tri1);
+arrow.scale(0.56);
+arrow.rotate(90);
+arrow.position=new Point(175, 125);
+microCtr_group.addChild(arrow);
+
+
 
 //draw master box
 var master_group = new Group();
@@ -1051,32 +1119,103 @@ var x1 = wave_coordinate.x[0];
 var y1 = wave_coordinate.y[0];
 var x2 = wave_coordinate.x[1];
 var y2 = wave_coordinate.y[1];
-var Master = new Rectangle(new Point(50, 55), new Size(150, 150));
+var Master = new Rectangle(new Point(200, 55), new Size(100, 150));
 var path = new Path.Rectangle(Master);
 master_group.addChild(path);
-path.fillColor = 'lightblue';
+path.fillColor = 'white';
 path.strokeColor = 'black';
-var text_m = new PointText(new Point(125, 135));
+var text_m = new PointText(new Point(250, 225));
 text_m.justification = 'center';
 text_m.fillColor = 'black';
 text_m.content = 'Master';
-text_m.fontSize = '30';
+text_m.fontSize = '20';
 master_group.addChild(text_m);
-var text3 = new PointText(new Point(190, 120));
-text3.content = '0';
-var text = new PointText(new Point(170, 110));
-text.content = 'SDA';
-var text2 = new PointText(new Point(190, 100));
-text2.content = '1';
+var msda0 = new PointText(new Point(301, 118));
+msda0.content = '0';
+var msda = new PointText(new Point(301, 85));
+msda.content = 'SDA';
+var msda1 = new PointText(new Point(301, 98));
+msda1.content = '1';
+master_group.addChild(msda0);
+master_group.addChild(msda);
+master_group.addChild(msda1);
+var mscl0 = new PointText(new Point(301, 178));
+mscl0.content = '0';
+var mscl = new PointText(new Point(301, 145));
+mscl.content = 'SCL';
+var mscl1 = new PointText(new Point(301, 158));
+mscl1.content = '1';
+master_group.addChild(mscl0);
+master_group.addChild(mscl);
+master_group.addChild(mscl1);
+var conset_group=new Group();
+var Conset = new Rectangle(new Point(210,61), new Size(80,22));
+var path1 = new Path.Rectangle(Conset);
+conset_group.addChild(path1);
+path1.fillColor = 'lightblue';
+path1.strokeColor = 'black';
+var text = new PointText(new Point(250, 79));
+text.justification = 'center';
+text.fillColor = 'black';
+text.content = 'CONSET';
+text.fontSize = '16';
+conset_group.addChild(text);
+master_group.addChild(conset_group);
+conclear_group=conset_group.clone();
+conclear_group.position.y +=25;
+conclear_group.children[1].content='CONCLR';
+master_group.addChild(conclear_group);
+dat_group=conset_group.clone();
+dat_group.position.y +=50;
+dat_group.children[1].content='DAT';
+master_group.addChild(dat_group);
+stat_group=conset_group.clone();
+stat_group.position.y +=75;
+stat_group.children[1].content='STAT';
+master_group.addChild(stat_group);
+text1=text.clone();
+text1.position.y +=100;
+text1.fontSize=14;
+text1.content='I2C';
+master_group.addChild(text1);
+text2=text1.clone();
+text2.position.y +=18;
+text2.content='INTERFACE';
+master_group.addChild(text2);
 
-master_group.addChild(text);
-var text3 = new PointText(new Point(190, 180));
-text3.content = '0';
-var text = new PointText(new Point(170, 170));
-text.content = 'SCL';
-var text2 = new PointText(new Point(190, 160));
-text2.content = '1';
-master_group.addChild(text);
+// Draw CONSET PATH
+
+var conset_path=new Group();
+var path=new Path({
+    segments: [[195, 72], [165, 72], [165, 225], [50, 225], [50, 310], [98, 310]]
+});
+path.strokeColor='purple';
+path.dashArray=[15, 5];
+var path1=new Path({
+    segments: [[189, 69], [195, 72], [189, 75]]
+});
+path1.strokeColor='purple';
+conset_path.addChild(path);
+conset_path.addChild(path1);
+
+// Draw CONCLR PATH
+
+var conclr_path=new Group();
+var path=new Path({
+    segments: [[195, 97], [180, 97], [180, 245], [70, 245], [70, 410], [98, 410]]
+});
+path.strokeColor='purple';
+path.dashArray=[15, 5];
+var path1=new Path({
+    segments: [[189, 94], [195, 97], [189, 100]]
+});
+path1.strokeColor='purple';
+conclr_path.addChild(path);
+conclr_path.addChild(path1);
+
+conset_path.visible=false;
+conclr_path.visible=false;
+
 //Draw content box function
 
 
@@ -1135,53 +1274,96 @@ testing.strokeColor = 'black';
 
 //Slave box
 var slave_group = new Group();
-x3 = 647-clocklength;
+x3 = 747-clocklength;
 y3 = 55;
-x4 = 647+150-clocklength;
+x4 = 747+150-clocklength;
 y4 = 55+150;
-var Slave = new Rectangle(new Point(647, 55), new Size(150, 150));
+var Slave = new Rectangle(new Point(747, 55), new Size(150, 150));
 var path = new Path.Rectangle(Slave);
-path.fillColor = 'yellow';
+path.fillColor = 'white';
 path.strokeColor = 'black';
 slave_group.addChild(path);
-var text_s = new PointText(new Point(647+75, 135));
+var text_s = new PointText(new Point(747+75, 225));
 text_s.justification = 'center';
 text_s.fillColor = 'black';
 text_s.content = 'Slave';
-text_s.fontSize = '30';
+text_s.fontSize = '20';
 slave_group.addChild(text_s);
-var text0 = new PointText(new Point(650, 120));
+var text0 = new PointText(new Point(740, 118));
 text0.content = '0';
-var text = new PointText(new Point(650, 110));
+var text = new PointText(new Point(722, 85));
 text.content = 'SDA';
-var text1 = new PointText(new Point(650, 100));
+var text1 = new PointText(new Point(740, 98));
 text1.content = '1';
 slave_group.addChild(text);
 slave_group.addChild(text0);
 slave_group.addChild(text1);
-var text0 = new PointText(new Point(650, 180));
+var text0 = new PointText(new Point(740, 178));
 text0.content = '0';
-var text = new PointText(new Point(650, 170));
+var text = new PointText(new Point(722, 145));
 text.content = 'SCL';
-var text1 = new PointText(new Point(650, 160));
+var text1 = new PointText(new Point(740, 158));
 text1.content = '1';
 slave_group.addChild(text);
 slave_group.addChild(text0);
 slave_group.addChild(text1);
-slave_group.position = new Point(735, 130);
+var saddress_group=new Group();
+var sbox = new Rectangle(new Point(751, 97), new Size(16, 56));
+var path1 = new Path.Rectangle(sbox);
+path1.strokeColor = 'black';
+var slave_address = new PointText(new Point(760, 130));
+slave_address.justification = 'center';
+slave_address.fillColor = 'black';
+slave_address.content='1000100';
+slave_address.rotate(-90);
+saddress_group.addChild(path1);
+saddress_group.addChild(slave_address);
+slave_group.addChild(saddress_group);
+
+var command_group=new Group();
+var scommond = new Rectangle(new Point(770,61), new Size(120,22));
+var path2 = new Path.Rectangle(scommond);
+command_group.addChild(path2);
+path2.fillColor = 'yellow';
+path2.strokeColor = 'black';
+var txt = new PointText(new Point(770+120/2, 79));
+txt.justification = 'center';
+txt.fillColor = 'black';
+txt.content = 'COMMAND';
+txt.fontSize = '16';
+command_group.addChild(txt);
+lsb_group=command_group.clone();
+lsb_group.position.y +=25;
+lsb_group.children[1].content='LSB_SENSOR';
+msb_group=command_group.clone();
+msb_group.position.y +=50;
+msb_group.children[1].content='MSB_SENSOR';
+txt1=txt.clone();
+txt1.position.y +=100;
+txt1.fontSize=14;
+txt1.content='LIGHT';
+txt2=txt1.clone();
+txt2.position.y +=18;
+txt2.content='SENSOR';
+slave_group.addChild(command_group);
+slave_group.addChild(lsb_group);
+slave_group.addChild(msb_group);
+
+slave_group.position = new Point(823, 143);
+
 // var limit = new Rectangle(new Point(x2, y1-95), new Point(x3, y4+85))
 // var limitbox = new Path.Rectangle(limit);
 
 
 //Draw acknowledge box, set visibility to false first
-var topleft = new Point(589+5,60);
+var topleft = new Point(689+5,60);
 var rectsize = new Size(40,140);
 var test = new Rectangle(topleft, rectsize);
 var ack_rect = new Path.Rectangle(test);
 ack_rect.strokeColor = '#ff0000';
 ack_rect.strokeWidth = 1;
 ack_rect.dashArray = [5, 3];
-var ack_text = new PointText(new Point(614, 55));
+var ack_text = new PointText(new Point(714, 55));
 ack_text.justification = 'center';
 ack_text.fillColor = 'black';
 ack_text.content = 'ACK bit';
@@ -1195,7 +1377,7 @@ ack_group.visible = true;
 
 
 // ack/nack text
-var ack_true = new PointText(614, 115);
+var ack_true = new PointText(714, 115);
 ack_true.justification = 'center';
 ack_true.fillColor = 'black';
 ack_true.content = 'ACK';
@@ -1210,7 +1392,7 @@ var write_text = read_text.clone();
 write_text.content = 'W';
 write_text.visible = false;
 
-var nack_true = new PointText(new Point(614, 115));
+var nack_true = new PointText(new Point(714, 115));
 nack_true.justification = 'center';
 nack_true.fillColor = 'black';
 nack_true.content = 'NACK';
@@ -1224,7 +1406,7 @@ read_group.position -= new Point(42, 0);
 
 read_group.visible = false;
 
-var starttopleft = new Point(220, 60);
+var starttopleft = new Point(320, 60);
 startrectsize = new Size(25,140)
 var test1 = new Rectangle(starttopleft, startrectsize);
 var start_rect = new Path.Rectangle(test1);
@@ -1232,7 +1414,7 @@ start_rect.strokeColor = '#ff0000';
 start_rect.strokeWidth = 1;
 start_rect.dashArray = [5, 3];
 // start_rect.opacity = 0;
-var start_text = new PointText(new Point(232, 55));
+var start_text = new PointText(new Point(332, 55));
 start_text.justification = 'center';
 start_text.fillColor = 'black';
 start_text.content = 'Start Condition';
@@ -1332,7 +1514,7 @@ read_diagram.addChild(set_4);
 var set_5 = new Group();
 draw_address_box(0, set_5, coordinate_1, '00001000', 'Reg Addr', 1);
 draw_ack_box(1, set_5, 0, coordinate_1, 1);
-draw_stop_box(0, set_5, coordinate_1, 1);
+// draw_stop_box(0, set_5, coordinate_1, 1);
 read_diagram.addChild(set_5);
 
 var set_6 = new Group();
@@ -1373,18 +1555,18 @@ function initLine(serial, state){
     line.strokeColor = 'black';
     if (serial == "sda"){
         if(state == 0){
-            line.add(new Point(200,120), new Point(660,120));
+            line.add(new Point(300,120), new Point(760,120));
         }
         else{
-            line.add(new Point(200,100), new Point(660,100));
+            line.add(new Point(300,100), new Point(760,100));
         }
     }
     else if (serial =="scl"){
         if(state == 0){
-            line.add(new Point(200,180), new Point(660,180));
+            line.add(new Point(300,180), new Point(760,180));
         }
         else{
-            line.add(new Point(200,160), new Point(660,160));
+            line.add(new Point(300,160), new Point(760,160));
         }
     }
     return line;
@@ -1652,6 +1834,7 @@ function ackFlag(){
 
 // Register box function
 var regBox_group = new Group();
+var regBox_group1 = new Group();
 
 function register_box(group, posX, posY, bitNum, value, txt){
     var offX = 20;
@@ -1664,6 +1847,7 @@ function register_box(group, posX, posY, bitNum, value, txt){
     regBoxPath.strokeColor = 'black';
     reg1bit_group.addChild(regBoxPath);
     group.addChild(reg1bit_group);
+    regBoxPath.fillColor=(value==1?'lightblue':'white');
 
     var boxText = new PointText(new Point(posX+offX/2, 5+posY+offY/2));
     boxText.justification = 'center'
@@ -1678,9 +1862,9 @@ function register_box(group, posX, posY, bitNum, value, txt){
     reg1bit_group.addChild(bottomText);
     topText = boxText.clone();
     topText.content = name;
-    topText.fontSize = '18';
+    // topText.fontSize = '18';
     topText.content = txt;
-    topText.position += new Point(0,-20);
+    topText.position += new Point(0,-18);
     reg1bit_group.addChild(topText);
     group.addChild(reg1bit_group);
 }
@@ -1723,35 +1907,29 @@ function ctrReg_box(group, type, ctrBit, posX, posY, offsetX){
         label = 'I2CxCONSET ';
     }
     else {
-        label = 'I2CxCONCLEAR ';
+        label = 'I2CxCONCLR ';
         if(text!='STO'){
         text +=(text?'C':' ');
         }
     }
   
-    for(var i=0; i<32; i++){
+    for(var i=0; i<10; i++){
         // regLength += offsetX;
         switch(i){
                 case 0: 
                   bitNum = '31';
                   break;
-                case 8: 
-                  bitNum ='23';
-                  break;
-                case 16: 
-                  bitNum = '15';
-                  break;
-                case 24: 
+                case 2: 
                   bitNum = '7';
                 break;
-                case 31:
+                case 9:
                   bitNum = '0';
                   break;
                 default:
                   bitNum = '-1';
         }
         if(ctrBit>1 && ctrBit<7){
-            if (i==31-ctrBit){
+            if (i==9-ctrBit){
                 bitNum = '--';
                 if(ctrBit==4 && type==0){
                 value = 'X';
@@ -1759,51 +1937,204 @@ function ctrReg_box(group, type, ctrBit, posX, posY, offsetX){
                 }
                 else{
                 value = '1';
-                txt = text;    
+                txt = text;
+                // group.fillColor='lightblue';   
                 }
             }
-            else{
+            else if (i==3){
+                value = '1';
+                txt = ' ';   
+            }
+            else if (i==1){
+                value = '...';
+                txt = ' ';
+                }
+            else {
+                value = 'X';
+                txt = ' '; 
+            }
+        }
+        else {
                 value = 'X';
                 txt = ' ';
-                }
-        }
 
-        else {
-                txt = ' ';
-            if(i>24 && i<30){
-                bitNum = (!type&&i==27?'-1':'--');
-            }
-        }
+               } 
+
             register_box(group, posX+(offsetX*i), posY, bitNum, value, txt);
         }
     // register_label(group, offsetX+regLength/2, posY-10, label);    
-    register_label(group, posX+offsetX/4, posY-5, label); 
+    register_label(group, posX+offsetX/4, posY-15, label); 
+    
+        group.children[1].children[0].remove();
     }  
+
+function move_bit(group, bitnum, offset) {
+    var bitbox = group.children[9-bitnum].clone();
+    bitbox.visible = true;
+    bitbox.position.y +=2*offset    
+    bitbox.children[0].fillColor='lightblue';
+    bitbox.children[0].strokeColor='white';
+    bitbox.children[1].content='1';
+    bitbox.children[2].content=' ';
+    bitbox.children[3].content=' ';
+    disable_play_buttons();
+    flag[0] = 1;
+    var offset = 0;
+    var offset1 = 0;
+    var path = new Path();
+    path.add(bitbox.position);
+    path.add(group.children[9-bitnum].position);
+    speed1=speed/5;
+    var a = path.length/(speed1);
+    bitbox.bringToFront();
+
+    var framehandler = function(event){
+           group.children[9-bitnum].children[1].content='X';
+           if(bitnum==6){
+            if(group==regBox_group){
+               master_group.children[1].content=' '; 
+            }
+            else {
+               master_group.children[1].content='Master';  
+            }
+           }
+           if(group==regBox_group1){
+            regBox_group.children[9-bitnum].children[1].content='1';
+            group.children[9-bitnum].children[1].content='X';
+           }
+        if(offset < path.length) {
+            bitbox.position = path.getPointAt(offset);
+            offset+=speed1;
+            progress_bar.dashArray = [offset1, 1000];
+            offset1+= progress_bar.length / (a);
+        } else {
+            flag[0] = 0;
+            bitbox.removeChildren();
+           group.children[9-bitnum].children[1].content='1';
+           master_group.children[1].content='Master';
+           if(group==regBox_group1){
+            regBox_group.children[9-bitnum].children[1].content='0';
+            if(bitnum==6){
+               master_group.children[1].content=' '; 
+            }
+           }
+            group.visible = true;
+            progress_bar.dashArray = [1000, 1000];
+            enable_play_buttons();
+            view.off('frame', framehandler)
+        }
+    }
+    view.on('frame', framehandler);
+}    
+
+function stoSet(group){
+    ctrReg_box(group, 1, 4, 100, 300, 20);
+    var bitbox = group.children[5].clone();
+    bitbox.visible = true;
+    bitbox.position.y +=40   
+    bitbox.children[0].fillColor='lightblue';
+    bitbox.children[0].strokeColor='white';
+    bitbox.children[1].content='1';
+    bitbox.children[2].content=' ';
+    bitbox.children[3].content=' ';
+    disable_play_buttons();
+    flag[0] = 1;
+    var offset = 0;
+    var offset1 = 0;
+    var path = new Path();
+    path.add(bitbox.position);
+    path.add(group.children[5].position);
+    speed1=speed/5;
+    var a = path.length/(speed1);
+    bitbox.bringToFront();
+
+    var framehandler = function(event){
+           group.children[5].children[1].content='X';
+        if(offset < path.length) {
+            bitbox.position = path.getPointAt(offset);
+            offset+=speed1;
+            progress_bar.dashArray = [offset1, 1000];
+            offset1+= progress_bar.length / (a);
+        } else {
+            flag[0] = 0;
+            bitbox.removeChildren();
+            group.children[5].children[1].content='1';
+            group.visible = true;
+            progress_bar.dashArray = [1000, 1000];
+            enable_play_buttons();
+            view.off('frame', framehandler)
+        }
+    }
+    view.on('frame', framehandler);
+}
+
+function stoClr(group){
+    ctrReg_box(group, 1, 4, 100, 300, 20);
+    var bitbox = group.children[5].clone();
+    bitbox.visible = true;
+    bitbox.position.y +=40   
+    bitbox.children[0].fillColor='lightblue';
+    bitbox.children[0].strokeColor='white';
+    bitbox.children[1].content='0';
+    bitbox.children[2].content=' ';
+    bitbox.children[3].content=' ';
+    disable_play_buttons();
+    flag[0] = 1;
+    var offset = 0;
+    var offset1 = 0;
+    var path = new Path();
+    path.add(bitbox.position);
+    path.add(group.children[5].position);
+    speed1=speed/5;
+    var a = path.length/(speed1);
+    bitbox.bringToFront();
+
+    var framehandler = function(event){
+           group.children[5].children[1].content='1';
+        if(offset < path.length) {
+            bitbox.position = path.getPointAt(offset);
+            offset+=speed1;
+            progress_bar.dashArray = [offset1, 1000];
+            offset1+= progress_bar.length / (a);
+        } else {
+            flag[0] = 0;
+            bitbox.removeChildren();
+            group.children[5].children[1].content='0';
+            group.visible = true;
+            progress_bar.dashArray = [1000, 1000];
+            enable_play_buttons();
+            view.off('frame', framehandler)
+        }
+    }
+    view.on('frame', framehandler);
+}
+
 
 function ctrRegBox_visible(status){
     regBox_group.visible = status;
+    regBox_group1.visible = status;
 }
 
 function ctrRegBox_clear(){
-    regBox_group.remove();
-    regBox_group = new Group();
+    regBox_group.removeChildren();
+    regBox_group1.removeChildren();
 }
 
 ctrRegBox_visible(false);
 
-var SDA_ctr = new PointText(new Point(260,70));
+var SDA_ctr = new PointText(new Point(360,70));
 SDA_ctr.content = '';
 SDA_ctr.fontSize = 16;
 SDA_ctr.fontWeight = 'bold';
 SDA_ctr.fillColor = 'black';
 
-var SCL_ctr = new PointText(new Point(260, 220));
+var SCL_ctr = new PointText(new Point(360, 220));
 SCL_ctr.content = '';
 SCL_ctr.fontSize = 16;
 SCL_ctr.fontWeight = 'bold';
 SCL_ctr.fillColor = 'black';
 
-var ClkNum = new PointText(new Point(500, 220));
+var ClkNum = new PointText(new Point(600, 220));
 ClkNum.content = '';
 ClkNum.fontSize = 16;
 ClkNum.fontWeight = 'bold';
@@ -1837,182 +2168,338 @@ function signalCtr(num1, num2){
 
 }
 
+//draw start bit
+var S_bit = new Group();
+var S_box = new Rectangle(new Point(300, 75), new Size(50, 50));
+var path = new Path.Rectangle(S_box);
+S_bit.addChild(path);
+path.fillColor = 'lightblue';
+// path.strokeColor = 'black';
+var Stext = new PointText(new Point(305, 95));
+Stext.justification = 'left';
+Stext.fillColor = 'black';
+Stext.content = 'S bit';
+Stext.fontSize = '16';
+S_bit.addChild(Stext);
+var path1=new Path();
+path1.strokeColor='black';
+path1.add(new Point(300, 100), new Point(320, 100), new Point(330, 120), new Point(350, 120) );
+S_bit.addChild(path1);
+S_bit.visible=false;
+
+// Draw Stop bit
+P_bit = S_bit.clone();
+P_bit.children[1].content='P bit';
+var path2=new Path();
+path2.strokeColor='black';
+path2.add(new Point(300, 120), new Point(320, 120), new Point(330, 100), new Point(350, 100) );
+P_bit.children[2].remove();
+P_bit.addChild(path2);
+
+
+// Draw Clock Pulse bit
+CLK9 = S_bit.clone();
+CLK9.position=new Point(325, 160);
+CLK9.children[1].content='CLK 9';
+CLK9.children[1].fontSize=16;
+var path3=new Path();
+path3.strokeColor='black';
+path3.add(new Point(300, 180), new Point(305, 180), new Point(320, 160), new Point(330, 160), new Point(345, 180), new Point(350, 180));
+CLK9.children[2].remove();
+CLK9.addChild(path3);
+clkTxt=new PointText(new Point(325, 196));
+clkTxt.justification = 'center';
+clkTxt.fillColor = 'black';
+clkTxt.content = '9';
+CLK9.addChild(clkTxt);
+
+// Draw master ACK bit
+ACK_M = S_bit.clone();
+ACK_M.children[1].content='ACK';
+var path4=new Path();
+path4.strokeColor='black';
+path4.add(new Point(300, 120), new Point(350, 120) );
+ACK_M.children[2].remove();
+ACK_M.addChild(path4);
+
+// Draw master NACK bit
+NACK_M = ACK_M.clone();
+NACK_M.children[1].content='NACK';
+NACK_M.children[2].position.y -=20
+
+
+// Draw slave ACK bit
+ACK_S = ACK_M.clone();
+ACK_S.children[0].fillColor='yellow';
+ACK_S.position = new Point(735, 100);
+
+
+//Define bit sending function
+
+function sendBit(group, type){
+    disable_play_buttons();
+    flag[0] = 1;
+    var offset = 0;
+    var offset1 = 0;
+    var init_x=group.position.x;
+    var dest_x=group.position.x;
+    var dest_y=group.position.y;
+    if(type==0){
+        dest_x +=447;
+    }
+    else{
+        dest_x -=447;
+    }
+
+    var path = new Path();
+    path.add(group.position);
+    path.add(new Point(dest_x, dest_y));
+    var speed1=speed*0.8
+    var a = path.length/(speed1);
+    group.bringToFront();
+    slave_group.bringToFront();
+    master_group.bringToFront();
+    var framehandler = function(event){
+           group.visible=true;
+        if(offset < path.length) {
+            group.position = path.getPointAt(offset);
+            offset+=speed1;
+            progress_bar.dashArray = [offset1, 1000];
+            offset1+= progress_bar.length / (a);
+        } else {
+            flag[0] = 0;
+            group.position.x=init_x;
+            group.visible = false;
+            progress_bar.dashArray = [1000, 1000];
+            enable_play_buttons();
+            view.off('frame', framehandler)
+        }
+    }
+    view.on('frame', framehandler);
+} 
+
+
 
 // General Scenario function
 function gen_scenario(num){
-    switch(num){
-        case 0:  //Default condition
-            scenario.content = 'Default Condition';
-            default_scenario();
-            break;
-        case 1: //START condition
-            visibleSignal(true);
-            // ctrRegBox_visible(false);
-            scenario.content = 'START Condition';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl_yPos);
-            animateSignal(sda, 0);
-            sdaControl(0);
-            signalCtr(0,5);
-            break;
-        case 2:  //Stop condition
-            visibleSignal(true);
-            ctrRegBox_visible(true);
-            scenario.content = 'STOP Condition';
-            resetSignal(sda, sda0_yPos);
-            resetSignal(scl, scl_yPos);
-            animateSignal(sda, 1);
-            sdaControl(0);
-            signalCtr(0,5);
-            break;       
-        case 3: //Clock pulse generation
-            visibleSignal(true);
-            scenario.content = 'Clock Pulses';
-            resetSignal(sda, sda0_yPos);
-            resetSignal(scl, scl_yPos);
-            clockPulse();
-            signalCtr(2,0);
-            break;
-        case 4: //SDA change from low to high
-            visibleSignal(true);
-            scenario.content = 'SDA Low to High';
-            resetSignal(sda, sda0_yPos);
-            resetSignal(scl, scl0_yPos);
-            animateSignal(sda, 1);   
-            clock_pulse_control();
-            signalCtr(2,0);
-            break;   
-        case 5: //SDA change from high to low
-            visibleSignal(true);
-            scenario.content = 'SDA High to Low';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl0_yPos);
-            animateSignal(sda, 0);  
-            clock_pulse_control();
-            signalCtr(2,0);
-            break; 
-        case 6: //Read status
-            visibleSignal(true);
-            scenario.content = 'Read Request';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl0_yPos);
-            sdaControl(0);
-            clock_pulse_control();
-            signalCtr(0,0);
-           break;     
-        case 7: //Write status
-            visibleSignal(true);
-            scenario.content = 'Write Request';
-            resetSignal(sda, sda0_yPos);
-            resetSignal(scl, scl0_yPos);
-            sdaControl(0);
-            clock_pulse_control();
-            signalCtr(0,0);
-           break;     
-       case 8: //Acknowledged
-            visibleSignal(true);
-            scenario.content = 'ACK';
-            resetSignal(sda, sda0_yPos);
-            resetSignal(scl, scl_yPos);
-            ack();
-            clock_pulse_control(); 
-            signalCtr(5,0);
-           break;   
-       case 9: //Not Acknowledged
-            visibleSignal(true);
-            scenario.content = 'NACK';
-            resetSignal(sda, sda0_yPos);
-            resetSignal(scl, scl_yPos);
-            nack();
-            clock_pulse_control(); 
-            signalCtr(5,0);
-           break;  
-         case 10: //Repeat START condition
-            visibleSignal(true);
-            scenario.content = 'Sr Condition';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl_yPos);
-            animateSignal(sda, 0); 
-            sdaControl(0);
-            signalCtr(0,5);
-            break;
-         case 11: //Clock Streching
-            visibleSignal(true);
-            scenario.content = 'Clock Stretching';
-            resetSignal(sda, sda0_yPos);
-            resetSignal(scl, scl_yPos);
-            clockStretching(); 
-            break;
-         case 12: //I2C control register
-            ctrReg_box(regBox_group, 1, 0, 100, 300, 20);
-            ctrReg_box(regBox_group, 0, 0, 100, 400, 20);
-            ctrRegBox_visible(true);
-            visibleSignal(true);
-            scenario.content = 'I2C Control Registers';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl_yPos);
-            break;
-         case 13: //I2C interface enable
+        switch(num){
+         case 0: //I2C interface enable
             ctrReg_box(regBox_group, 1, 6, 100, 300, 20);
-            ctrReg_box(regBox_group, 0, 6, 100, 400, 20);
+            move_bit(regBox_group, 6, 20);
             ctrRegBox_visible(true);
-            visibleSignal(true);
+            conset_path.visible=true;
             scenario.content = 'I2C Interface Enable';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl_yPos);
             break;
-         case 14: //I2C Start Flag
+         case 1: //I2C interface disable
+            ctrReg_box(regBox_group, 1, 6, 100, 300, 20);
+            ctrReg_box(regBox_group1, 0, 6, 100, 400, 20);
+            move_bit(regBox_group1, 6, 20);
+            ctrRegBox_visible(true);
+            conset_path.visible=true;
+            conclr_path.visible=true;
+            scenario.content = 'I2C Interface Disable';
+            break;
+         case 2: //Set STA Flag
             ctrReg_box(regBox_group, 1, 5, 100, 300, 20);
-            ctrReg_box(regBox_group, 0, 5, 100, 400, 20);
+            move_bit(regBox_group, 5, 20);
             ctrRegBox_visible(true);
-            visibleSignal(true);
-            scenario.content = 'I2C START Flag';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl_yPos);
-            animateSignal(sda, 0); 
-            sdaControl(0);
-            signalCtr(0,5);
+            conset_path.visible=true;
+            scenario.content = 'Set STA Flag';
             break;  
-         case 15: //I2C Ascert Acknowledge Flag
-            ctrReg_box(regBox_group, 1, 2, 100, 300, 20);
-            ctrReg_box(regBox_group, 0, 2, 100, 400, 20);
+          case 3: //Clear STA Flag
+            ctrReg_box(regBox_group, 1, 5, 100, 300, 20);
+            ctrReg_box(regBox_group1, 0, 5, 100, 400, 20);
+            move_bit(regBox_group1, 5, 20);
             ctrRegBox_visible(true);
-            visibleSignal(true);
-            scenario.content = 'I2C AA Flag';
-            ackFlag();
-            clock_pulse_control();
-            sdaControl(0);
-            signalCtr(0,0);    
-            break; 
-         case 16: //I2C STOP Flag
-            ctrReg_box(regBox_group, 1, 4, 100, 300, 20);
-            ctrReg_box(regBox_group, 0, 4, 100, 400, 20);
-            ctrRegBox_visible(true);
-            visibleSignal(true);  
-            scenario.content = 'I2C STOP Flag';
-            resetSignal(sda, sda0_yPos);
-            resetSignal(scl, scl_yPos);
-            animateSignal(sda, 1); 
-            clock_pulse_control();
-            sdaControl(0);
-            signalCtr(0,0);  
-            break; 
-         case 17: //I2C Interrupt Flag
+            conset_path.visible=true;
+            conclr_path.visible=true;
+            scenario.content = 'Clear STA Flag';
+            break;
+         case 4: //Set SI Flag
             ctrReg_box(regBox_group, 1, 3, 100, 300, 20);
-            ctrReg_box(regBox_group, 0, 3, 100, 400, 20);
+            move_bit(regBox_group, 3, 20);
             ctrRegBox_visible(true);
-            visibleSignal(true);
-            scenario.content = 'I2C Interrupt';
-            resetSignal(sda, sda_yPos);
-            resetSignal(scl, scl_yPos);
+            conset_path.visible=true;
+            scenario.content = 'Set SI Flag';
             break; 
+         case 5: //Clear SI Flag
+            ctrReg_box(regBox_group, 1, 3, 100, 300, 20);
+            ctrReg_box(regBox_group1, 0, 3, 100, 400, 20);
+            move_bit(regBox_group1, 3, 20);
+            conset_path.visible=true;
+            conclr_path.visible=true;
+            ctrRegBox_visible(true);
+            // scenario.content = 'Clear SI Flag';
+            break;  
+         case 6: //Set STO Flag
+            stoSet(regBox_group);
+            regBox_group.visible=true;
+            scenario.content = 'Set STO Flag';
+            conset_path.visible=true;
+            break; 
+         case 7: //STO Flag Clear
+            stoClr(regBox_group);
+            regBox_group.visible=true;
+            conset_path.visible=true;
+            scenario.content = 'Clear STO Flag';
+            break;    
+         case 8: //Set AA Flag
+            ctrReg_box(regBox_group, 1, 2, 100, 300, 20);
+            move_bit(regBox_group, 2, 20);
+            ctrRegBox_visible(true);
+            conset_path.visible=true;
+            scenario.content = 'Set AA Flag';
+            break; 
+         case 9: //Clear AA Flag
+            ctrReg_box(regBox_group, 1, 2, 100, 300, 20);
+            regBox_group.children[29].children[1].content='0';
+            ctrReg_box(regBox_group1, 0, 2, 100, 400, 20);
+            move_bit(regBox_group1, 2, 20);
+            ctrRegBox_visible(true);
+            conset_path.visible=true;
+            conclr_path.visible=true;
+            scenario.content = 'Clear AA Flag';
+            break; 
+         case 10: //Send Start Bit
+            scl.visible=true;
+            scl.position.y=scl_yPos;
+            sendBit(S_bit, 0);
+            break;
+         case 11: //Send Stop Bit
+            scl.visible=true;
+            scl.position.y=scl_yPos;
+            sendBit(P_bit, 0);
+            break;  
+         case 12: //Slave Send ACK Bit
+            ACK_S.visible=true;
+            CLK9.visible=true;
+            sendBit(ACK_S, 1);
+            sendBit(CLK9, 0);
+            break;
+        case 13: //Set STA Flag for Sr
+            ctrReg_box(regBox_group, 1, 5, 100, 300, 20);
+            regBox_group.children[6].children[1].content='1';
+            move_bit(regBox_group, 5, 20);
+            ctrRegBox_visible(true);
+            conset_path.visible=true;
+            scenario.content = 'Set STA Flag';
+            break;  
+        case 14: //Clear STA Flag and SI flag
+            ctrReg_box(regBox_group, 1, 5, 100, 300, 20);
+            regBox_group.children[6].children[1].content='1';
+            regBox_group.children[6].children[3].content='SI';
+            ctrReg_box(regBox_group1, 0, 5, 100, 400, 20);
+            regBox_group1.children[6].children[3].content='SIC';
+            move_bit(regBox_group1, 5, 20);
+            move_bit(regBox_group1, 3, 20);
+            ctrRegBox_visible(true);
+            conset_path.visible=true;
+            conclr_path.visible=true;
+            scenario.content = 'Clear STA Flag';
+            break;
+
+        case 15: //LSB_Sensor diagram
+            illustrate(all_waves, 7, 0);
+            byte_control(0);
+            ack_control(1);
+            change_waveform('00001000');
+            ack_or_nack('y');
+            fill_num('000010000', number_text);
+            stop_group.visible = false;
+            show_read_diagram(1);
+            move_waveform(read_diagram.children[1].position, read_diagram.children[1]);
+            clock_pulse_control(0);
+            clkPulseNum(1, pulseNum);
+            break;
+
+        case 16://Send Slave Address & W BIT
+            illustrate(all_waves, 4, 1);
+            show_en_diagram(0);
+            start_control(0);
+            byte_control(0);
+            change_waveform('10001000');
+            fill_num('100010000', number_text);
+            read_or_write('w');
+            clock_pulse_control(0);
+            clkPulseNum(1, pulseNum);
+            break;
+        case 17:
+            illustrate(all_waves, 5, 1);
+            show_en_diagram(1);
+            byte_control(0);
+            // ack_control(1);
+            // ack_or_nack('y');
+            change_waveform('00000000');
+            clkPulseNum(1, pulseNum);
+            break;
+        case 18:
+            // temp_stop();
+            show_en_diagram(2);
+            illustrate(all_waves, 6, 1);
+            byte_control(0);
+            // ack_control(1);
+            // stop_control(0);
+            change_waveform('10000000');
+            // ack_or_nack('y');
+            fill_num('100000000', number_text);
+            clkPulseNum(1, pulseNum);
+            // stop_group.visible = true;
+            break;
+        case 19:
+            show_en_diagram(2);
+            illustrate(all_waves, 2, 1);
+            byte_control(0);
+            ack_control(1);
+            stop_control(0);
+            change_waveform('10000000');
+            ack_or_nack('y');
+            // fill_num('100000000', number_text);
+            clkPulseNum(1, pulseNum);
+            stop_group.visible = true;
+            break;
+        case 20:
+            illustrate(all_waves, 5, 1);
+            show_en_diagram(1);
+            byte_control(0);
+            // ack_control(1);
+            // ack_or_nack('y');
+            change_waveform('00001000');
+            fill_num('000010000', number_text);
+            clkPulseNum(1, pulseNum);
+            break;
+         case 21://Send Slave Address & W BIT
+            illustrate(all_waves, 4, 1);
+            // start_control(0);
+            byte_control(0);
+            // show_start();
+            change_waveform('10001001');
+            read_or_write('r');
+            fill_num('100010010', number_text);
+            clkPulseNum(1, pulseNum);
+            show_read_diagram(2);
+            break;
+
+        case 22: //Read data from LSB_sensor
+            illustrate(all_waves, 6, 1);
+            byte_control(1);
+            change_waveform('11001011');
+            fill_num('110010111', number_text);
+            show_read_diagram(3);
+            clkPulseNum(1, pulseNum);
+            break;
+        case 23: //Master Send NACK Bit
+            NACK_M.visible=true;
+            CLK9.visible=true;
+            sendBit(NACK_M, 0);
+            sendBit(CLK9, 0);
+            break;
         }
 }
 
 //Clock pulse sequence number
 pulseNum = new Group();
 function draw_PulseNum(group){
-    var text = new PointText(new Point(235, 195));
+    var text = new PointText(new Point(335, 195));
     text.fillColor = 'black';
     text.content = ' ';
     group.insertChild(0, text);
@@ -2037,7 +2524,7 @@ function clkPulseNum(num, group){
 function enable_scenario(num) {
     switch(num){
         case 0:
-            all_waves.removeChildren();
+            // all_waves.removeChildren();
             illustrate(all_waves, 0, 1);
             show_en_diagram(0);
             start_control(0);
@@ -2051,7 +2538,7 @@ function enable_scenario(num) {
             clkPulseNum(1, pulseNum);
             break;
         case 1:
-            all_waves.removeChildren();
+            // all_waves.removeChildren();
             // clearboxes();
             // clear_control();
             illustrate(all_waves, 0, 0);
@@ -2069,7 +2556,7 @@ function enable_scenario(num) {
             break;       
         case 2:
             // temp_stop();
-            all_waves.removeChildren();
+            // all_waves.removeChildren();
             illustrate(all_waves, 1, 1);
             show_en_diagram(1);
             byte_control(0);
@@ -2079,7 +2566,7 @@ function enable_scenario(num) {
             clkPulseNum(1, pulseNum);
             break;
         case 3:
-            all_waves.removeChildren();
+            // all_waves.removeChildren();
             illustrate(all_waves, 1, 0);
             show_en_diagram(1);
             byte_control(0);
@@ -2094,7 +2581,7 @@ function enable_scenario(num) {
             break;
         case 4:
             // temp_stop();
-            all_waves.removeChildren();
+            // all_waves.removeChildren();
             show_en_diagram(2);
             illustrate(all_waves, 2, 1);
             byte_control(0);
@@ -2107,7 +2594,7 @@ function enable_scenario(num) {
             stop_group.visible = true;
             break;
         case 5:
-            all_waves.removeChildren();
+            // all_waves.removeChildren();
             illustrate(all_waves, 2, 0);
             show_en_diagram(2);
             byte_control(0);
@@ -2125,10 +2612,12 @@ function enable_scenario(num) {
     }
 }
 
+// check here
 function read_scenario(num) {
     switch(num){
         case 0:
             all_waves.removeChildren();
+            // illustrate(all_waves, 0, 1);
             illustrate(all_waves, 0, 1);
             start_control(0);
             byte_control(0);
@@ -2196,7 +2685,7 @@ function read_scenario(num) {
             byte_control(0);
             ack_control(1);
             show_start();
-            change_waveform('10001000');
+            change_waveform('10001001');
             read_or_write('r');
             ack_or_nack('y');
             fill_num('100010010', number_text);
@@ -2210,7 +2699,7 @@ function read_scenario(num) {
             byte_control(0);
             ack_control(1);
             show_start();
-            change_waveform('10001000');
+            change_waveform('10001001');
             read_or_write('r');
             ack_or_nack('y');
             fill_num('100010010', number_text);
@@ -3239,7 +3728,7 @@ btn1.onclick = function update(){
 }
 
 function add_page(group, txt){
-    page = new PointText(new Point(890, 50));
+    page = new PointText(new Point(1040, 50));
     page.fontSize = 15;
     page.wordwrap(55, txt);
     group.addChild(page);
@@ -3261,16 +3750,6 @@ function show_read_page(num){
             read_pages.children[i].visible = true;
         } else{
             read_pages.children[i].visible = false;
-        }
-    }
-}
-
-function show_gen_page(num){
-    for(var i=0; i<gen_pages.children.length;i++){
-        if(i==num-1){
-            gen_pages.children[i].visible = true;
-        } else{
-            gen_pages.children[i].visible = false;
         }
     }
 }
@@ -3452,127 +3931,101 @@ function clear_all(){
 }
 
 // General
-default_status.onclick = function update(){
-    clear_all();
-    scene = 3;
-    scene_num = 0;
-    scene_num_1.content = scene_num;
-    testing.content = scene_num;
-    compiled_gen_scenario(scene_num);
-    show_read_page(0);
-    show_page(0);
-}
+// default_status.onclick = function update(){
+//     clear_all();
+//     scene = 3;
+//     scene_num = 0;
+//     scene_num_1.content = scene_num;
+//     testing.content = scene_num;
+//     compiled_gen_scenario(scene_num);
+//     show_read_page(0);
+//     show_page(0);
+// }
 
-start.onclick = function update(){
-    clear_all();
-    scene = 3;
-    scene_num = 1;
-    scene_num_1.content = scene_num;
-    testing.content = scene_num;
-    compiled_gen_scenario(scene_num);
-    show_read_page(0);
-    show_page(0);
-}
+// start.onclick = function update(){
+//     clear_all();
+//     scene = 3;
+//     scene_num = 1;
+//     scene_num_1.content = scene_num;
+//     testing.content = scene_num;
+//     compiled_gen_scenario(scene_num);
+//     show_read_page(0);
+//     show_page(0);
+// }
 
-clk_stretching.onclick = function update(){
-    clear_all();
-    scene = 3;
-    scene_num = 11;
-    scene_num_1.content = scene_num;
-    testing.content = scene_num;
-    compiled_gen_scenario(scene_num);
-    show_read_page(0);
-    show_page(0);
-}
+// clk_stretching.onclick = function update(){
+//     clear_all();
+//     scene = 3;
+//     scene_num = 11;
+//     scene_num_1.content = scene_num;
+//     testing.content = scene_num;
+//     compiled_gen_scenario(scene_num);
+//     show_read_page(0);
+//     show_page(0);
+// }
 
-i2en.onclick = function update(){
-    clear_all();
-    scene = 3;
-    scene_num = 13;
-    scene_num_1.content = scene_num;
-    testing.content = scene_num;
-    compiled_gen_scenario(scene_num);
-    show_read_page(0);
-    show_page(0);
-    enable_play_buttons();
-}
+// i2en.onclick = function update(){
+//     clear_all();
+//     scene = 3;
+//     scene_num = 13;
+//     scene_num_1.content = scene_num;
+//     testing.content = scene_num;
+//     compiled_gen_scenario(scene_num);
+//     show_read_page(0);
+//     show_page(0);
+//     enable_play_buttons();
+// }
 
 // End of General
 
 enable_btn.onclick = function update(){
     clear_all();
     scene = 1;
-    scenario.content = 'Enabling The Light Sensor';
+    // scenario.content = 'Enabling The Light Sensor';
     scene_num = 0;
-    testing.content = scene_num;
+    scene_num_1.content = scene_num;
     compiled_enable_scenario(scene_num);
-    show_read_page(0);
-    show_gen_page(0);
 }
 
 enable_set_2.onclick = function update(){
     clear_all();
-    show_read_page(0);
-    show_gen_page(0);
     scene = 1;
-    scenario.content = 'Enabling The Light Sensor';
-    scene_num = 10;
-    testing.content = scene_num;
+    scene_num = 16;
     compiled_enable_scenario(scene_num);
 }
 
 enable_set_3.onclick = function update(){
     clear_all();
-    show_read_page(0);
-    show_gen_page(0);
     scene = 1;
-    scenario.content = 'Enabling The Light Sensor';
-    scene_num = 17;
-    testing.content = scene_num;
+    scene_num = 24;
     compiled_enable_scenario(scene_num);
 }
 
 read_btn.onclick = function update(){
     clear_all();
     scene = 2;
-    scenario.content = 'Reading From The Light Sensor';
     scene_num = 0;
-    testing.content = scene_num;
     compiled_read_scenario(scene_num);
-    show_page(0);
-    show_gen_page(0);
 }
 
 read_set_2.onclick = function update(){
     clear_all();
-    show_page(0);
-    show_gen_page(0);
     scene = 2;
-    scenario.content = 'Reading From The Light Sensor';
-    scene_num = 10;
-    testing.content = scene_num;
+    scene_num = 16;
     compiled_read_scenario(scene_num);
 }
 
 read_set_3.onclick = function update(){
     clear_all();
-    show_page(0);
-    show_gen_page(0);
     scene = 2;
-    scenario.content = 'Reading From The Light Sensor';
-    scene_num = 19;
-    testing.content = scene_num;
+    scene_num = 25;
     compiled_read_scenario(scene_num);
 }
 
 read_set_4.onclick = function update(){
     clear_all();
-    show_page(0);
-    show_gen_page(0);
     scene = 2;
-    scenario.content = 'Reading From The Light Sensor';
-    scene_num = 28;
-    testing.content = scene_num;
+    scene_num = 37;
     compiled_read_scenario(scene_num);
 }
 
@@ -3583,8 +4036,6 @@ prev_btn.onclick = function update(){
             scene_num--;
         }
         clear_all();
-        scene_num_1.content = scene_num;
-        testing.content = scene_num;
         if(scene == 1) {
             compiled_enable_scenario(scene_num);
         }
@@ -3603,8 +4054,6 @@ next_btn.onclick = function update(){
     if(flag[0] == 0) {
         clear_all();
         scene_num++;
-        scene_num_1.content = scene_num;
-        testing.content = scene_num;
         if(scene == 1) {
             compiled_enable_scenario(scene_num);
         }
@@ -3636,7 +4085,6 @@ function show_overlay(){
     document.getElementById('instructions_overlay').style.display = 'block';
     instruction_overlay.visible = true;
     pages.visible = false;
-    gen_pages.visible = false;
     read_pages.visible = false;
     scenario.content = ' ';
     ctrRegBox_clear();
@@ -3646,14 +4094,12 @@ function hide_overlay(){
     document.getElementById('instructions_overlay').style.display = 'none';
     instruction_overlay.visible = false;  
     pages.visible = true;
-    gen_pages.visible = true;
     read_pages.visible = true;
 }   
 
 close_instructions.onclick = function update(){
     hide_overlay();
     document.getElementById('master_popup').style.display = 'block';
-    show_gen_page(0); 
     show_read_page(0);
     show_page(0);
     disable_play_buttons();  
@@ -3663,7 +4109,6 @@ close_instructions.onclick = function update(){
     // document.getElementById('first_survey').style.display = 'none';   
 //     document.getElementById('main').style.overflow = 'scroll';
 //     show_overlay();
-//     show_gen_page(0);
 //     disable_play_buttons();  
 // }
 
@@ -3697,11 +4142,9 @@ function enable_play_buttons(){
     } else {
         document.getElementById('prev_btn').disabled = false;
     }
-    if(scene_num == 37 && scene == 2) {
+    if(scene_num == 51 && scene == 2) {
         document.getElementById('next_btn').disabled = true;
-    } else if(scene_num == 25 && scene == 1) {
-        document.getElementById('next_btn').disabled = true;
-    } else if(scene_num == 17 && scene == 3) {
+    } else if(scene_num == 36 && scene == 1) {
         document.getElementById('next_btn').disabled = true;
     } else {
         document.getElementById('next_btn').disabled = false;
@@ -3721,9 +4164,14 @@ var box = new Path.Rectangle(new Point(100,100), new Size(15,45));
 box.fillColor = 'red';
 var triangle = new Path.RegularPolygon(new Point(107, 100), 3, 20);
 triangle.fillColor = 'red';
+var tri1 = new Path.RegularPolygon(new Point(107, 75), 3, 20);
+tri1.fillColor = 'red';
 arrow.addChild(box);
 arrow.addChild(triangle);
-arrow.rotate(180);
+arrow.rotate(180); 
+dbl_arrow=arrow.clone();
+dbl_arrow.addChild(tri1);
+dbl_arrow.visible=false;
 arrow.position += new Point(305, 330);
 instruction_overlay.addChild(arrow);
 var text = new PointText(new Point (340, 400));
@@ -3831,130 +4279,90 @@ diagram2_button.on('mouseleave', function(){
 pages = new Group();
 read_pages = new Group();
 
-// add general pages
-gen_pages = new Group(); 
 
+//1 General Introduction
+add_page(pages, "This application will be simulating the process of I2C communications between a Master and Slave for the purposes of enabling a LSB sensor. On the left you will see a waveform being drawn that will depict the data to be communicated between the Master and Slave. Any part of the diagram being highlighted in light blue is being controlled by the Master, while anything highlighted in yellow is being controlled by the Slave.");
+//2 I2EN
+add_page(pages, "First, there needs to write '1' to CONSET bit 6 to enable I2C interface, the default SDA and SCL are both at high");
+//3 STA
+add_page(pages, 'Then STA flag needs to be set by writting "1" to CONSET bit 5');
+//4 Diagram introduction
+add_page(pages, 'The diagram shows a 5 different master devices represented by blue circles, and 5 different slave devices represented by the yellow circles. As I2C is a half-duplex, serial communication, only one device can transmit at any point in time. Furthermore, there is collision detection and arbitration to allow for multiple masters. At any point when one master is communicating, no other masters will be able to communicate, this is represented by the traffic light which will show which master is communicating while the others are forced to stop. This diagram will show how each segment of the waveform shown earlier is transmitted.');
+//5 Send START bit, STAC
+add_page(pages, 'After the STA flag is set, the master will send out START bit, the START bit is SDA changes from high to low while SCL is at high. At the same time, STA flag is cleared by writting "1" to CONCLR bit 5. All slaves will start listening to the bus. As I2C communication is half-duplex, only one device can transmit at any time, in this way it is somewhat like having a conversation where each party has to affirm that they have received a message. The chat window below shows a conversation between the master and slave as each bit is sent across.');
 
-//1
-add_page(pages, "1 This application will be simulating the process of I2C communications between a Master and Slave for the purposes of enabling a LSB sensor. On the left you will see a waveform being drawn that will depict the data to be communicated between the Master and Slave. Any part of the diagram being highlighted in light blue is being controlled by the Master, while anything highlighted in yellow is being controlled by the Slave.");
-//2
-add_page(pages, "2 We will need a start condition which is defined as SDA going from high to low while SCL is high, the first byte of data we will send is the address of the LSB sensor: 0x44, or 1000100, however since the 8th bit is set to 0 to indicate write transmission, the actual byte to be sent is 10001000 or 0x88, this is then followed by the acknowledge bit controlled by the slave, in this case a 0 representing ACK.");
-//3
-add_page(pages, '3 This series of communications can be represented as such, in a block diagram.');
-//4
-add_page(pages, '4 The diagram shows a 5 different master devices represented by blue circles, and 5 different slave devices represented by the yellow circles. As I2C is a half-duplex, serial communication, only one device can transmit at any point in time. Furthermore, there is collision detection and arbitration to allow for multiple masters. At any point when one master is communicating, no other masters will be able to communicate, this is represented by the traffic light which will show which master is communicating while the others are forced to stop. This diagram will show how each segment of the waveform shown earlier is transmitted.');
-//5
-add_page(pages, '5 First, the start condition is given by the master to the bus, and all slaves will start listening to the bus. As I2C communication is half-duplex, only one device can transmit at any time, in this way it is somewhat like having a conversation where each party has to affirm that they have received a message. The chat window below shows a conversation between the master and slave as each bit is sent across.');
-//6
-add_page(pages, '6 The master will now propagate the slave address it wants to communicate with onto the bus, for this demonstration, our top most slave is the LSB sensor with the Slave Address 0x44.');
-//7
-add_page(pages, '7 The slave then acknowledges that it has received the message by replying with an acknowledge bit.');
-//8
-add_page(pages, '8 Since we want to enable the LSB sensor, our next step is communicating the address of the command register on the light. As such we will want to transmit 0x00, or 00000000, with an acknowledge bit.');
-//9
-add_page(pages, '9 The register address is sent by the master and then acknowledged by the slave.');
-//10
-add_page(pages, '10 Finally, the master will transmit the value which to write onto the register, bit 7 controls the enabling of the LSB sensor, with 0 disabling the ADC-core, and 1 enabling the ADC-core. As such our waveform will show 1000000, with an acknowledge bit of 0. We then want to stop communications which requires a stop condition to be transmitted by the master, which is defined as the SDA going from low to high while SCL is high.');
-//11
-add_page(pages, '11 As such the value will first be transmitted by the master, followed by an acknowledge from the slave, and finally a stop condition from the master.')
-//12 
-add_page(pages, '12 This is the last page for this scene. You can either go through the Reading scenario if you have not, or go on to complete the feedback survey');
+//6  Send START bit, STAC
+add_page(pages, 'The master send out the START bit and STA flag is cleared by writting "1" to CONCLR bit 5.');
 
-//1
-add_page(read_pages, "1 This application will be simulating the process of I2C communications between a Master and Slave for the purposes of enabling a LSB sensor. On the left you will see a waveform being drawn that will depict the data to be communicated between the Master and Slave. Any part of the diagram being highlighted in light blue is being controlled by the Master, while anything highlighted in yellow is being controlled by the Slave.");
-//2
-add_page(read_pages, "2 We will be simulating the process of reading from the light sensor. The first set of signals are a start condition, the slave address and a write bit. The address of the LSB sensor: 0x44, or 1000100, however since the 8th bit is set to 0 to indicate a write transmission, the actual byte to be sent is 10001000 or 0x88, followed by an acknowledge bit as can be seen on the diagram to the left.");
-//3
-add_page(read_pages, "3 This series of communications can be presented as such, in a block diagram.");
-//4
-add_page(read_pages, "4 We will now proceed to view how each part of the signal is transmitted by the master/slave. To the left you can see a number of masters represented by the light blue circles, while slaves are represented by the yellow circles. As I2C is a half-duplex, serial communication, only one device can transmit at any point in time. Furthermore, there is collision detection and arbitration to allow for multiple masters. At any point when one master is communicating, no other masters will be able to communicate, this is represented by the traffic light which will show which master is communicating while the others are forced to stop.");
-//5
-add_page(read_pages, "5 The start condition is given by the master to the bus, and all slaves start listening to the bus. As I2C communication is half-duplex, only one device can transmit at any time, in this way it is somewhat like having a conversation where each party has to affirm that they have received a message. The chat window below shows a representation of a conversation between the master and slave as each bit is sent across.");
-//6
-add_page(read_pages, '6 The master will now propagate the slave address it wants to communicate with onto the bus followed by a write bit, for this demonstration, our top most slave is the LSB sensor with the Slave Address 0x44.');
-//7
-add_page(read_pages, '7 The slave then acknowledges that it has received the message by replying with an acknowledge bit.');
-//8
-add_page(read_pages, '8 The next step is for the Master to instruct the slave on the register it wants to access, in this case we want to read from the light sensor register address with address 0x04 or 00000100. This is followed by an acknowledge bit from the slave. A stop condition is also necessary as we will need to initiate a change in direction of communication.');
-//9
-add_page(read_pages, '9 The register address is transmitted by the Master, followed by an acknowledge from the slave. Communications are then stopped with a stop condition propagated from the master.')
-//10
-add_page(read_pages, '10 Communications are then stopped with a stop condition propagated from the master');
-//11
-add_page(read_pages, '11 We need initiate another start condition together with the slave address since we closed our last set of communications. Once again the actual byte of data to be sent is shifted since the read bit needs to be included.');
-//12
-add_page(read_pages, '12 The process is the same as the first time communications are initiated, except the master specifies that it wants to read instead of write.');
-//13
-add_page(read_pages, '13 The data read from the slave is 11001011 or 0xCB. We will then close communications with a not acknowledge (NACK) bit and a stop condition.');
-//14
-add_page(read_pages, '14 The data is sent from the slave to the master.');
-//15
-add_page(read_pages, '15 If we wanted to continue reading from the slave, we would transmit an acknowledge bit. However, as we want to stop communications, a NACK bit is transmitted instead.');
-//16
-add_page(read_pages, '16 It is followed by a stop condition to finish the transfer.');
-//17
-add_page(read_pages, '17 While in this demonstration we initiated a new series of communication, it is also possible to immediately change direction without first initiating start condition. Instead, a repeated start condition would take the place of the second start condition                                                           This is the last page for this scene. You can either look through the Enable scenario if you have not or go on to complete the survey.');
+//7  Set SI flag
+add_page(pages, 'After the START bit is successfully sent, the SI flag is set by writting "1" to CONSET bit 3.');
+//8 Send Slave Address with 'W' bit
+add_page(pages, 'The master will now propagate the slave address it wants to communicate with onto the bus, for this demonstration, our top most is the Slave Address 0x44. The slave address is appended with "W" bit to show that the master want to write data to slave. At the same time, the SI flag is cleared by writting "1" to CONCLR bit 3');
+//9 Send Slave Address with 'W' bit, clear SI flag
+add_page(pages, 'The master sends out slave address appended with "w" bit, at the same time, the SI flag is cleared by writting "1" to CONCLR bit 3.');
 
+//10 Receive ACK from Slave
+add_page(pages, 'The slave then acknowledges that it has received the message by replying with an acknowledge bit "ACK", which is SDA low during the 9th clock pulse.');
 
-//1
-add_page(gen_pages, "1. I2C consists 2 bi-directional lines, SDA(serial data line) and SCL(serial clock line). Both lines are high when the bus is free, i.e. default condition for both SDA and SCL are high.");
+//11 Set SI aft Receiving ACK from Slave
+add_page(pages, 'Once ACK from slave is received, the I2C interrupt flag is set by writting "1" to CONSET bit 3.');
 
-//2
-add_page(gen_pages, "2. All transactions begin with a START condition S, generated by master. Start is SDA going from high to low while SCL is high. The bus is considered to be busy after the START condition, all devices will keep listening to the bus all the time to know whether the bus is free or not.");
+//12 Send Reg address and clear SI flag
+add_page(pages, 'Next the master sends out the address of the command register on the light, which is 0x00, or 00000000. At the same time, the SI flag is cleared by writting "1" to CONCLR bit 3');
+//13 SIC & send 1 Byte data
+add_page(pages, 'The master then send a byte of data to write to command register. At the same time, the SI flag is cleared by writting "1" to CONCLR bit 3 ');
+//14 Set STO
+add_page(pages, 'If the master does not want to carry on the communication, the STO flag is set by writting "1" to CONSET bit 4. ');
+//15 STOP
+add_page(pages, 'The master then send out the STOP bit, which is SDA change from low to high while SCL is kept at high. At the same time, the interrupt flag is cleared.')
+//16 STOC
+add_page(pages, 'After the master send out the stop bit, the STO flag is self cleared.');
 
-//3
-add_page(gen_pages, "3. A transaction can be terminated by a STOP condton P. STOP is SDA going from low to high while SCL is high. STOP condition is generated by Master");
-
-//4
-add_page(gen_pages, "4. After start condition, the clock pulses are generated by the master to sychronize the transaction");
-
-//5
-add_page(gen_pages, "5. During a transaction, SDA can change from low to high only when SCL is low");
-
-//6
-add_page(gen_pages, "6. During a transaction, SDA can change from high to low only when SCL is low");
-
-
-//7
-add_page(gen_pages, "7. After START condition, a 7-bit slave address is sent out, followed by bit '1' indicates master wants to read data");
-
-//8
-add_page(gen_pages, "8. Slave address followed by bit '0' indicates master wants to write data");
+//1 General Description
+add_page(read_pages, "This application will be simulating the process of I2C communications between a Master and Slave for the purposes of enabling a LSB sensor. On the left you will see a waveform being drawn that will depict the data to be communicated between the Master and Slave. Any part of the diagram being highlighted in light blue is being controlled by the Master, while anything highlighted in yellow is being controlled by the Slave.");
+//2 I2EN
+add_page(read_pages, "We will be simulating the process of reading from the light sensor. First, there needs to write '1' to CONSET bit 6 to enable I2C interface, the default SDA and SCL are both at high.");
+//3 STA
+add_page(read_pages, 'Then STA flag needs to be set by writting "1" to CONSET bit 5');
+//4 Diagram Introduction
+add_page(read_pages, "We will now proceed to view how each part of the signal is transmitted by the master/slave. To the left you can see a number of masters represented by the light blue circles, while slaves are represented by the yellow circles. As I2C is a half-duplex, serial communication, only one device can transmit at any point in time. Furthermore, there is collision detection and arbitration to allow for multiple masters. At any point when one master is communicating, no other masters will be able to communicate, this is represented by the traffic light which will show which master is communicating while the others are forced to stop.");
+//5 Send START bit, STAC
+add_page(read_pages, 'After the STA flag is set, the master will send out START bit, the START bit is SDA changes from high to low while SCL is at high. At the same time, STA flag is cleared by writting "1" to CONCLR bit 5. All slaves will start listening to the bus. As I2C communication is half-duplex, only one device can transmit at any time, in this way it is somewhat like having a conversation where each party has to affirm that they have received a message. The chat window below shows a conversation between the master and slave as each bit is sent across.');
+//6  Set SI flag
+add_page(read_pages, 'After the START bit is successfully sent, the SI flag is set by writting "1" to CONSET bit 3.');
+//7 Send Slave Address with 'W' bit
+add_page(read_pages, 'The master will now propagate the slave address it wants to communicate with onto the bus, for this demonstration, our top most is the Slave Address 0x44. The slave address is appended with "W" bit to show that the master want to write data to slave. At the same time, the SI flag is cleared by writting "1" to CONCLR bit 3');
+//8 Receive ACK from Slave
+add_page(read_pages, 'The slave then acknowledges that it has received the message by replying with an acknowledge bit "ACK", which is SDA low during the 9th clock pulse.');
 
 //9
-add_page(gen_pages, "9. The transmitter releases the SDA line during the 9th clock pulse so the receiver can pull the SDA line LOW and it remains stable LOW during the HIGH period of this clock pulse to indicate an ACK. ");
+add_page(read_pages, 'The next step is for the Master to instruct the slave on the register it wants to access, in this case we want to read from LSB light sensor register address with address 0x04 or 00000100. This is followed by an acknowledge bit from the slave. A stop condition is not necessary as a (repeat) START condition can initiate a change in direction of communication. Before this, SI flag needs to be set.');
+//10  Set SI flag
+add_page(read_pages, 'After ACK from slave is received, the I2C interrupt flag is set by writting "1" to CONSET bit 3.');
+//11 Send Reg address and clear SI flag
+add_page(read_pages, 'Next the master sends out the address of LSB_sensor register on the light, which is 0x04, or 00000100. At the same time, the SI flag is cleared by writting "1" to CONCLR bit 3');
+//12 Send START bit, STAC & SIC
+add_page(read_pages, 'After the STA flag is set, the master will send out START bit, the START bit is SDA changes from high to low while SCL is at high. At the same time, STA flag is cleared by writting "1" to CONCLR bit 5, interrupt flag is cleared by writting "1" to CONCLR bit 3. All slaves will start listening to the bus again. This is one way to "claim" the bus.');
+//13 Send Slave address with "R"
+add_page(read_pages, 'The master then sends out slave address 0x44 appended with "R" bit. At the same time, the SI flag is cleared by writting "1" to CONCLR bit 3.');
+//14 STA for Sr
+add_page(read_pages, 'A repeat START condition to be setup when there is a change of direction within a transfer. In this case, change dirction from "write" to "read", needs to set STA flag by writting "1" to CONSET bit 5');
 
-//10
-add_page(gen_pages, "10. When SDA remains HIGH during this 9th clock pulse, it is defined as the Not Acknowledge (NACK / Ā) signal. ACK/NACK is always generated by the receiver.");
+//15 Read LSB
+add_page(read_pages, 'The slave sends data 11001011 or 0xCB to the master, at the same time, the SI flag is cleared.');
+//16 NACK
+add_page(read_pages, 'If we wanted to continue reading from the slave, we would transmit an acknowledge bit. In case the master needs to read from MSB_SENSOR after finish reading from LSB_SENSOR, a repeat START needs to send out, all the other steps would be same as reading from LSB_SENSOR. However, as we want to stop communications, a NACK bit is transmitted instead.');
+//17 SI
+add_page(read_pages, 'The interrupt flag is set after send out NACK.');
+//18 STO
+add_page(read_pages, 'The next step is to set STO flag by writting "1" to CONSET bit 4 before STOP condition "P" can be sent');
+//19 STOP and Clear SI
+add_page(read_pages, 'The STOP condition is sent after STO flag is set. At the same time, the SI flag is cleared.');
+//20 Clear STO
+add_page(read_pages, 'The STO flag is self cleared after STOP condition is sent');
+//21 I2ENC
+add_page(read_pages, 'If I2C no more in use, the I2C interface is disabled by writting "1" to CONCLR bit 6, the Master device exit "Master" status.');
 
-//11
-add_page(gen_pages, "11. During a change of direction within a transfer, the START condition and the slave address are both repeated, the repeated START condition is called Sr.");
-
-
-//12
-add_page(gen_pages, "12. If a slave itself is a microcontroller and cannot receive or transmit another complete byte of data until it has performed some other function, it can hold the clock line SCL LOW to force the master into a wait state. This is called clock stretching.");
-
-//13
-add_page(gen_pages, "13. I2C Control Register is accessed through I2CxCONSET and I2CxCONCLR. Writing to 1's to CONSET will set the corresponding bits in the Control Register, and writing 1's to CONCLR will clear the corresponding bits.");
-
-//14
-add_page(gen_pages, "14. bit 6 is I2EN, set to 1 to enable I2C interface, set to 0 by writing 1 to I2ENC to disable I2C interface");
-
-
-//15
-add_page(gen_pages, "15. Bit 5 is STA, set to 1 I2C interface enter master mode if not yet in the mode, check the bus and generate a START condition S if the bus is free. If the bus is not free, it waits for a STOP condition (which will free the bus) and generates a START condition. If the I2C interface is already in master mode and data has been transmitted or received, it transmits a repeated START condition Sr");
-
-//16
-add_page(gen_pages, "16. Bit 2 is AA (Assert Acknowledge, applicable only when master is receiver), set to 1 when more bytes are expected from the slave. Causes an acknowledge to be sent to the slave upon receiving a byte. Set to 0 when no more bytes are expected from the slave. Causes a not acknowledge to be sent to the slave upon receiving a byte.");
-
-//17
-add_page(gen_pages, "17. Bit 4 is STO (STOP flag), set to 1 causes the I2C interface to transmit a STOP condition in master mode. When the bus detects the STOP condition, STO is cleared automatically (self-clearing).");
-
-//18
-add_page(gen_pages, "18. Bit 3 is SI (Interrupt flag), set to 1 implys the hardware is not busy.");
-
-
-show_gen_page(0);
 show_read_page(0);
 show_page(0);
 
@@ -4016,39 +4424,36 @@ layer2.addChild(read_box_diagram);
 
 // SCL_overlay();
 
-function compiled_gen_scenario(num){
-    hide_overlay();
-    clear_all();
-    document.getElementById('master_popup').style.display = 'none';
-    // document.getElementById('feedback').style.display = 'none';
-    scene=3;
-    slave_group.position = new Point(735, 130);
-    show_layer(1);
-    gen_scenario(num);
-    show_gen_page(num+1);
-    if(num==17){
-    document.getElementById('next_btn').disabled = true;
-    }   
-}    
-      
+     
 function compiled_enable_scenario(num){
     hide_overlay();
     document.getElementById('master_popup').style.display = 'block';
+    all_waves.removeChildren();
+    regBox_group.removeChildren();
+    regBox_group1.removeChildren();
+    conset_path.visible=false;
+    conclr_path.visible=false;
+    enable_play_buttons();
+    show_page(0);
+    show_read_page(0);
+    scene_num_1.content = scene_num;
+    testing.content = scene_num;
+    slave_group.position = new Point(823, 143);
+    scenario.content = 'Enabling The Light Sensor';
     // document.getElementById('feedback').style.display = 'none';
     switch(num) {
         case 0:
             show_layer(1);
-            default_scenario();
             show_page(1);
             break;
-        case 1:
+        case 1: //I2C ENABLE
             show_layer(1);
-            enable_scenario(0);
+            gen_scenario(0);
             show_page(2);
             break;
-        case 2:
+        case 2://SET STA FLAG
             show_layer(1);
-            enable_scenario(1);
+            gen_scenario(2);
             show_page(3);
             break;  
         case 3:
@@ -4056,6 +4461,7 @@ function compiled_enable_scenario(num){
             show_box_diagram(0);     
             show_box_children(box_diagram.children[0], 99);   
             show_page(4);
+            scenario.content = 'Send Start Bit';
             break;      
         case 4:
             show_layer(2);
@@ -4065,6 +4471,7 @@ function compiled_enable_scenario(num){
             show_box_children(box_diagram.children[0], 0);
             move_to_position(left_path.children[2], box_diagram.children[0].children[0], single_signal);
             show_page(5);
+            scenario.content = 'Send Start Bit';
             break;  
         case 5:
             show_layer(2);
@@ -4074,8 +4481,23 @@ function compiled_enable_scenario(num){
             // add_message(chatMessages[0]);
             add_message_mass(chatMessages, 0);
             show_page(5);
+            scenario.content = 'Send Start Bit';
+            break;   
+        case 6://SEND START BIT
+            show_layer(1);
+            gen_scenario(3);
+            gen_scenario(10);
+            add_message_mass_no_wait(chatMessages, 0);
+            show_page(6);
+            scenario.content = 'Send Start Bit, CLR STA';
             break; 
-        case 6:
+
+        case 7://SET SI FLAG
+            show_layer(1);
+            gen_scenario(4);
+            show_page(7);
+            break;   
+        case 8:
             // temp_stop_2();
             show_layer(2);  
             change_value_item('0x44', 'W');
@@ -4083,200 +4505,283 @@ function compiled_enable_scenario(num){
             show_box_children(box_diagram.children[0], 1);
             move_to_position(left_path.children[2], box_diagram.children[0].children[1], value_item);
             add_message_mass_no_wait(chatMessages, 0);
-            show_page(6);
+            show_page(8);
+            scenario.content = 'Send Slave Address & "W" Bit';
             break;    
-        case 7:
+        case 9:
             show_layer(2);
             enable_scenario_2(1);
             show_box_diagram(0);
             show_box_children(box_diagram.children[0], 1);
             // add_message(chatMessages[1]);
             add_message_mass(chatMessages, 1);
-            show_page(6);
+            show_page(8);
+            scenario.content = 'Send Slave Address & "W" Bit';
             break;
-        case 8:
+        case 10://SEND SLAVE ADDRESS N CLR SI
+            show_layer(1);
+            gen_scenario(5);
+            gen_scenario(16);
+            add_message_mass_no_wait(chatMessages, 1);
+            show_page(9);
+            scenario.content = 'Send Slave Address & "W" BIT, CLR SI';
+            break;   
+        case 11:
+            show_layer(1);
+            gen_scenario(12);
+            add_message_mass(chatMessages, 2);
+            show_page(10);
+            scenario.content = 'Receive ACK from Slave';
+            break;
+        case 12:
             // temp_stop_2();
             show_layer(2);
             change_signal_item('A');
             show_box_diagram(0);
             show_box_children(box_diagram.children[0], 2);
             move_to_position_2(right_path.children[4], box_diagram.children[0].children[2], single_signal);
-            add_message_mass_no_wait(chatMessages, 1);
-            show_page(7);
+            add_message_mass_no_wait(chatMessages, 2);
+            show_page(10);
+            scenario.content = 'Receive ACK from Slave';
             break; 
-        case 9:
+        case 13:
             show_layer(2);
             enable_scenario_2(2);
             show_box_diagram(0);
             show_box_children(box_diagram.children[0], 2);
             // add_message(chatMessages[2]);
-            add_message_mass(chatMessages, 2);
-            show_page(7);
-            break;
-        case 10:
-            show_layer(1);
             add_message_mass_no_wait(chatMessages, 2);
-            // en_diagram.removeChildren();
-            enable_scenario(2);
-            show_page(8);
-            break;
-        case 11:
+            show_page(10);
+            scenario.content = 'Receive ACK from Slave';
+            break; 
+        case 14:
             show_layer(1);
+            enable_scenario(1);
             add_message_mass_no_wait(chatMessages, 2);
-            enable_scenario(3);
-            show_page(8);
+            break; 
+        case 15://SET SI FLAG after receiving ACK
+            show_layer(1);
+            gen_scenario(4);
+            show_page(11);
             break;
-        case 12:
+        case 16:
             show_layer(2);
-            add_message_mass_no_wait(chatMessages, 2);
+            add_message_mass(chatMessages, 3);
             show_box_diagram(1);
             show_box_children(box_diagram.children[1], 99);
-            show_page(9);
+            show_page(12);
+            scenario.content = 'Send Register Address';
             break;
-        case 13: 
+        case 17: 
             // temp_stop_2();
             show_layer(2);
-            add_message_mass_no_wait(chatMessages, 2);
+            add_message_mass_no_wait(chatMessages, 3);
             change_value_item('0x00', '');
             show_box_diagram(1);
             show_box_children(box_diagram.children[1], 0);
             move_to_position(left_path.children[2], box_diagram.children[1].children[0], value_item);
-            show_page(9);
-            break;
-        case 14:
+            show_page(12);
+            scenario.content = 'Send Register Address';
+            break; 
+        case 18:
             show_layer(2);   
             enable_scenario_2(3);
             show_box_diagram(1);
             show_box_children(box_diagram.children[1], 0);
             // add_message(chatMessages[3]);
-            add_message_mass(chatMessages, 3);
-            show_page(9);
+            add_message_mass_no_wait(chatMessages, 3);
+            show_page(12);
+            scenario.content = 'Send Register Address';
             break;
-        case 15:
+        case 19:
+            show_layer(1);
+            add_message_mass_no_wait(chatMessages, 3);
+            gen_scenario(5);
+            gen_scenario(17);
+            show_page(12);
+            scenario.content = 'Send Register Address, CLR SI';
+            break;
+        case 20:
             // temp_stop_2();
             show_layer(2);
-            add_message_mass_no_wait(chatMessages, 3);
+            add_message_mass(chatMessages, 4);
             change_signal_item('A');
             show_box_diagram(1);
             show_box_children(box_diagram.children[1], 1);
             move_to_position_2(right_path.children[4], box_diagram.children[1].children[1], single_signal);
-            show_page(9);
+            show_page(10);
+            scenario.content = 'Receive ACK from Slave';
             break;
-        case 16:
+        case 21:
             show_layer(2);
             enable_scenario_2(4);
             show_box_diagram(1);
             show_box_children(box_diagram.children[1], 1);
             // add_message(chatMessages[4]);
-            add_message_mass(chatMessages, 4);
-            show_page(9);
-            break;
-        case 17:
-            show_layer(1); 
             add_message_mass_no_wait(chatMessages, 4);
-            enable_scenario(4);
+            scenario.content = 'Receive ACK from Slave';
             show_page(10);
             break;
-        case 18:
+        case 22:
             show_layer(1);
-            add_message_mass_no_wait(chatMessages, 4);
-            enable_scenario(5);
+            gen_scenario(12);
             show_page(10);
-            break;
-        case 19:
-            show_layer(2);
             add_message_mass_no_wait(chatMessages, 4);
+            scenario.content = 'Receive ACK from Slave';
+            break;
+        case 23://SET SI FLAG
+            show_layer(1);
+            gen_scenario(4);
+            show_page(11);
+            break; 
+        case 24:
+            show_layer(2);
+            add_message_mass(chatMessages, 5);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 99);
-            show_page(11);
-            break;
-        case 20:
+            show_page(0);
+            scenario.content ='Write to Resgister';
+            break; 
+        case 25:
             // temp_stop_2();
             show_layer(2);
-            add_message_mass_no_wait(chatMessages, 4);
+            add_message_mass_no_wait(chatMessages, 5);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 0);
             change_value_item('0x80', '');
             move_to_position(left_path.children[2], box_diagram.children[2].children[0], value_item);
-            show_page(11);
+            show_page(0);
+            scenario.content ='Write 1 Byte Data';
             break;
-        case 21:
+        case 26:
             show_layer(2);
             enable_scenario_2(5);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 0);
             // add_message(chatMessages[5]);
-            add_message_mass(chatMessages, 5);
-            show_page(11);
+            add_message_mass_no_wait(chatMessages, 5);
+            show_page(0);
+            scenario.content ='Write 1 Byte Data';
+            break;  
+        case 27:
+            show_layer(1); 
+            add_message_mass_no_wait(chatMessages, 5);
+            gen_scenario(5);
+            gen_scenario(18);
+            show_page(13);
+            scenario.content = 'Send 1 Byte Data, CLR SI';
             break;
-        case 22:
+        case 28:
             // temp_stop_2();
             show_layer(2);
-            add_message_mass_no_wait(chatMessages, 5);
+            add_message_mass(chatMessages, 6);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 1);
             change_signal_item('A');
             move_to_position_2(right_path.children[4], box_diagram.children[2].children[1], single_signal);
-            show_page(11);
+            show_page(10);
+            scenario.content = 'Receive ACK from Slave';
             break;
-        case 23:
+        case 29:
             show_layer(2);
             enable_scenario_2(6);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 1);
             // add_message(chatMessages[6]);
-            add_message_mass(chatMessages, 6);
-            show_page(11);
+            add_message_mass_no_wait(chatMessages, 6);            
+            show_page(10);
+            scenario.content = 'Receive ACK from Slave';
             break;
-        case 24:
+        case 30://SET SI FLAG
+            show_layer(1);
+            gen_scenario(4);
+            show_page(11);
+            break; 
+        case 31://SET STO FLAG
+            show_layer(1);
+            gen_scenario(6);
+            show_page(14);
+            break;
+         case 32://Send STOP Bit, CLR SI
+            show_layer(1);
+            add_message_mass(chatMessages, 7);
+            gen_scenario(5);
+            gen_scenario(11);
+            show_page(15);
+            scenario.content = 'Send STOP Bit, CLR SI';
+            break; 
+        case 33:
             // temp_stop_2();
             show_layer(2);
-            add_message_mass_no_wait(chatMessages, 6);
+            add_message_mass_no_wait(chatMessages, 7);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 2);
             change_signal_item('P');
             move_to_position(left_path.children[2], box_diagram.children[2].children[2], single_signal);
-            show_page(11);
+            show_page(15);
+            scenario.content = 'Send Stop Bit';
             break;
-        case 25:
+        case 34:
             show_layer(2);
             enable_scenario_2(7);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 2);
-            // add_message(chatMessages[7]);
-            add_message_mass(chatMessages, 7);
-            show_page(12);
-            // feedback_button_glow();
+            add_message_mass_no_wait(chatMessages, 7);
+            show_page(15);
+            scenario.content = 'Send Stop Bit';
             break;
-
+        case 35:
+            show_layer(1);
+            add_message_mass_no_wait(chatMessages, 7);
+            enable_scenario(5);
+            show_page(15);
+            break;
+         case 36://CLR STO
+            show_layer(1);
+            gen_scenario(7);
+            show_page(16);
+            scenario.content = 'CLR STO';
+            break;  
     }    
 }
 function compiled_read_scenario(num){
     hide_overlay();
     document.getElementById('master_popup').style.display = 'block';
     // document.getElementById('feedback').style.display = 'none';
+    all_waves.removeChildren();
+    regBox_group.removeChildren();
+    regBox_group1.removeChildren();
+    conset_path.visible=false;
+    conclr_path.visible=false;
+    enable_play_buttons();
+    show_page(0);
+    show_read_page(0);
+    scene_num_1.content = scene_num;
+    testing.content = scene_num;
+    slave_group.position = new Point(823, 143);
+    scenario.content = 'Reading from The Light Sensor';
     switch(num){
         case 0:
             show_layer(1);
-            default_scenario();
             show_read_page(1);
             break;
-        case 1:
+        case 1: //I2C ENABLE
             show_layer(1);
-            read_scenario(0);
+            gen_scenario(0);
             show_read_page(2);
             break;
-        case 2:
+        case 2://SET STA FLAG
             show_layer(1);
-            read_scenario(1);
+            gen_scenario(2);
             show_read_page(3);
-            break;
+            break;  
         case 3:
             show_layer(2);
-            show_read_box_diagram(0);
-            show_box_children(read_box_diagram.children[0], 99);
+            show_read_box_diagram(0);     
+            show_box_children(read_box_diagram.children[0], 99);   
             show_read_page(4);
-            break;
+            scenario.content = 'Send Start Bit';
+            break;      
         case 4:
             show_layer(2);
             all_red();
@@ -4285,34 +4790,68 @@ function compiled_read_scenario(num){
             show_box_children(read_box_diagram.children[0], 0);
             move_to_position(left_path.children[2], read_box_diagram.children[0].children[0], single_signal);
             show_read_page(5);
-            break;
+            scenario.content = 'Send Start Bit';
+            break;  
         case 5:
             show_layer(2);
             show_read_box_diagram(0);
             show_box_children(read_box_diagram.children[0], 0);
             read_scenario_2(0);
-            show_read_page(5);
+            // add_message(chatMessages[0]);
             add_message_mass(r_chatMessages, 0);
-            break;
-        case 6:
-            // temp_stop_2();
-            show_layer(2);
+            show_read_page(5);
+            scenario.content = 'Send Start Bit';
+            break;   
+        case 6://SEND START BIT
+            show_layer(1);
+            gen_scenario(3);
+            gen_scenario(10);
             add_message_mass_no_wait(r_chatMessages, 0);
+            show_read_page(5);
+            scenario.content = 'Send Start Bit, CLR STA';
+            break; 
+
+        case 7://SET SI FLAG
+            show_layer(1);
+            gen_scenario(4);
+            show_read_page(6);
+            break;   
+        case 8:
+            // temp_stop_2();
+            show_layer(2);  
             change_value_item('0x44', 'W');
             show_read_box_diagram(0);
             show_box_children(read_box_diagram.children[0], 1);
             move_to_position(left_path.children[2], read_box_diagram.children[0].children[1], value_item);
-            show_read_page(6);
-            break;
-        case 7:
+            add_message_mass_no_wait(r_chatMessages, 0);
+            show_read_page(7);
+            scenario.content = 'Send Slave Address & "W" Bit';
+            break;    
+        case 9:
             show_layer(2);
-            add_message_mass(r_chatMessages, 1);
+            read_scenario_2(1);
             show_read_box_diagram(0);
             show_box_children(read_box_diagram.children[0], 1);
-            read_scenario_2(1);
-            show_read_page(6);
+            add_message_mass(r_chatMessages, 1);
+            show_read_page(7);
+            scenario.content = 'Send Slave Address & "W" Bit';
             break;
-        case 8:
+        case 10://SEND SLAVE ADDRESS N CLR SI
+            show_layer(1);
+            gen_scenario(5);
+            gen_scenario(16);
+            add_message_mass_no_wait(r_chatMessages, 1);
+            show_read_page(7);
+            scenario.content = 'Send Slave Address & "W" BIT, CLR SI';
+            break;   
+        case 11:
+            show_layer(1);
+            gen_scenario(12);
+            add_message_mass(r_chatMessages, 2);
+            show_read_page(8);
+            scenario.content = 'Receive ACK from Slave';
+            break;
+        case 12:
             // temp_stop_2();
             show_layer(2);
             add_message_mass_no_wait(r_chatMessages, 1);
@@ -4320,36 +4859,38 @@ function compiled_read_scenario(num){
             show_box_children(read_box_diagram.children[0], 2);
             change_signal_item('A');
             move_to_position_2(right_path.children[4], read_box_diagram.children[0].children[2], single_signal);
-            show_read_page(7);
-            break;
-        case 9:
+            show_read_page(8);
+            scenario.content = 'Receive ACK from Slave';
+            break; 
+        case 13:
             show_layer(2);
             add_message_mass(r_chatMessages, 2);
             show_read_box_diagram(0);
             show_box_children(read_box_diagram.children[0], 2);
             read_scenario_2(2);
-            show_read_page(7);
-            break;
-        case 10:
+            show_read_page(8);
+            scenario.content = 'Receive ACK from Slave';
+            break; 
+        case 14:
             show_layer(1);
             add_message_mass_no_wait(r_chatMessages, 2);
-            read_scenario(2);
-            show_read_page(8);
-            break;
-        case 11:
+            read_scenario(1);
+            show_read_page(9);
+            break; 
+        case 15://SET SI FLAG after receiving ACK
             show_layer(1);
-            add_message_mass_no_wait(r_chatMessages, 2);
-            read_scenario(3);
-            show_read_page(8);
+            gen_scenario(4);
+            show_read_page(10);
             break;
-        case 12:
+        case 16:
             show_layer(2);
             add_message_mass_no_wait(r_chatMessages, 2);
             show_read_box_diagram(1);
             show_box_children(read_box_diagram.children[1], 99);
-            show_read_page(9);
+            show_read_page(11);
+            scenario.content = 'Send LSB_SENSOR Address';
             break;
-        case 13:
+        case 17: 
             // temp_stop_2();
             show_layer(2);
             add_message_mass_no_wait(r_chatMessages, 2);
@@ -4357,17 +4898,27 @@ function compiled_read_scenario(num){
             show_read_box_diagram(1);
             show_box_children(read_box_diagram.children[1], 0);
             move_to_position(left_path.children[2], read_box_diagram.children[1].children[0], value_item);
-            show_read_page(9);
-            break;
-        case 14:
-            show_layer(2);
+            show_read_page(11);
+            scenario.content = 'Send LSB_SENSOR Address';
+            break; 
+        case 18:
+            show_layer(2);   
             add_message_mass(r_chatMessages, 3);
             show_read_box_diagram(1);
             show_box_children(read_box_diagram.children[1], 0);
             read_scenario_2(3);
-            show_read_page(9);
+            show_read_page(11);
+            scenario.content = 'Send LSB_SENSOR Address';
             break;
-        case 15:
+        case 19:
+            show_layer(1);
+            add_message_mass_no_wait(r_chatMessages, 3);
+            gen_scenario(5);
+            gen_scenario(20);
+            show_read_page(11);
+            scenario.content = 'Send LSB_SENSOR Address, CLR SI';
+            break;
+        case 20:
             // temp_stop_2();
             show_layer(2);
             add_message_mass_no_wait(r_chatMessages, 3);
@@ -4375,164 +4926,215 @@ function compiled_read_scenario(num){
             show_read_box_diagram(1);
             show_box_children(read_box_diagram.children[1], 1);
             move_to_position_2(right_path.children[4], read_box_diagram.children[1].children[1], single_signal);
-            show_read_page(9);
-            break;
-        case 16:
-            show_layer(2);
-            add_message_mass(r_chatMessages, 4);
-            show_read_box_diagram(1);
-            show_box_children(read_box_diagram.children[1], 1);
-            read_scenario_2(4);
-            show_read_page(9);
-            break;
-        case 17:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 4);
-            change_signal_item('P');
-            show_read_box_diagram(1);
-            show_box_children(read_box_diagram.children[1], 2);
-            move_to_position(left_path.children[2], read_box_diagram.children[1].children[2], single_signal);
-            show_read_page(10);
-            break;
-        case 18:
-            show_layer(2);
-            add_message_mass(r_chatMessages, 5);
-            show_read_box_diagram(1);
-            show_box_children(read_box_diagram.children[1], 2);
-            read_scenario_2(5);
-            show_read_page(10);
-            break;
-        case 19:
-            show_layer(1);
-            add_message_mass_no_wait(r_chatMessages, 5);
-            read_scenario(4);
-            show_read_page(11);
-            break;
-        case 20:
-            show_layer(1);
-            add_message_mass_no_wait(r_chatMessages, 5);
-            read_scenario(5);
-            show_read_page(11);
+            show_read_page(8);
+            scenario.content = 'Receive ACK from Slave';
             break;
         case 21:
             show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 5);
-            show_read_box_diagram(2);
-            show_box_children(read_box_diagram.children[2], 99);
-            show_read_page(12);
+            read_scenario_2(4);
+            show_read_box_diagram(1);
+            show_box_children(read_box_diagram.children[1], 1);
+            // add_message(chatMessages[4]);
+            add_message_mass(r_chatMessages, 4);
+            scenario.content = 'Receive ACK from Slave';
+            show_read_page(8);
             break;
         case 22:
-            // temp_stop_2();
+            show_layer(1);
+            gen_scenario(12);
+            show_read_page(8);
+            add_message_mass_no_wait(r_chatMessages, 4);
+            scenario.content = 'Receive ACK from Slave';
+            break;
+        case 23:
+            show_layer(1);
+            gen_scenario(15);
+            add_message_mass_no_wait(r_chatMessages, 4);
+            scenario.content = 'Send LSB_Sensor & Receive ACK from Slave';
+            break;
+        case 24://SET SI FLAG
+            show_layer(1);
+            gen_scenario(4);
+            show_read_page(10);
+            break; 
+        case 25://SET STA FLAG
+            show_layer(1);
+            gen_scenario(13);
+            show_read_page(14);
+            break;  
+        case 26:
             show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 5);
+            add_message_mass_no_wait(r_chatMessages, 0);
+            show_read_box_diagram(2);
+            show_box_children(read_box_diagram.children[2], 99);   
+            show_read_page(12);
+            scenario.content = 'Send Start Bit';
+            break;      
+        case 27:
+            show_layer(2);
+            add_message_mass_no_wait(r_chatMessages, 0);
             change_signal_item('S');
             show_read_box_diagram(2);
             show_box_children(read_box_diagram.children[2], 0);
             move_to_position(left_path.children[2], read_box_diagram.children[2].children[0], single_signal);
             show_read_page(12);
-            break;
-        case 23:
+            scenario.content = 'Send Start Bit';
+            break;  
+        case 28:
             show_layer(2);
-            add_message_mass(r_chatMessages, 6);
+            add_message_mass(r_chatMessages, 0);
             show_read_box_diagram(2);
             show_box_children(read_box_diagram.children[2], 0);
             read_scenario_2(6);
             show_read_page(12);
-            break;
-        case 24:
+            scenario.content = 'Send Start Bit';
+            break;   
+        case 29://SEND START BIT
+            show_layer(1);
+            gen_scenario(14);
+            gen_scenario(10);
+            add_message_mass_no_wait(r_chatMessages, 0);
+            show_read_page(12);
+            scenario.content = 'Send Start Bit, CLR STA & SI';
+            break; 
+
+        case 30://SET SI FLAG
+            show_layer(1);
+            gen_scenario(4);
+            show_read_page(6);
+            break;   
+        case 31:
             // temp_stop_2();
-            show_layer(2);
+            show_layer(2);  
             add_message_mass_no_wait(r_chatMessages, 6);
             change_value_item('0x44', 'R');
             show_read_box_diagram(2);
             show_box_children(read_box_diagram.children[2], 1);
             temp_container = new Group();
             move_to_position(left_path.children[2], read_box_diagram.children[2].children[1], value_item);
-            show_read_page(12);
-            break;
-        case 25:
+            show_read_page(13);
+            scenario.content = 'Send Slave Address & "R" Bit';
+            break;    
+        case 32:
             show_layer(2);
             add_message_mass(r_chatMessages, 7);
             show_read_box_diagram(2);
             show_box_children(read_box_diagram.children[2], 1);
             read_scenario_2(7);
-            show_read_page(12);
+            show_read_page(13);
+            scenario.content = 'Send Slave Address & "R" Bit';
             break;
-        case 26:
+        case 33://SEND SLAVE ADDRESS N CLR SI
+            show_layer(1);
+            gen_scenario(5);
+            gen_scenario(21);
+            add_message_mass_no_wait(r_chatMessages, 7);
+            show_read_page(13);
+            scenario.content = 'Send Slave Address & "R" BIT, CLR SI';
+            break;   
+        case 34:
+            show_layer(1);
+            gen_scenario(12);
+            add_message_mass(r_chatMessages, 8);
+            show_read_page(8);
+            scenario.content = 'Receive ACK from Slave';
+            break;
+        case 35:
             // temp_stop_2();
             show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 7);
+            add_message_mass_no_wait(r_chatMessages, 8);
+            show_read_box_diagram(0);
+            show_box_children(read_box_diagram.children[0], 2);
             change_signal_item('A');
-            show_read_box_diagram(2);
-            show_box_children(read_box_diagram.children[2], 2);
-            move_to_position_2(right_path.children[4], read_box_diagram.children[2].children[2], single_signal);
-            show_read_page(12);
-            break;
-        case 27:
+            move_to_position_2(right_path.children[4], read_box_diagram.children[0].children[2], single_signal);
+            show_read_page(8);
+            scenario.content = 'Receive ACK from Slave';
+            break; 
+        case 36:
             show_layer(2);
-            add_message_mass(r_chatMessages, 8);
-            show_read_box_diagram(2);
-            show_box_children(read_box_diagram.children[2], 2);
-            read_scenario_2(8);
-            show_read_page(12);
-            break;
-        case 28:
+            add_message_mass_no_wait(r_chatMessages, 8);
+            show_read_box_diagram(0);
+            show_box_children(read_box_diagram.children[0], 2);
+            read_scenario_2(2);
+            show_read_page(8);
+            scenario.content = 'Receive ACK from Slave';
+            break; 
+        case 37:
             show_layer(1);
             add_message_mass_no_wait(r_chatMessages, 8);
-            read_scenario(6);
-            show_read_page(13);
+            read_scenario(5);
+            // show_read_page(9);
+            break; 
+        case 38://SET SI FLAG after receiving ACK
+            show_layer(1);
+            gen_scenario(4);
+            show_read_page(10);
             break;
-        case 29:
-            show_layer(1); 
-            add_message_mass_no_wait(r_chatMessages, 8);
-            read_scenario(7);
-            show_read_page(13);
-            break;
-        case 30:
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 8);
-            show_read_box_diagram(3);
-            show_box_children(read_box_diagram.children[3], 99);
-            show_read_page(14);
-            break;
-        case 31:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 8);
-            change_value_item('0xCB', '');
-            show_read_box_diagram(3);
-            show_box_children(read_box_diagram.children[3], 0);
-            move_to_position_2(right_path.children[4], read_box_diagram.children[3].children[0], value_item);
-            show_read_page(14);
-            break;
-        case 32:
-            show_layer(2);
+        case 39:
+            show_layer(1);
             add_message_mass(r_chatMessages, 9);
+            gen_scenario(5);
+            gen_scenario(22);
+            show_read_page(15);
+            scenario.content = 'Read from LSB_SENSOR and Clear SI';
+            break;
+        case 40:
+            show_layer(2);
+            add_message_mass_no_wait(r_chatMessages, 9);
             show_read_box_diagram(3);
             show_box_children(read_box_diagram.children[3], 0);
             read_scenario_2(9);
-            show_read_page(14);
+            show_read_page(15);
+            scenario.content = 'Read Data and Clear SI';
             break;
-        case 33:
+        case 41:
             // temp_stop_2();
             show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 9);
+            add_message_mass(r_chatMessages, 10);
             change_signal_item('Ā');
             show_read_box_diagram(3);
             show_box_children(read_box_diagram.children[3], 1);
             move_to_position(left_path.children[2], read_box_diagram.children[3].children[1], single_signal);
-            show_read_page(15);
+            show_read_page(16);
+            scenario.content = 'Send Ā';
             break;
-        case 34:
+        case 42:
             show_layer(2);
-            add_message_mass(r_chatMessages, 10);
+            add_message_mass_no_wait(r_chatMessages, 10);
             show_read_box_diagram(3);
             show_box_children(read_box_diagram.children[3], 1);
             read_scenario_2(10);
-            show_read_page(15);
+            show_read_page(16);
+            scenario.content = 'Send Ā';
             break;
-        case 35:
+        case 43: 
+            show_layer(1);
+            gen_scenario(23);
+            add_message_mass_no_wait(r_chatMessages, 10);
+            show_read_page(16);
+            scenario.content = 'Send Ā';
+            break;
+        case 44:
+            show_layer(1);
+            gen_scenario(4);
+            add_message_mass_no_wait(r_chatMessages, 10);
+            show_read_page(17);
+            break;
+        case 45:
+            show_layer(1);
+            gen_scenario(6);
+            add_message_mass_no_wait(r_chatMessages, 10);
+            show_read_page(18);
+            break;
+        case 46:
+            show_layer(1);
+            gen_scenario(5);
+            gen_scenario(11);
+            add_message_mass_no_wait(r_chatMessages, 10);
+            show_read_page(19);
+            scenario.content = 'Send STOP Condition & Clear SI';
+            break;
+        case 47:
             // temp_stop_2();
             show_layer(2);
             add_message_mass_no_wait(r_chatMessages, 10);
@@ -4540,27 +5142,38 @@ function compiled_read_scenario(num){
             show_read_box_diagram(3);
             show_box_children(read_box_diagram.children[3], 2);
             move_to_position(left_path.children[2], read_box_diagram.children[3].children[2], single_signal);
-            show_read_page(16);
+            show_read_page(19);
+            scenario.content = 'Send STOP bit & Clear SI';
             break;
-        case 36:
+        case 48:
             show_layer(2);
-            add_message_mass(r_chatMessages, 11);
+            add_message_mass(r_chatMessages, 10);
             show_read_box_diagram(3);
             show_box_children(read_box_diagram.children[3], 2);
             read_scenario_2(11);
-            show_read_page(16);
+            show_read_page(19);
+            scenario.content = 'Send STOP bit & Clear SI';
             break;
-        case 37:
-            add_message_mass_no_wait(r_chatMessages, 11);
-            enable_play_buttons();
-            show_layer(2);
-            show_read_page(17);
-            feedback_button_glow();
+        case 49:
+            show_layer(1); 
+            add_message_mass_no_wait(r_chatMessages, 10);
+            read_scenario(7);
+            break;
+        case 50:
+            show_layer(1);
+            gen_scenario(7);
+            add_message_mass_no_wait(r_chatMessages, 10);
+            show_read_page(20);
+            break;
+        case 51:
+            show_layer(1);
+            add_message_mass(r_chatMessages, 10);
+            gen_scenario(1);
+            show_read_page(21);
+            break;
+       
     }
 }
-
-
-
 
 var scene_num = 0;
 testing.content = scene_num;
