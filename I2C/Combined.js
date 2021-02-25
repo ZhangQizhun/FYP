@@ -1202,7 +1202,7 @@ conset_path.addChild(path1);
 
 var conclr_path=new Group();
 var path=new Path({
-    segments: [[195, 97], [180, 97], [180, 245], [70, 245], [70, 410], [98, 410]]
+    segments: [[195, 97], [180, 97], [180, 245], [70, 245], [70, 440], [98, 440]]
 });
 path.strokeColor='purple';
 path.dashArray=[15, 5];
@@ -2292,7 +2292,7 @@ function gen_scenario(num){
             break;
          case 1: //I2C interface disable
             ctrReg_box(regBox_group, 1, 6, 100, 300, 20);
-            ctrReg_box(regBox_group1, 0, 6, 100, 400, 20);
+            ctrReg_box(regBox_group1, 0, 6, 100, 430, 20);
             move_bit(regBox_group1, 6, 20);
             ctrRegBox_visible(true);
             conset_path.visible=true;
@@ -2308,7 +2308,7 @@ function gen_scenario(num){
             break;  
           case 3: //Clear STA Flag
             ctrReg_box(regBox_group, 1, 5, 100, 300, 20);
-            ctrReg_box(regBox_group1, 0, 5, 100, 400, 20);
+            ctrReg_box(regBox_group1, 0, 5, 100, 430, 20);
             move_bit(regBox_group1, 5, 20);
             ctrRegBox_visible(true);
             conset_path.visible=true;
@@ -2324,7 +2324,7 @@ function gen_scenario(num){
             break; 
          case 5: //Clear SI Flag
             ctrReg_box(regBox_group, 1, 3, 100, 300, 20);
-            ctrReg_box(regBox_group1, 0, 3, 100, 400, 20);
+            ctrReg_box(regBox_group1, 0, 3, 100, 430, 20);
             move_bit(regBox_group1, 3, 20);
             conset_path.visible=true;
             conclr_path.visible=true;
@@ -2353,7 +2353,7 @@ function gen_scenario(num){
          case 9: //Clear AA Flag
             ctrReg_box(regBox_group, 1, 2, 100, 300, 20);
             regBox_group.children[29].children[1].content='0';
-            ctrReg_box(regBox_group1, 0, 2, 100, 400, 20);
+            ctrReg_box(regBox_group1, 0, 2, 100, 430, 20);
             move_bit(regBox_group1, 2, 20);
             ctrRegBox_visible(true);
             conset_path.visible=true;
@@ -2388,7 +2388,7 @@ function gen_scenario(num){
             ctrReg_box(regBox_group, 1, 5, 100, 300, 20);
             regBox_group.children[6].children[1].content='1';
             regBox_group.children[6].children[3].content='SI';
-            ctrReg_box(regBox_group1, 0, 5, 100, 400, 20);
+            ctrReg_box(regBox_group1, 0, 5, 100, 430, 20);
             regBox_group1.children[6].children[3].content='SIC';
             move_bit(regBox_group1, 5, 20);
             move_bit(regBox_group1, 3, 20);
@@ -2423,7 +2423,7 @@ function gen_scenario(num){
             clock_pulse_control(0);
             clkPulseNum(1, pulseNum);
             break;
-        case 17:
+        case 17://send command register address
             illustrate(all_waves, 5, 1);
             show_en_diagram(1);
             byte_control(0);
@@ -2432,7 +2432,7 @@ function gen_scenario(num){
             change_waveform('00000000');
             clkPulseNum(1, pulseNum);
             break;
-        case 18:
+        case 18://Send 1 byte data
             // temp_stop();
             show_en_diagram(2);
             illustrate(all_waves, 6, 1);
@@ -2762,8 +2762,8 @@ t_box = new Group();
 collection = new Group();
 var device_array = [0,0];
 var test_array = [0,0];
-var coordinate = { x: [130, 130, 130, 130, 130, 150, 150], y: [80, 160, 240, 320, 400, 80, 240]}
-var coordinate1 = { x: [130, 130, 130, 130, 130], y: [80, 160, 240, 320, 400]}
+var coordinate = { x: [1510, 1510, 1510, 1510, 1510, 1530, 1530], y: [80, 160, 240, 320, 400, 80, 240]}
+var coordinate1 = { x: [1510, 1510, 1510, 1510, 1510], y: [80, 160, 240, 320, 400]}
 
 function light_up(num){
     for(i = 1; i<4; i++){
@@ -3309,14 +3309,14 @@ function show_box_children(group, num){
 
 
 
-var topleft = new Point(50,50);
+var topleft = new Point(1430,50);
 var rectsize = new Size(t_width,t_height);
 var rect = new Rectangle(topleft, rectsize);
 var b_box = new Path.Rectangle(rect);
 b_box.strokeColor = 'black';
 b_box.fillColor = 'black';
 t_box.addChild(b_box);
-var path = new Path.Circle(new Point(60, 61), small_radius)
+var path = new Path.Circle(new Point(1440, 61), small_radius)
 path.strokeColor = 'white';
 t_box.addChild(path);
 for(var i = 1; i<3; i++){
@@ -3337,7 +3337,7 @@ for (var i = 0; i<5; i++){
 }
 var master_devices = new Group();
 var slave_devices = new Group();
-var path = new Path.Circle(new Point(105,80), big_radius);
+var path = new Path.Circle(new Point(1485,80), big_radius);
 master_devices.addChild(path);
 path.fillColor='lightblue';
 for(var i = 1; i<5; i++){
@@ -3358,7 +3358,8 @@ for(var i = 1; i<5; i++){
 
 var diagram2_button = diagram1_button.clone();
 layer2.addChild(diagram2_button);
-diagram2_button.position += new Point(-100, 0);
+diagram2_button.position += new Point(1050, 0);
+
 
 //invisible left lines drawing
 var left_path = new Group()
@@ -3519,16 +3520,16 @@ allslaves.addChild(ver2);
 
 
 var reg_group = new Group();
-var rect = new Rectangle(new Point(350, 50), new Size(200, 100));
+var rect = new Rectangle(new Point(1730, 50), new Size(200, 100));
 var lightbox = new Path.Rectangle(rect);
 lightbox.strokeColor = 'black';
 reg_group.addChild(lightbox);
 var val_group = new Group();
-var rect = new Rectangle(new Point(460, 55), new Size(r_length, r_height));
+var rect = new Rectangle(new Point(1840, 55), new Size(r_length, r_height));
 var addressbox = new Path.Rectangle(rect);
 addressbox.strokeColor = 'black';
 val_group.addChild(addressbox);
-var text = new PointText(new Point(360 + r_length/2, 55 +5 + r_height/2));
+var text = new PointText(new Point(1740 + r_length/2, 55 +5 + r_height/2));
 text.fillColor = 'black';
 text.content = 'Slave Addr';
 text.justification = 'center';
@@ -3614,7 +3615,7 @@ var z4 = 0;
 
 
 var scene_num_1 = new PointText(new Point(200, 40));
-
+scene_num_1.visible=false;
 
 function enable_scenario_2(num){
     switch(num) {
@@ -3728,7 +3729,7 @@ btn1.onclick = function update(){
 }
 
 function add_page(group, txt){
-    page = new PointText(new Point(1040, 50));
+    page = new PointText(new Point(1020, 50));
     page.fontSize = 15;
     page.wordwrap(55, txt);
     group.addChild(page);
@@ -3897,6 +3898,11 @@ function show_layer(num){
             layer1.visible = false;
             layer2.visible = true;
             break;
+        case 3:
+            value_item.visible = false;
+            layer1.visible = true;
+            layer2.visible = true;
+            break;
         default:
             value_item.visible = false;
             layer1.visible = false;
@@ -3930,74 +3936,26 @@ function clear_all(){
     single_signal.visible = false;
 }
 
-// General
-// default_status.onclick = function update(){
-//     clear_all();
-//     scene = 3;
-//     scene_num = 0;
-//     scene_num_1.content = scene_num;
-//     testing.content = scene_num;
-//     compiled_gen_scenario(scene_num);
-//     show_read_page(0);
-//     show_page(0);
-// }
-
-// start.onclick = function update(){
-//     clear_all();
-//     scene = 3;
-//     scene_num = 1;
-//     scene_num_1.content = scene_num;
-//     testing.content = scene_num;
-//     compiled_gen_scenario(scene_num);
-//     show_read_page(0);
-//     show_page(0);
-// }
-
-// clk_stretching.onclick = function update(){
-//     clear_all();
-//     scene = 3;
-//     scene_num = 11;
-//     scene_num_1.content = scene_num;
-//     testing.content = scene_num;
-//     compiled_gen_scenario(scene_num);
-//     show_read_page(0);
-//     show_page(0);
-// }
-
-// i2en.onclick = function update(){
-//     clear_all();
-//     scene = 3;
-//     scene_num = 13;
-//     scene_num_1.content = scene_num;
-//     testing.content = scene_num;
-//     compiled_gen_scenario(scene_num);
-//     show_read_page(0);
-//     show_page(0);
-//     enable_play_buttons();
-// }
-
-// End of General
 
 enable_btn.onclick = function update(){
     clear_all();
     scene = 1;
     // scenario.content = 'Enabling The Light Sensor';
     scene_num = 0;
-    scene_num_1.content = scene_num;
     compiled_enable_scenario(scene_num);
 }
 
 enable_set_2.onclick = function update(){
     clear_all();
     scene = 1;
-    scene_num = 16;
+    scene_num = 9;
     compiled_enable_scenario(scene_num);
 }
 
 enable_set_3.onclick = function update(){
     clear_all();
     scene = 1;
-    scene_num = 24;
+    scene_num = 12;
     compiled_enable_scenario(scene_num);
 }
 
@@ -4011,21 +3969,21 @@ read_btn.onclick = function update(){
 read_set_2.onclick = function update(){
     clear_all();
     scene = 2;
-    scene_num = 16;
+    scene_num = 9;
     compiled_read_scenario(scene_num);
 }
 
 read_set_3.onclick = function update(){
     clear_all();
     scene = 2;
-    scene_num = 25;
+    scene_num = 14;
     compiled_read_scenario(scene_num);
 }
 
 read_set_4.onclick = function update(){
     clear_all();
     scene = 2;
-    scene_num = 37;
+    scene_num = 20;
     compiled_read_scenario(scene_num);
 }
 
@@ -4142,9 +4100,9 @@ function enable_play_buttons(){
     } else {
         document.getElementById('prev_btn').disabled = false;
     }
-    if(scene_num == 51 && scene == 2) {
+    if(scene_num == 27 && scene == 2) {
         document.getElementById('next_btn').disabled = true;
-    } else if(scene_num == 36 && scene == 1) {
+    } else if(scene_num == 18 && scene == 1) {
         document.getElementById('next_btn').disabled = true;
     } else {
         document.getElementById('next_btn').disabled = false;
@@ -4179,12 +4137,12 @@ text.strokeColor = 'red';
 text.fontSize = 15;
 text.content = 'Controls and Progress Bar';
 instruction_overlay.addChild(text);
-var box = new Path.Rectangle(new Point(880,30), new Size(390, 242));
+var box = new Path.Rectangle(new Point(1000,30), new Size(390, 260));
 box.strokeColor = 'red';
 instruction_overlay.addChild(box);
 var instruction_text = text.clone();
 instruction_text.content = 'Instructional text will be located here.';
-instruction_text.position += (new Point(550, -375));
+instruction_text.position += (new Point(670, -375));
 instruction_overlay.addChild(instruction_text);
 menu_arrow = arrow.clone();
 menu_arrow.rotate(180);
@@ -4282,12 +4240,13 @@ read_pages = new Group();
 
 //1 General Introduction
 add_page(pages, "This application will be simulating the process of I2C communications between a Master and Slave for the purposes of enabling a LSB sensor. On the left you will see a waveform being drawn that will depict the data to be communicated between the Master and Slave. Any part of the diagram being highlighted in light blue is being controlled by the Master, while anything highlighted in yellow is being controlled by the Slave.");
-//2 I2EN
+//2 Diagram introduction
+add_page(pages, 'The right diagram shows a 5 different master devices represented by blue circles, and 5 different slave devices represented by the yellow circles. As I2C is a half-duplex, serial communication, only one device can transmit at any point in time. Furthermore, there is collision detection and arbitration to allow for multiple masters. At any point when one master is communicating, no other masters will be able to communicate, this is represented by the traffic light which will show which master is communicating while the others are forced to stop. This diagram will show how each segment of the waveform shown earlier is transmitted.');
+//3 I2EN
 add_page(pages, "First, there needs to write '1' to CONSET bit 6 to enable I2C interface, the default SDA and SCL are both at high");
-//3 STA
+//4 STA
 add_page(pages, 'Then STA flag needs to be set by writting "1" to CONSET bit 5');
-//4 Diagram introduction
-add_page(pages, 'The diagram shows a 5 different master devices represented by blue circles, and 5 different slave devices represented by the yellow circles. As I2C is a half-duplex, serial communication, only one device can transmit at any point in time. Furthermore, there is collision detection and arbitration to allow for multiple masters. At any point when one master is communicating, no other masters will be able to communicate, this is represented by the traffic light which will show which master is communicating while the others are forced to stop. This diagram will show how each segment of the waveform shown earlier is transmitted.');
+
 //5 Send START bit, STAC
 add_page(pages, 'After the STA flag is set, the master will send out START bit, the START bit is SDA changes from high to low while SCL is at high. At the same time, STA flag is cleared by writting "1" to CONCLR bit 5. All slaves will start listening to the bus. As I2C communication is half-duplex, only one device can transmit at any time, in this way it is somewhat like having a conversation where each party has to affirm that they have received a message. The chat window below shows a conversation between the master and slave as each bit is sent across.');
 
@@ -4399,19 +4358,19 @@ write_r_message('That will be all from me', 0);
 
 
 
-var path = new Rectangle(new Point(500,400), new Size(50,50));
+var path = new Rectangle(new Point(1880,400), new Size(50,50));
 var box = new Path.Rectangle(path);
 box_diagram = en_diagram.clone();
-box_diagram.children[0].position += new Point(-80, 100);
-box_diagram.children[1].position += new Point(-240, 100);
-box_diagram.children[2].position += new Point(-380, 100);
+box_diagram.children[0].position += new Point(1300, 100);
+box_diagram.children[1].position += new Point(1140, 100);
+box_diagram.children[2].position += new Point(1000, 100);
 layer2.addChild(box_diagram);
 
 read_box_diagram = read_diagram.clone();
-read_box_diagram.children[0].position += new Point(40, 100);
-read_box_diagram.children[1].position += new Point(-140, 100);
-read_box_diagram.children[2].position += new Point(-280, 100);
-read_box_diagram.children[3].position += new Point(-460, 100);
+read_box_diagram.children[0].position += new Point(1420, 100);
+read_box_diagram.children[1].position += new Point(1240, 100);
+read_box_diagram.children[2].position += new Point(1100, 100);
+read_box_diagram.children[3].position += new Point(920, 100);
 layer2.addChild(read_box_diagram);
 // box_diagram.children[0].visible = true;
 
@@ -4434,257 +4393,106 @@ function compiled_enable_scenario(num){
     conset_path.visible=false;
     conclr_path.visible=false;
     enable_play_buttons();
+    show_layer(3);
     show_page(0);
     show_read_page(0);
-    scene_num_1.content = scene_num;
     testing.content = scene_num;
     slave_group.position = new Point(823, 143);
     scenario.content = 'Enabling The Light Sensor';
     // document.getElementById('feedback').style.display = 'none';
     switch(num) {
-        case 0:
-            show_layer(1);
+        case 0: //General
             show_page(1);
             break;
         case 1: //I2C ENABLE
-            show_layer(1);
             gen_scenario(0);
-            show_page(2);
+            show_page(3);
             break;
         case 2://SET STA FLAG
-            show_layer(1);
             gen_scenario(2);
-            show_page(3);
+            show_page(4);
             break;  
         case 3:
-            show_layer(2);
-            show_box_diagram(0);     
-            show_box_children(box_diagram.children[0], 99);   
-            show_page(4);
-            scenario.content = 'Send Start Bit';
-            break;      
-        case 4:
-            show_layer(2);
-            all_red();
-            change_signal_item('S');
-            show_box_diagram(0);
-            show_box_children(box_diagram.children[0], 0);
-            move_to_position(left_path.children[2], box_diagram.children[0].children[0], single_signal);
-            show_page(5);
-            scenario.content = 'Send Start Bit';
-            break;  
-        case 5:
-            show_layer(2);
             enable_scenario_2(0);
             show_box_diagram(0);
             show_box_children(box_diagram.children[0], 0);
+            gen_scenario(3);
+            gen_scenario(10);
             // add_message(chatMessages[0]);
             add_message_mass(chatMessages, 0);
             show_page(5);
-            scenario.content = 'Send Start Bit';
-            break;   
-        case 6://SEND START BIT
-            show_layer(1);
-            gen_scenario(3);
-            gen_scenario(10);
-            add_message_mass_no_wait(chatMessages, 0);
-            show_page(6);
             scenario.content = 'Send Start Bit, CLR STA';
-            break; 
-
-        case 7://SET SI FLAG
-            show_layer(1);
+            break;  
+        case 4://SET SI FLAG
             gen_scenario(4);
             show_page(7);
             break;   
-        case 8:
-            // temp_stop_2();
-            show_layer(2);  
-            change_value_item('0x44', 'W');
-            show_box_diagram(0);
-            show_box_children(box_diagram.children[0], 1);
-            move_to_position(left_path.children[2], box_diagram.children[0].children[1], value_item);
-            add_message_mass_no_wait(chatMessages, 0);
-            show_page(8);
-            scenario.content = 'Send Slave Address & "W" Bit';
-            break;    
-        case 9:
-            show_layer(2);
+        case 5:
             enable_scenario_2(1);
             show_box_diagram(0);
+            gen_scenario(5);
+            gen_scenario(16);
             show_box_children(box_diagram.children[0], 1);
             // add_message(chatMessages[1]);
             add_message_mass(chatMessages, 1);
             show_page(8);
-            scenario.content = 'Send Slave Address & "W" Bit';
-            break;
-        case 10://SEND SLAVE ADDRESS N CLR SI
-            show_layer(1);
-            gen_scenario(5);
-            gen_scenario(16);
-            add_message_mass_no_wait(chatMessages, 1);
-            show_page(9);
             scenario.content = 'Send Slave Address & "W" BIT, CLR SI';
-            break;   
-        case 11:
-            show_layer(1);
+            break;
+        case 6:
             gen_scenario(12);
+            enable_scenario_2(2);
+            show_box_diagram(0);
+            show_box_children(box_diagram.children[0], 2);
             add_message_mass(chatMessages, 2);
             show_page(10);
             scenario.content = 'Receive ACK from Slave';
             break;
-        case 12:
-            // temp_stop_2();
-            show_layer(2);
-            change_signal_item('A');
-            show_box_diagram(0);
-            show_box_children(box_diagram.children[0], 2);
-            move_to_position_2(right_path.children[4], box_diagram.children[0].children[2], single_signal);
-            add_message_mass_no_wait(chatMessages, 2);
-            show_page(10);
-            scenario.content = 'Receive ACK from Slave';
-            break; 
-        case 13:
-            show_layer(2);
-            enable_scenario_2(2);
-            show_box_diagram(0);
-            show_box_children(box_diagram.children[0], 2);
-            // add_message(chatMessages[2]);
-            add_message_mass_no_wait(chatMessages, 2);
-            show_page(10);
-            scenario.content = 'Receive ACK from Slave';
-            break; 
-        case 14:
-            show_layer(1);
+        case 7:
             enable_scenario(1);
             add_message_mass_no_wait(chatMessages, 2);
             break; 
-        case 15://SET SI FLAG after receiving ACK
-            show_layer(1);
+        case 8://SET SI FLAG after receiving ACK
             gen_scenario(4);
             show_page(11);
             break;
-        case 16:
-            show_layer(2);
-            add_message_mass(chatMessages, 3);
-            show_box_diagram(1);
-            show_box_children(box_diagram.children[1], 99);
-            show_page(12);
-            scenario.content = 'Send Register Address';
-            break;
-        case 17: 
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(chatMessages, 3);
-            change_value_item('0x00', '');
-            show_box_diagram(1);
-            show_box_children(box_diagram.children[1], 0);
-            move_to_position(left_path.children[2], box_diagram.children[1].children[0], value_item);
-            show_page(12);
-            scenario.content = 'Send Register Address';
-            break; 
-        case 18:
-            show_layer(2);   
+        case 9:
             enable_scenario_2(3);
-            show_box_diagram(1);
-            show_box_children(box_diagram.children[1], 0);
-            // add_message(chatMessages[3]);
-            add_message_mass_no_wait(chatMessages, 3);
-            show_page(12);
-            scenario.content = 'Send Register Address';
-            break;
-        case 19:
-            show_layer(1);
-            add_message_mass_no_wait(chatMessages, 3);
             gen_scenario(5);
             gen_scenario(17);
+            show_box_diagram(1);
+            show_box_children(box_diagram.children[1], 0);
+            add_message_mass(chatMessages, 3);
             show_page(12);
             scenario.content = 'Send Register Address, CLR SI';
             break;
-        case 20:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass(chatMessages, 4);
-            change_signal_item('A');
-            show_box_diagram(1);
-            show_box_children(box_diagram.children[1], 1);
-            move_to_position_2(right_path.children[4], box_diagram.children[1].children[1], single_signal);
-            show_page(10);
-            scenario.content = 'Receive ACK from Slave';
-            break;
-        case 21:
-            show_layer(2);
+        case 10:
             enable_scenario_2(4);
-            show_box_diagram(1);
-            show_box_children(box_diagram.children[1], 1);
-            // add_message(chatMessages[4]);
-            add_message_mass_no_wait(chatMessages, 4);
-            scenario.content = 'Receive ACK from Slave';
-            show_page(10);
-            break;
-        case 22:
-            show_layer(1);
             gen_scenario(12);
             show_page(10);
-            add_message_mass_no_wait(chatMessages, 4);
+            show_box_diagram(1);
+            show_box_children(box_diagram.children[1], 1);
+            add_message_mass(chatMessages, 4);
             scenario.content = 'Receive ACK from Slave';
+            show_page(10);
             break;
-        case 23://SET SI FLAG
-            show_layer(1);
+        case 11://SET SI FLAG
             gen_scenario(4);
+            add_message_mass_no_wait(chatMessages, 4);
             show_page(11);
             break; 
-        case 24:
-            show_layer(2);
-            add_message_mass(chatMessages, 5);
-            show_box_diagram(2);
-            show_box_children(box_diagram.children[2], 99);
-            show_page(0);
-            scenario.content ='Write to Resgister';
-            break; 
-        case 25:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(chatMessages, 5);
-            show_box_diagram(2);
-            show_box_children(box_diagram.children[2], 0);
-            change_value_item('0x80', '');
-            move_to_position(left_path.children[2], box_diagram.children[2].children[0], value_item);
-            show_page(0);
-            scenario.content ='Write 1 Byte Data';
-            break;
-        case 26:
-            show_layer(2);
+        case 12:
+            gen_scenario(5);
+            gen_scenario(18);
             enable_scenario_2(5);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 0);
-            // add_message(chatMessages[5]);
-            add_message_mass_no_wait(chatMessages, 5);
-            show_page(0);
-            scenario.content ='Write 1 Byte Data';
-            break;  
-        case 27:
-            show_layer(1); 
-            add_message_mass_no_wait(chatMessages, 5);
-            gen_scenario(5);
-            gen_scenario(18);
+            add_message_mass(chatMessages, 5);
             show_page(13);
             scenario.content = 'Send 1 Byte Data, CLR SI';
-            break;
-        case 28:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass(chatMessages, 6);
-            show_box_diagram(2);
-            show_box_children(box_diagram.children[2], 1);
-            change_signal_item('A');
-            move_to_position_2(right_path.children[4], box_diagram.children[2].children[1], single_signal);
-            show_page(10);
-            scenario.content = 'Receive ACK from Slave';
-            break;
-        case 29:
-            show_layer(2);
+            break;  
+        case 13:
             enable_scenario_2(6);
+            gen_scenario(12);
             show_box_diagram(2);
             show_box_children(box_diagram.children[2], 1);
             // add_message(chatMessages[6]);
@@ -4692,52 +4500,30 @@ function compiled_enable_scenario(num){
             show_page(10);
             scenario.content = 'Receive ACK from Slave';
             break;
-        case 30://SET SI FLAG
-            show_layer(1);
+        case 14://SET SI FLAG
             gen_scenario(4);
             show_page(11);
             break; 
-        case 31://SET STO FLAG
-            show_layer(1);
+        case 15://SET STO FLAG
             gen_scenario(6);
             show_page(14);
             break;
-         case 32://Send STOP Bit, CLR SI
-            show_layer(1);
+         case 16://Send STOP Bit, CLR SI
             add_message_mass(chatMessages, 7);
+            enable_scenario_2(7);
+            show_box_diagram(2);
+            show_box_children(box_diagram.children[2], 2);
             gen_scenario(5);
             gen_scenario(11);
             show_page(15);
             scenario.content = 'Send STOP Bit, CLR SI';
             break; 
-        case 33:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(chatMessages, 7);
-            show_box_diagram(2);
-            show_box_children(box_diagram.children[2], 2);
-            change_signal_item('P');
-            move_to_position(left_path.children[2], box_diagram.children[2].children[2], single_signal);
-            show_page(15);
-            scenario.content = 'Send Stop Bit';
-            break;
-        case 34:
-            show_layer(2);
-            enable_scenario_2(7);
-            show_box_diagram(2);
-            show_box_children(box_diagram.children[2], 2);
-            add_message_mass_no_wait(chatMessages, 7);
-            show_page(15);
-            scenario.content = 'Send Stop Bit';
-            break;
-        case 35:
-            show_layer(1);
+        case 17:
             add_message_mass_no_wait(chatMessages, 7);
             enable_scenario(5);
             show_page(15);
             break;
-         case 36://CLR STO
-            show_layer(1);
+         case 18://CLR STO
             gen_scenario(7);
             show_page(16);
             scenario.content = 'CLR STO';
@@ -4753,185 +4539,83 @@ function compiled_read_scenario(num){
     regBox_group1.removeChildren();
     conset_path.visible=false;
     conclr_path.visible=false;
+    show_layer(3);
     enable_play_buttons();
     show_page(0);
     show_read_page(0);
-    scene_num_1.content = scene_num;
+    // scene_num_1.content = scene_num;
     testing.content = scene_num;
     slave_group.position = new Point(823, 143);
     scenario.content = 'Reading from The Light Sensor';
     switch(num){
         case 0:
-            show_layer(1);
             show_read_page(1);
             break;
         case 1: //I2C ENABLE
-            show_layer(1);
             gen_scenario(0);
             show_read_page(2);
             break;
         case 2://SET STA FLAG
-            show_layer(1);
             gen_scenario(2);
             show_read_page(3);
             break;  
         case 3:
-            show_layer(2);
-            show_read_box_diagram(0);     
-            show_box_children(read_box_diagram.children[0], 99);   
-            show_read_page(4);
-            scenario.content = 'Send Start Bit';
-            break;      
-        case 4:
-            show_layer(2);
-            all_red();
-            change_signal_item('S');
-            show_read_box_diagram(0);
-            show_box_children(read_box_diagram.children[0], 0);
-            move_to_position(left_path.children[2], read_box_diagram.children[0].children[0], single_signal);
-            show_read_page(5);
-            scenario.content = 'Send Start Bit';
-            break;  
-        case 5:
-            show_layer(2);
+            gen_scenario(3);
+            gen_scenario(10);
             show_read_box_diagram(0);
             show_box_children(read_box_diagram.children[0], 0);
             read_scenario_2(0);
             // add_message(chatMessages[0]);
             add_message_mass(r_chatMessages, 0);
             show_read_page(5);
-            scenario.content = 'Send Start Bit';
-            break;   
-        case 6://SEND START BIT
-            show_layer(1);
-            gen_scenario(3);
-            gen_scenario(10);
-            add_message_mass_no_wait(r_chatMessages, 0);
-            show_read_page(5);
             scenario.content = 'Send Start Bit, CLR STA';
-            break; 
-
-        case 7://SET SI FLAG
-            show_layer(1);
+            break;   
+        case 4://SET SI FLAG
             gen_scenario(4);
             show_read_page(6);
             break;   
-        case 8:
-            // temp_stop_2();
-            show_layer(2);  
-            change_value_item('0x44', 'W');
-            show_read_box_diagram(0);
-            show_box_children(read_box_diagram.children[0], 1);
-            move_to_position(left_path.children[2], read_box_diagram.children[0].children[1], value_item);
-            add_message_mass_no_wait(r_chatMessages, 0);
-            show_read_page(7);
-            scenario.content = 'Send Slave Address & "W" Bit';
-            break;    
-        case 9:
-            show_layer(2);
+        case 5:
+            gen_scenario(5);
+            gen_scenario(16);
             read_scenario_2(1);
             show_read_box_diagram(0);
             show_box_children(read_box_diagram.children[0], 1);
             add_message_mass(r_chatMessages, 1);
             show_read_page(7);
-            scenario.content = 'Send Slave Address & "W" Bit';
-            break;
-        case 10://SEND SLAVE ADDRESS N CLR SI
-            show_layer(1);
-            gen_scenario(5);
-            gen_scenario(16);
-            add_message_mass_no_wait(r_chatMessages, 1);
-            show_read_page(7);
             scenario.content = 'Send Slave Address & "W" BIT, CLR SI';
-            break;   
-        case 11:
-            show_layer(1);
-            gen_scenario(12);
-            add_message_mass(r_chatMessages, 2);
-            show_read_page(8);
-            scenario.content = 'Receive ACK from Slave';
             break;
-        case 12:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 1);
-            show_read_box_diagram(0);
-            show_box_children(read_box_diagram.children[0], 2);
-            change_signal_item('A');
-            move_to_position_2(right_path.children[4], read_box_diagram.children[0].children[2], single_signal);
-            show_read_page(8);
-            scenario.content = 'Receive ACK from Slave';
-            break; 
-        case 13:
-            show_layer(2);
-            add_message_mass(r_chatMessages, 2);
+        case 6:
+            gen_scenario(12);
             show_read_box_diagram(0);
             show_box_children(read_box_diagram.children[0], 2);
             read_scenario_2(2);
+            add_message_mass(r_chatMessages, 2);
             show_read_page(8);
             scenario.content = 'Receive ACK from Slave';
-            break; 
-        case 14:
-            show_layer(1);
+            break;
+        case 7:
             add_message_mass_no_wait(r_chatMessages, 2);
             read_scenario(1);
             show_read_page(9);
             break; 
-        case 15://SET SI FLAG after receiving ACK
-            show_layer(1);
+        case 8://SET SI FLAG after receiving ACK
             gen_scenario(4);
             show_read_page(10);
-            break;
-        case 16:
-            show_layer(2);
             add_message_mass_no_wait(r_chatMessages, 2);
-            show_read_box_diagram(1);
-            show_box_children(read_box_diagram.children[1], 99);
-            show_read_page(11);
-            scenario.content = 'Send LSB_SENSOR Address';
             break;
-        case 17: 
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 2);
-            change_value_item('0x04', '');
-            show_read_box_diagram(1);
-            show_box_children(read_box_diagram.children[1], 0);
-            move_to_position(left_path.children[2], read_box_diagram.children[1].children[0], value_item);
-            show_read_page(11);
-            scenario.content = 'Send LSB_SENSOR Address';
-            break; 
-        case 18:
-            show_layer(2);   
+        case 9:
             add_message_mass(r_chatMessages, 3);
             show_read_box_diagram(1);
             show_box_children(read_box_diagram.children[1], 0);
             read_scenario_2(3);
-            show_read_page(11);
-            scenario.content = 'Send LSB_SENSOR Address';
-            break;
-        case 19:
-            show_layer(1);
-            add_message_mass_no_wait(r_chatMessages, 3);
             gen_scenario(5);
             gen_scenario(20);
             show_read_page(11);
             scenario.content = 'Send LSB_SENSOR Address, CLR SI';
             break;
-        case 20:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 3);
-            change_signal_item('A');
-            show_read_box_diagram(1);
-            show_box_children(read_box_diagram.children[1], 1);
-            move_to_position_2(right_path.children[4], read_box_diagram.children[1].children[1], single_signal);
-            show_read_page(8);
-            scenario.content = 'Receive ACK from Slave';
-            break;
-        case 21:
-            show_layer(2);
+        case 10:
             read_scenario_2(4);
+            gen_scenario(12);
             show_read_box_diagram(1);
             show_box_children(read_box_diagram.children[1], 1);
             // add_message(chatMessages[4]);
@@ -4939,234 +4623,109 @@ function compiled_read_scenario(num){
             scenario.content = 'Receive ACK from Slave';
             show_read_page(8);
             break;
-        case 22:
-            show_layer(1);
-            gen_scenario(12);
-            show_read_page(8);
-            add_message_mass_no_wait(r_chatMessages, 4);
-            scenario.content = 'Receive ACK from Slave';
-            break;
-        case 23:
-            show_layer(1);
+        case 11:
             gen_scenario(15);
             add_message_mass_no_wait(r_chatMessages, 4);
-            scenario.content = 'Send LSB_Sensor & Receive ACK from Slave';
+            scenario.content = 'Send LSB_Sensor Address & Receive ACK';
             break;
-        case 24://SET SI FLAG
-            show_layer(1);
+        case 12://SET SI FLAG
             gen_scenario(4);
             show_read_page(10);
             break; 
-        case 25://SET STA FLAG
-            show_layer(1);
+        case 13://SET STA FLAG
             gen_scenario(13);
             show_read_page(14);
             break;  
-        case 26:
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 0);
-            show_read_box_diagram(2);
-            show_box_children(read_box_diagram.children[2], 99);   
-            show_read_page(12);
-            scenario.content = 'Send Start Bit';
-            break;      
-        case 27:
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 0);
-            change_signal_item('S');
-            show_read_box_diagram(2);
-            show_box_children(read_box_diagram.children[2], 0);
-            move_to_position(left_path.children[2], read_box_diagram.children[2].children[0], single_signal);
-            show_read_page(12);
-            scenario.content = 'Send Start Bit';
-            break;  
-        case 28:
-            show_layer(2);
+        case 14:
             add_message_mass(r_chatMessages, 0);
             show_read_box_diagram(2);
             show_box_children(read_box_diagram.children[2], 0);
             read_scenario_2(6);
-            show_read_page(12);
-            scenario.content = 'Send Start Bit';
-            break;   
-        case 29://SEND START BIT
-            show_layer(1);
             gen_scenario(14);
             gen_scenario(10);
-            add_message_mass_no_wait(r_chatMessages, 0);
             show_read_page(12);
             scenario.content = 'Send Start Bit, CLR STA & SI';
-            break; 
-
-        case 30://SET SI FLAG
-            show_layer(1);
+            break;   
+        case 15://SET SI FLAG
             gen_scenario(4);
             show_read_page(6);
             break;   
-        case 31:
-            // temp_stop_2();
-            show_layer(2);  
-            add_message_mass_no_wait(r_chatMessages, 6);
-            change_value_item('0x44', 'R');
-            show_read_box_diagram(2);
-            show_box_children(read_box_diagram.children[2], 1);
-            temp_container = new Group();
-            move_to_position(left_path.children[2], read_box_diagram.children[2].children[1], value_item);
-            show_read_page(13);
-            scenario.content = 'Send Slave Address & "R" Bit';
-            break;    
-        case 32:
-            show_layer(2);
+        case 16:
             add_message_mass(r_chatMessages, 7);
             show_read_box_diagram(2);
             show_box_children(read_box_diagram.children[2], 1);
             read_scenario_2(7);
-            show_read_page(13);
-            scenario.content = 'Send Slave Address & "R" Bit';
-            break;
-        case 33://SEND SLAVE ADDRESS N CLR SI
-            show_layer(1);
             gen_scenario(5);
-            gen_scenario(21);
-            add_message_mass_no_wait(r_chatMessages, 7);
+            gen_scenario(21)
             show_read_page(13);
             scenario.content = 'Send Slave Address & "R" BIT, CLR SI';
-            break;   
-        case 34:
-            show_layer(1);
+            break;
+        case 17:
             gen_scenario(12);
+            show_read_box_diagram(0);
+            show_box_children(read_box_diagram.children[0], 2);
+            read_scenario_2(2)
             add_message_mass(r_chatMessages, 8);
             show_read_page(8);
             scenario.content = 'Receive ACK from Slave';
             break;
-        case 35:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 8);
-            show_read_box_diagram(0);
-            show_box_children(read_box_diagram.children[0], 2);
-            change_signal_item('A');
-            move_to_position_2(right_path.children[4], read_box_diagram.children[0].children[2], single_signal);
-            show_read_page(8);
-            scenario.content = 'Receive ACK from Slave';
-            break; 
-        case 36:
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 8);
-            show_read_box_diagram(0);
-            show_box_children(read_box_diagram.children[0], 2);
-            read_scenario_2(2);
-            show_read_page(8);
-            scenario.content = 'Receive ACK from Slave';
-            break; 
-        case 37:
-            show_layer(1);
+        case 18:
             add_message_mass_no_wait(r_chatMessages, 8);
             read_scenario(5);
-            // show_read_page(9);
             break; 
-        case 38://SET SI FLAG after receiving ACK
-            show_layer(1);
+        case 19://SET SI FLAG after receiving ACK
             gen_scenario(4);
             show_read_page(10);
             break;
-        case 39:
-            show_layer(1);
+        case 20:
             add_message_mass(r_chatMessages, 9);
             gen_scenario(5);
             gen_scenario(22);
-            show_read_page(15);
-            scenario.content = 'Read from LSB_SENSOR and Clear SI';
-            break;
-        case 40:
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 9);
             show_read_box_diagram(3);
             show_box_children(read_box_diagram.children[3], 0);
             read_scenario_2(9);
             show_read_page(15);
-            scenario.content = 'Read Data and Clear SI';
+            scenario.content = 'Read from LSB_SENSOR and Clear SI';
             break;
-        case 41:
-            // temp_stop_2();
-            show_layer(2);
+        case 21:
             add_message_mass(r_chatMessages, 10);
-            change_signal_item('Ā');
-            show_read_box_diagram(3);
-            show_box_children(read_box_diagram.children[3], 1);
-            move_to_position(left_path.children[2], read_box_diagram.children[3].children[1], single_signal);
-            show_read_page(16);
-            scenario.content = 'Send Ā';
-            break;
-        case 42:
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 10);
             show_read_box_diagram(3);
             show_box_children(read_box_diagram.children[3], 1);
             read_scenario_2(10);
-            show_read_page(16);
-            scenario.content = 'Send Ā';
-            break;
-        case 43: 
-            show_layer(1);
             gen_scenario(23);
-            add_message_mass_no_wait(r_chatMessages, 10);
             show_read_page(16);
             scenario.content = 'Send Ā';
             break;
-        case 44:
-            show_layer(1);
+        case 22:
             gen_scenario(4);
             add_message_mass_no_wait(r_chatMessages, 10);
             show_read_page(17);
             break;
-        case 45:
-            show_layer(1);
+        case 23:
             gen_scenario(6);
             add_message_mass_no_wait(r_chatMessages, 10);
             show_read_page(18);
             break;
-        case 46:
-            show_layer(1);
+        case 24:
             gen_scenario(5);
             gen_scenario(11);
+            show_read_box_diagram(3);
+            show_box_children(read_box_diagram.children[3], 2);
+            read_scenario_2(11);
             add_message_mass_no_wait(r_chatMessages, 10);
             show_read_page(19);
             scenario.content = 'Send STOP Condition & Clear SI';
             break;
-        case 47:
-            // temp_stop_2();
-            show_layer(2);
-            add_message_mass_no_wait(r_chatMessages, 10);
-            change_signal_item('P');
-            show_read_box_diagram(3);
-            show_box_children(read_box_diagram.children[3], 2);
-            move_to_position(left_path.children[2], read_box_diagram.children[3].children[2], single_signal);
-            show_read_page(19);
-            scenario.content = 'Send STOP bit & Clear SI';
-            break;
-        case 48:
-            show_layer(2);
-            add_message_mass(r_chatMessages, 10);
-            show_read_box_diagram(3);
-            show_box_children(read_box_diagram.children[3], 2);
-            read_scenario_2(11);
-            show_read_page(19);
-            scenario.content = 'Send STOP bit & Clear SI';
-            break;
-        case 49:
-            show_layer(1); 
+        case 25:
             add_message_mass_no_wait(r_chatMessages, 10);
             read_scenario(7);
             break;
-        case 50:
-            show_layer(1);
+        case 26:
             gen_scenario(7);
             add_message_mass_no_wait(r_chatMessages, 10);
             show_read_page(20);
             break;
-        case 51:
-            show_layer(1);
+        case 27:
             add_message_mass(r_chatMessages, 10);
             gen_scenario(1);
             show_read_page(21);

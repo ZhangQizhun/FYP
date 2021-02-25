@@ -15,7 +15,7 @@ iframe{
   position: relative;
   left: -30px;
   height: 500px;
-  width: 1475px;
+  width: 2200px;
 }
 
 
@@ -28,8 +28,8 @@ iframe{
 .dropdown-content {
     display: none;
     position: absolute;
-    top: 345px;
-    left: 1040px;
+    top: 400px;
+    left: 1000px;
 
     background-color: #f9f9f9;
     min-width: 160px;
@@ -51,14 +51,14 @@ iframe{
   height: 200px;
   width: 300px;
   top: 130px;
-  left: 300px;
+  left: 350px;
 }
 
 #diagram_2{
   height: 300px;
   width: 400px;
   top: 130px;
-  left: 300px;
+  left: 1350px;
 }
 
 #wrapper {
