@@ -27,7 +27,7 @@ var stretch = 40;
 var amount=0;
 var changeindex = [4,5,8,9,12,13,16,17,20,21,24,25,28,29,32,33,36,37]
 var input1 = "111111111"
-
+var pause = false;
 //dictionaries with significant segment numbers of paths
 PointText.prototype.wordwrap=function(max,txt){
     this.content = '';
@@ -638,13 +638,15 @@ function  animate_draw_wave(wave, wave1, wave2){
     flag[0] = 1;
     var first_time = 0;
     var framehandler = function(event){
-
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+        if(pause == false){
         if(first_time == 0){
             cur_frame[0] = event.count;
             first_time = 1;
         }
 
         if(event.count < cur_frame[0]+speed_1*1.1){
+            
             wave.dashArray = [offset, 1000];
             offset+= wave.length/speed_1;
             wave1.dashArray = [offset1, 1000];
@@ -653,13 +655,16 @@ function  animate_draw_wave(wave, wave1, wave2){
             offset2+=wave2.length/speed_1;
             progress_bar.dashArray = [offset3+5, 1000];
             offset3+= progress_bar.length/(speed_1*1.1);
+
         } else {
             flag[0] = 0;
             progress_bar.dashArray = [1000, 1000];
             enable_play_buttons();
             view.off('frame', framehandler);
         }
-    }
+    } else{;}   
+}
+
     view.on('frame', framehandler);
 }
 
@@ -719,6 +724,8 @@ function move_waveform(destination, group){
     var scaling = Math.exp(b/a)
 
     var framehandler = function(event){
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
         if(offset < path.length) {
             clone.position = path.getPointAt(offset);
             clone.scale(scaling);
@@ -734,7 +741,8 @@ function move_waveform(destination, group){
             enable_play_buttons();
             view.off('frame', framehandler)
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 }
 
@@ -1588,6 +1596,8 @@ function animateSignal(signal, value){
     disable_play_buttons();
     var i = 0;
     var framehandler = function(event){
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
         if (value == 0){
             if(i<20){
                 signal.position.y += 1;
@@ -1608,7 +1618,8 @@ function animateSignal(signal, value){
                 view.off('frame', framehandler);
             }
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 }
 
@@ -1616,6 +1627,8 @@ function clockPulse(){
     disable_play_buttons();
      var count = 0, i=0, clk_num=0;
      var framehandler = function(event){
+    document.getElementById("pause_btn").addEventListener("click", pauseResume);
+    if(pause == false){
     if(count<19){
         ClkNum.content= 'CLK Pulse No.' + clk_num;
         SCL_ctr.content='SCL Master Control';
@@ -1645,7 +1658,8 @@ function clockPulse(){
         view.off('frame', framehandler);
         enable_play_buttons();
     }
-     }
+     } else{;}
+ }
     view.on('frame', framehandler);
 }
 
@@ -1653,6 +1667,8 @@ function clockStretching(){
     disable_play_buttons();
      var count = 0, i=0, clk_num=0;
      var framehandler = function(event){
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
     if(count<18){
         ClkNum.content= 'CLK Pulse No.' + clk_num;
         if(count<17){
@@ -1695,7 +1711,8 @@ function clockStretching(){
         view.off('frame', framehandler);
         enable_play_buttons();
     }
-     }
+     } else{;}
+ }
     view.on('frame', framehandler);
 }
 
@@ -1703,6 +1720,8 @@ function ack(){
     disable_play_buttons();
      var count = 0, i=0, clk_num=0;
      var framehandler = function(event){
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
     if(count<19){
         ClkNum.content= 'CLK Pulse No.' + clk_num;
         if(count<17){
@@ -1742,7 +1761,8 @@ function ack(){
         view.off('frame', framehandler);
         enable_play_buttons();
     }
-     }
+     } else{;}
+ }
     view.on('frame', framehandler);
 }
 
@@ -1750,6 +1770,8 @@ function nack(){
      disable_play_buttons();
      var count = 0, i=0, clk_num=0;
      var framehandler = function(event){
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
     if(count<19){
         ClkNum.content= 'CLK Pulse No.' + clk_num;
         if(count<17){
@@ -1789,7 +1811,8 @@ function nack(){
         view.off('frame', framehandler);
         enable_play_buttons();
     }
-     }
+     } else {;}
+ }
     view.on('frame', framehandler);
 }
 
@@ -1799,6 +1822,8 @@ function ackFlag(){
      sda.position.y = sda_yPos;
      scl.position.y = scl0_yPos;
      var framehandler = function(event){
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
     if(count==0){
             if(i<20){
                 sda.position.y += 1;
@@ -1828,7 +1853,8 @@ function ackFlag(){
         view.off('frame', framehandler);
         enable_play_buttons();
     }
-     }
+     } else{;}
+ }
     view.on('frame', framehandler);
 }
 
@@ -1941,7 +1967,7 @@ function ctrReg_box(group, type, ctrBit, posX, posY, offsetX){
                 // group.fillColor='lightblue';   
                 }
             }
-            else if (i==3){
+            else if (i==3 && type==1){
                 value = '1';
                 txt = ' ';   
             }
@@ -1971,7 +1997,17 @@ function ctrReg_box(group, type, ctrBit, posX, posY, offsetX){
 function move_bit(group, bitnum, offset) {
     var bitbox = group.children[9-bitnum].clone();
     bitbox.visible = true;
-    bitbox.position.y +=2*offset    
+    // specify bitbox initial position
+    if(bitnum == 3){
+        bitbox.position.y = 205;
+        if(group == regBox_group1){
+          bitbox.position.x = 90;  
+        }
+        else {;}
+    }
+    else {
+      bitbox.position.y +=2*offset;  
+    }
     bitbox.children[0].fillColor='lightblue';
     bitbox.children[0].strokeColor='white';
     bitbox.children[1].content='1';
@@ -1984,11 +2020,24 @@ function move_bit(group, bitnum, offset) {
     var path = new Path();
     path.add(bitbox.position);
     path.add(group.children[9-bitnum].position);
-    speed1=speed/5;
+    if(bitnum == 3) {
+        if(group == regBox_group){
+            speed1 = speed/3;
+        }
+        else {
+            speed1 = speed/2;
+        }
+    }
+    else {
+        speed1=speed/5;
+    }
+
     var a = path.length/(speed1);
     bitbox.bringToFront();
 
     var framehandler = function(event){
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
            group.children[9-bitnum].children[1].content='X';
            if(bitnum==6){
             if(group==regBox_group){
@@ -2007,7 +2056,8 @@ function move_bit(group, bitnum, offset) {
             offset+=speed1;
             progress_bar.dashArray = [offset1, 1000];
             offset1+= progress_bar.length / (a);
-        } else {
+            }
+         else {
             flag[0] = 0;
             bitbox.removeChildren();
            group.children[9-bitnum].children[1].content='1';
@@ -2023,7 +2073,8 @@ function move_bit(group, bitnum, offset) {
             enable_play_buttons();
             view.off('frame', framehandler)
         }
-    }
+    } else {;}
+}
     view.on('frame', framehandler);
 }    
 
@@ -2050,11 +2101,17 @@ function stoSet(group){
 
     var framehandler = function(event){
            group.children[5].children[1].content='X';
+           document.getElementById("pause_btn").addEventListener("click", pauseResume);
+        if(pause == false){
         if(offset < path.length) {
+            document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
             bitbox.position = path.getPointAt(offset);
             offset+=speed1;
             progress_bar.dashArray = [offset1, 1000];
-            offset1+= progress_bar.length / (a);
+            offset1+= progress_bar.length / (a);    
+            }
+            else{;}            
         } else {
             flag[0] = 0;
             bitbox.removeChildren();
@@ -2064,7 +2121,8 @@ function stoSet(group){
             enable_play_buttons();
             view.off('frame', framehandler)
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 }
 
@@ -2090,12 +2148,18 @@ function stoClr(group){
     bitbox.bringToFront();
 
     var framehandler = function(event){
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
            group.children[5].children[1].content='1';
         if(offset < path.length) {
+             document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
             bitbox.position = path.getPointAt(offset);
             offset+=speed1;
             progress_bar.dashArray = [offset1, 1000];
-            offset1+= progress_bar.length / (a);
+            offset1+= progress_bar.length / (a);   
+            }
+            else{;}
         } else {
             flag[0] = 0;
             bitbox.removeChildren();
@@ -2105,7 +2169,8 @@ function stoClr(group){
             enable_play_buttons();
             view.off('frame', framehandler)
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 }
 
@@ -2261,11 +2326,17 @@ function sendBit(group, type){
     master_group.bringToFront();
     var framehandler = function(event){
            group.visible=true;
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+        if(pause == false){   
         if(offset < path.length) {
+            document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
             group.position = path.getPointAt(offset);
             offset+=speed1;
             progress_bar.dashArray = [offset1, 1000];
-            offset1+= progress_bar.length / (a);
+            offset1+= progress_bar.length / (a);    
+            }
+            else{;}
         } else {
             flag[0] = 0;
             group.position.x=init_x;
@@ -2274,11 +2345,23 @@ function sendBit(group, type){
             enable_play_buttons();
             view.off('frame', framehandler)
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 } 
 
+//pause_resume
 
+function pauseResume(){
+    if(pause == false){
+        pause = true;
+        document.getElementById("pause_btn").innerHTML = "Resume";
+    }
+    else if(pause == true){
+        pause = false;
+        document.getElementById("pause_btn").innerHTML = "Pause";
+    }
+}
 
 // General Scenario function
 function gen_scenario(num){
@@ -2933,6 +3016,8 @@ function propagatefrom(path1, object, group, num) {
     var total_length = path1.length + right_path.children[4].length;
     flag[0] = 1;
     var framehandler = function (event) {
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
         if (offset1< path1.length){
             object.position =path1.getPointAt(offset1)+ new Point(0,-9);
             offset1+=speed/2; // speed - 150px/second
@@ -2978,7 +3063,8 @@ function propagatefrom(path1, object, group, num) {
             }
             offset2+=speed/2;
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 }
 
@@ -2991,6 +3077,8 @@ function movealong2paths(path1, path2, object, num, content_1, content_2) {
     total_length = path1.length + path2.length;
     flag[0] = 1;
     var framehandler = function (event) {
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
         if (offset1< path1.length){
             object.position =path1.getPointAt(offset1)+ new Point(0,-9);
             offset1+= speed/2; 
@@ -3013,7 +3101,8 @@ function movealong2paths(path1, path2, object, num, content_1, content_2) {
                 view.off('frame', framehandler);
             }
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 }
 function movealong2paths_no_change(path1, path2, object, num) {
@@ -3025,6 +3114,8 @@ function movealong2paths_no_change(path1, path2, object, num) {
     var total_length = path1.length + path2.length;
     flag[0] = 1;
     var framehandler = function (event) {
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
         if (offset1< path1.length){
             object.position =path1.getPointAt(offset1)+ new Point(0,-9);
             offset1+=speed/2;
@@ -3045,7 +3136,8 @@ function movealong2paths_no_change(path1, path2, object, num) {
                 view.off('frame', framehandler)
             }
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 }
 function stop_bit(path1, path2, object, num, content_1, content_2) {
@@ -3057,6 +3149,8 @@ function stop_bit(path1, path2, object, num, content_1, content_2) {
     var total_length = path1.length + path2.length;
     flag[0] = 1;
     var framehandler = function (event) {
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
         if (offset1< path1.length){
             object.position =path1.getPointAt(offset1)+ new Point(0,-9);
             offset1+= speed/2;
@@ -3081,7 +3175,8 @@ function stop_bit(path1, path2, object, num, content_1, content_2) {
                 view.off('frame', framehandler);
             }
         }
-    }
+    } else {;}
+}
     view.on('frame', framehandler);
 }
 // function onFrame(event){
@@ -3097,6 +3192,8 @@ function reversealong2paths(path1, path2, object, num) {
     var total_length = path1.length + path2.length;
     flag[0] = 1;
     var framehandler = function (event) {
+        document.getElementById("pause_btn").addEventListener("click", pauseResume);
+            if(pause == false){
         if (offset1 > 0){
             object.position =path1.getPointAt(offset1)+ new Point(0,-9);
             offset1-= speed/2;
@@ -3117,7 +3214,8 @@ function reversealong2paths(path1, path2, object, num) {
                 view.off('frame', framehandler)
             }
         }
-    }
+    } else{;}
+}
     view.on('frame', framehandler);
 }
 
@@ -4039,6 +4137,20 @@ play_btn.onclick = function update(){
     }
 }
 
+// var paused = false;
+// pause_btn.onclick = function update(){
+//     paused = true;
+// }
+// resume_btn.onclick = function update(){
+//     paused = false;
+//     requestAnimationFrame(animate);
+// }
+
+// requestAnimationFrame(animate);
+
+// function animate(time){
+//   if(paused){return;}
+
 function show_overlay(){
     document.getElementById('instructions_overlay').style.display = 'block';
     instruction_overlay.visible = true;
@@ -4092,9 +4204,12 @@ function disable_play_buttons(){
     document.getElementById('prev_btn').disabled = true;
     document.getElementById('next_btn').disabled = true;
     document.getElementById('play_btn').disabled = true;
+    document.getElementById('pause_btn').disabled = false;
 }
 
 function enable_play_buttons(){
+    pause = false;
+    document.getElementById('pause_btn').disabled = true;
     if(scene_num == 0) {
         document.getElementById('prev_btn').disabled = true;
     } else {
@@ -4390,8 +4505,9 @@ function compiled_enable_scenario(num){
     all_waves.removeChildren();
     regBox_group.removeChildren();
     regBox_group1.removeChildren();
-    conset_path.visible=false;
-    conclr_path.visible=false;
+    conset_path.visible = false;
+    conclr_path.visible = false;
+    pause = false;
     enable_play_buttons();
     show_layer(3);
     show_page(0);
@@ -4539,6 +4655,7 @@ function compiled_read_scenario(num){
     regBox_group1.removeChildren();
     conset_path.visible=false;
     conclr_path.visible=false;
+    pause = false;
     show_layer(3);
     enable_play_buttons();
     show_page(0);

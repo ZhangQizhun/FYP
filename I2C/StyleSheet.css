@@ -16,9 +16,15 @@ iframe{
   left: -30px;
   height: 500px;
   width: 2200px;
+
 }
 
-
+#page-1 {
+  position: relative;
+  height: 560px;
+  width: 100%;
+  overflow: auto;
+  }
 /* canvas[resize] {
     border: 1px solid black;
     width: 100%;
@@ -334,19 +340,25 @@ button.glowing{
 
 #play_btn {
   position: relative;
-  left: 200px;
+  left: 160px;
 }
+
+#pause_btn {
+  position: relative;
+  left: 260px;
+}
+
 
 #next_btn {
   position: relative;
   left: 350px;
 }
 
-#feedback {
+/*#feedback {
   position: relative;
   width: 100px;
   left: 600px;
-}
+}*/
 
 #btn1 {
   position: relative;
