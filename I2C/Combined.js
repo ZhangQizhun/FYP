@@ -4156,8 +4156,6 @@ function show_overlay(){
     instruction_overlay.visible = true;
     pages.visible = false;
     read_pages.visible = false;
-    layer1.visible = false;
-    layer2.visible = false;
     scenario.content = ' ';
     ctrRegBox_clear();
     // document.getElementById('feedback').style.display = 'none';   
@@ -4174,8 +4172,7 @@ close_instructions.onclick = function update(){
     document.getElementById('master_popup').style.display = 'block';
     show_read_page(0);
     show_page(0);
-    disable_play_buttons();
-    document.getElementById('pause_btn').disabled = true;  
+    disable_play_buttons();  
 }
 
 // close_prior.onclick = function update(){
@@ -4215,7 +4212,9 @@ function disable_play_buttons(){
 }
 
 function enable_play_buttons(){
-    pause = false;
+    if(pause == true){
+        pauseResume();
+    }
     document.getElementById('pause_btn').disabled = true;
     if(scene_num == 0) {
         document.getElementById('prev_btn').disabled = true;
@@ -4231,7 +4230,7 @@ function enable_play_buttons(){
     } else {
         document.getElementById('next_btn').disabled = false;
     }
-
+    
 }
 
 var scenario = new PointText(new Point(50,25));
@@ -4509,9 +4508,6 @@ layer2.addChild(read_box_diagram);
 
      
 function compiled_enable_scenario(num){
-    if(pause==true){
-        pauseResume();
-    }
     hide_overlay();
     document.getElementById('master_popup').style.display = 'block';
     all_waves.removeChildren();
@@ -4659,9 +4655,6 @@ function compiled_enable_scenario(num){
 }
 function compiled_read_scenario(num){
     hide_overlay();
-    if(pause==true){
-        pauseResume();
-    }
     document.getElementById('master_popup').style.display = 'block';
     // document.getElementById('feedback').style.display = 'none';
     all_waves.removeChildren();
@@ -4877,6 +4870,7 @@ scene_num_1.content = scene_num;
 show_overlay();
 
 disable_play_buttons();
+
 document.getElementById('pause_btn').disabled = true;
 
 
