@@ -4168,6 +4168,7 @@ function hide_overlay(){
 }   
 
 close_instructions.onclick = function update(){
+       clear_all();
     if(pause==true){
         pauseResume();
         hide_overlay();
@@ -4179,7 +4180,6 @@ close_instructions.onclick = function update(){
         document.getElementById('pause_btn').disabled = true;
     }
     else{
-    clear_all();
     scene = 1;
     scene_num = 0;
     compiled_enable_scenario(scene_num);
