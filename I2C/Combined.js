@@ -4172,7 +4172,8 @@ close_instructions.onclick = function update(){
     document.getElementById('master_popup').style.display = 'block';
     show_read_page(0);
     show_page(0);
-    disable_play_buttons();  
+    disable_play_buttons();
+    document.getElementById('pause_btn').disabled = true;
 }
 
 // close_prior.onclick = function update(){
