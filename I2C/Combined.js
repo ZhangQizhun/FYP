@@ -4168,13 +4168,13 @@ function hide_overlay(){
 }   
 
 close_instructions.onclick = function update(){
+    if(pause==true){
+        pauseResume();
+    }
     hide_overlay();
     document.getElementById('master_popup').style.display = 'block';
     show_read_page(0);
     show_page(0);
-    clear_all();
-    scene = 1;
-    // scenario.content = 'Enabling The Light Sensor';
     scene_num = 0;
     compiled_enable_scenario(scene_num);
 }
