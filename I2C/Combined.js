@@ -4183,11 +4183,11 @@ close_instructions.onclick = function update(){
 
 show_instruction.onclick = function update(){
     location.reload();
-    show_overlay();
-    show_layer(0);  
-    document.getElementById('master_popup').style.display = 'none';
-    disable_play_buttons();
-    document.getElementById('pause_btn').disabled = true;
+//    show_overlay();
+//    show_layer(0);  
+//    document.getElementById('master_popup').style.display = 'none';
+//    disable_play_buttons();
+//    document.getElementById('pause_btn').disabled = true;
 }
 
 // feedback.onclick = function update(){
