@@ -4172,9 +4172,6 @@ close_instructions.onclick = function update(){
         pauseResume();
     }
     hide_overlay();
-    document.getElementById('master_popup').style.display = 'block';
-    show_read_page(0);
-    show_page(0);
     clear_all();
     scene = 1;
     scene_num = 0;
