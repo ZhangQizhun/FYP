@@ -4170,12 +4170,20 @@ function hide_overlay(){
 close_instructions.onclick = function update(){
     if(pause==true){
         pauseResume();
+        hide_overlay();
+        show_layer(0);
+        document.getElementById('master_popup').style.display = 'block';
+        show_read_page(0);
+        show_page(0);
+        disable_play_buttons();
+        document.getElementById('pause_btn').disabled = true;
     }
-    hide_overlay();
+    else{
     clear_all();
     scene = 1;
     scene_num = 0;
     compiled_enable_scenario(scene_num);
+    }
 }
 
 // close_prior.onclick = function update(){
